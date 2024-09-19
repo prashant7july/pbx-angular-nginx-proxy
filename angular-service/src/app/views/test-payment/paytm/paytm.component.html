@@ -1,0 +1,69 @@
+<div id="page-wrapper" s>
+  <div id="page-inner">
+    <!--inside page start-->
+
+    <span>Payment</span>
+    <form [formGroup]="formGroup" (submit)="pay()">
+      <div class="row">
+
+        <div class="col-sm-3 col-md-3">
+          <div class="form-group">
+            <label> Customer Id</label>
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="custId" maxlength="50"
+                [ngClass]="{ 'is-invalid': submitted && formGroup.controls.custId.errors }">
+              <div *ngIf="submitted && formGroup.controls.custId.errors" class="invalid-feedback">
+                <div *ngIf="formGroup.controls.custId.errors.required">Customer ID is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-md-3">
+          <div class="form-group">
+            <label>Order id</label>
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="orderId" maxlength="50"
+                [ngClass]="{ 'is-invalid': submitted && formGroup.controls.orderId.errors }">
+              <div *ngIf="submitted && formGroup.controls.orderId.errors" class="invalid-feedback">
+                <div *ngIf="formGroup.controls.orderId.errors.required">Order Id is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-md-3">
+          <div class="form-group">
+            <label>Transaction amount</label>
+            <div class="input-group">
+              <input type="text" class="form-control" formControlName="amount" maxlength="50"
+                [ngClass]="{ 'is-invalid': submitted && formGroup.controls.amount.errors }">
+              <div *ngIf="submitted && formGroup.controls.amount.errors" class="invalid-feedback">
+                <div *ngIf="formGroup.controls.amount.errors.required">business ID is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+    <hr/>
+
+   <!-- <div [inner Html] = "htmlCode"></div>-->
+    <!--inside page end-->
+
+    <!-- <p-dialog header="Title" [(visible)]="display">
+      <div [innerHTML]="htmlCode"></div>
+  </p-dialog> -->
+
+  
+    <div [innerHtml]="htmlCode"></div>
+  
+</div>

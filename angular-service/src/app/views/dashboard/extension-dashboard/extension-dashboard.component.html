@@ -1,0 +1,399 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" style="background-color: #dbd9d9;">
+        <div class="card-header">
+          <strong>DASHBOARD</strong>
+        </div>
+        <div class="card-body">
+          <!-- Pbx Features(Extension) -->
+          <!-- speed dial -->
+          <div class="row">
+            <div class="col-sm-6 col-lg-3" *ngIf="disableSpeeddial" (click)="showSpeeddial()">
+              <div class="card text-white bg-info">
+                <div class="card-body pb-0">
+                  <div>
+                    <span class="ext_features">Speed Dial</span>
+                    <i class="fa fa-flash fa-2x" style="float: right;"></i>
+                    <br /><br />
+                    <table style="color: white;font:bold 15px arial, serif;width:100%">
+                      <tbody *ngFor='let speeddial of speeddialValue'>
+                        <tr>
+                          <td>{{speeddial.digit}}</td>
+                          <td style="text-align: right;">{{ speeddial.name ? speeddial.name : speeddial.phoneNumber }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- call forward -->
+            <!--/.col-->
+            <div class="col-sm-6 col-lg-5" *ngIf="disableCallForward" (click)="showCallForward()">
+              <div class="card text-white bg-warning">
+                <div class="card-body pb-0">
+                  <div>
+                    <span class="ext_features">Call Forward</span>
+                    <i class="fa fa-phone fa-2x" style="float: right;"></i>
+                    <br /><br />
+                    <table style="color: white;font:bold 15px arial, serif;width:100%">
+                      <tbody>
+                        <tr>
+                          <td>Busy Forward</td>
+                          <span *ngIf="callForwardValue">
+                            <td>{{callForwardValue.busy_external == 'Voicemail' ? disableVoicemail ? 'Voicemail': 'Disabled': callForwardValue.busy_external }}</td>
+                          </span>
+                        </tr>
+                        <tr>
+                          <td>No answer Forward</td>
+                          <span *ngIf="callForwardValue">
+                            <td>{{callForwardValue.noanswer_external  == 'Voicemail' ? disableVoicemail ? 'Voicemail': 'Disabled': callForwardValue.noanswer_external }}</td>
+                          </span>
+                        </tr>
+                        <tr>
+                          <td>Unavailable Forward</td>
+                          <span *ngIf="callForwardValue">
+                            <td>{{callForwardValue.unavailable_external  == 'Voicemail' ? disableVoicemail ? 'Voicemail': 'Disabled': callForwardValue.unavailable_external}}</td>
+                          </span>
+                        </tr>
+                        <tr>
+                          <td>Universal Forward</td>
+                          <span *ngIf="callForwardValue">
+                            <td>{{callForwardValue.universal_external == 'Voicemail' ? disableVoicemail ? 'Voicemail': 'Disabled': callForwardValue.universal_external}}</td>
+                          </span>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.col-->
+            <!-- voice mail-->
+            <div class="col-sm-6 col-lg-4" *ngIf="disableVoicemail" (click)="showVoicemail()">
+              <div class="card text-white bg-dark">
+                <div class="card-body pb-0">
+                  <div>
+                    <span class="ext_features">Voicemail</span>
+                    <i class="fa fa-phone-square fa-2x" style="float: right;"></i>
+                    <br /><br />
+                    <table style="color: white;font:bold 15px arial, serif;width:100%">
+                      <tbody>
+                       <!-- <tr>
+                          <td>Total</td>
+                          <td style="text-align: -webkit-right;">5/10</td>
+                        </tr>  -->
+                        <tr>
+                          <td>Voicemail to Email</td>
+                          <td>
+                            <label style="float: right; font-weight: bold;">
+                              <span *ngIf="voiceMailValue">
+                                <span *ngIf="voiceMailValue.voicemailToEmail==1"><img class="serviceStatus"
+                                    src="assets/img/brand/check_white.svg" /></span>
+                                <span *ngIf="voiceMailValue.voicemailToEmail==0"><img class="serviceStatus"
+                                    src="assets/img/brand/cross.svg" /></span>
+                              </span>
+                              <span *ngIf="!voiceMailValue">
+                                <img class="serviceStatus" src="assets/img/brand/cross.svg" />
+                              </span>
+                            </label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Delete Voicemail After Email</td>
+                          <td>
+                            <label style="float: right; font-weight: bold;">
+                              <span *ngIf="voiceMailValue">
+                                <span *ngIf="voiceMailValue.delVoicemailAfterEmail==1"><img class="serviceStatus"
+                                    src="assets/img/brand/check_white.svg" /></span>
+                                <span *ngIf="voiceMailValue.delVoicemailAfterEmail==0"><img class="serviceStatus"
+                                    src="assets/img/brand/cross.svg" /></span>
+                              </span>
+                              <span *ngIf="!voiceMailValue">
+                                <img class="serviceStatus" src="assets/img/brand/cross.svg" />
+                              </span>
+                            </label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Announce CallerID</td>
+                          <td>
+                            <label style="float: right; font-weight: bold;">
+                              <span *ngIf="voiceMailValue">
+                                <span *ngIf="voiceMailValue.announceCallerID==1"><img class="serviceStatus"
+                                    src="assets/img/brand/check_white.svg" /></span>
+                                <span *ngIf="voiceMailValue.announceCallerID==0"><img class="serviceStatus"
+                                    src="assets/img/brand/cross.svg" /></span>
+                              </span>
+                              <span *ngIf="!voiceMailValue">
+                                <img class="serviceStatus" src="assets/img/brand/cross.svg" />
+                              </span>
+                            </label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Deliver Voicemail To</td>
+                          <td>
+                            <label style="float: right; font-weight: bold;">
+                              <span *ngIf="voiceMailValue">
+                                <span *ngIf="voiceMailValue.deliverVoicemailTo==1"><img class="serviceStatus"
+                                    src="assets/img/brand/check_white.svg" /></span>
+                                <span *ngIf="voiceMailValue.deliverVoicemailTo==0"><img class="serviceStatus"
+                                    src="assets/img/brand/cross.svg" /></span>
+                              </span>
+                              <span *ngIf="!voiceMailValue">
+                                <img class="serviceStatus" src="assets/img/brand/cross.svg" />
+                              </span>
+                            </label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.col-->
+          </div>
+        </div><!--  row -->
+        <!-- Features -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <!-- faetures -->
+                  <div class="col-sm-12" (click)="showExtensionFeatures()">
+                    <div class="card text-white bg-success">
+                      <div class="card-body pb-0">
+                        <div>
+                          <span class="ext_features">Features and Extension Settings</span>
+                          <i class="fa fa-wrench fa-2x" style="float: right;"></i>
+                          <br /><br />
+                          <table class="table" style="color: white;font:bold 15px arial, serif;width:100%">
+                            <thead>
+                              <tr>
+                                <th>Balance Restriction</th>
+                                <!-- <th>Black List</th> -->
+                                <!-- <th>Call Transfer</th> -->
+                                <th>DND</th>
+                                <th>Forward</th>
+                                <th>Multiple Registration</th>
+                                <th>Outbound</th>
+                                <th>Recording</th>
+                                <th>Speed Dial</th>
+                                <th>Voicemail</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <span *ngIf="featuresValue.balance_restriction=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.balance_restriction=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <!-- <td>
+                                  <span *ngIf="featuresValue.black_list=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.black_list=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td> -->
+                                <!-- <td>
+                                  <span *ngIf="featuresValue.call_transfer=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.call_transfer=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td> -->
+                                <td>
+                                  <span *ngIf="featuresValue.dnd=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.dnd=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.forward=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.forward=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.multiple_registration=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.multiple_registration=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.outbound=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.outbound=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.recording=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.recording=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.speed_dial=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.speed_dial=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                                <td>
+                                  <span *ngIf="featuresValue.voicemail=='1'"><img class="serviceStatus"
+                                      src="assets/img/brand/check_white.svg" /></span>
+                                  <span *ngIf="featuresValue.voicemail=='0'"><img class="serviceStatus"
+                                      src="assets/img/brand/cross.svg" /></span>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <!-- <tbody>
+                              <tr>
+                                <td>Balance Restriction</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.balance_restriction=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.balance_restriction=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Black List</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.black_list=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.black_list=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Call Transfer</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.call_transfer=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.call_transfer=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>DND</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.dnd=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.dnd=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Forward</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.forward=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.forward=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Multiple Registration</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.multiple_registration=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.multiple_registration=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Outbound</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.outbound=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.outbound=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Recording</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.recording=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.recording=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Speed Dial</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.speed_dial=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.speed_dial=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Voicemail</td>
+                                <td>
+                                  <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="featuresValue.voicemail=='1'"><img class="serviceStatus"
+                                        src="assets/img/brand/check_white.svg" /></span>
+                                    <span *ngIf="featuresValue.voicemail=='0'"><img class="serviceStatus"
+                                        src="assets/img/brand/cross.svg" /></span>
+                                  </label>
+                                </td>
+                              </tr>
+                            </tbody> -->
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--/.col-->
+                </div>
+              </div>
+            </div><!-- card -->
+          </div>
+        </div>
+        <!-- CDR -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-5">
+                    <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                    (actionClick)="manageAction($event)">
+                  </app-grid>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    

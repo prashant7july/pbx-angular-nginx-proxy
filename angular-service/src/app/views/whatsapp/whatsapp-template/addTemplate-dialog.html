@@ -1,0 +1,67 @@
+<h3 class="card-header-style">ADD Template</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="WhatsappTemplateForm" class="row">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" 
+                    maxlength="20"  (keypress)="commonService.charOnly($event)"  autocomplete="off" required>
+                </mat-form-field>  
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>      
+            </div>                 
+
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description" formControlName="description" 
+                    maxlength="50"  (keypress)="commonService.charOnly($event)"  autocomplete="off">
+                </mat-form-field>        
+            </div>   
+<!-- 
+            <div class="form-group col-md-4" >
+                <ejs-dropdownlist formControlName="custom_group"
+                style="width: 80%;margin-top: -7px;" [dataSource]='' [fields]='' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true required>
+            </ejs-dropdownlist>           
+            </div>
+
+            <div class="form-group col-md-4" >
+                <ejs-dropdownlist formControlName="language"
+                style="width: 80%;margin-top: -7px;" [dataSource]='' [fields]='' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder4' allowFiltering=true required>
+            </ejs-dropdownlist>           
+            </div> -->            
+
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Text</mat-label>
+                    <input matInput placeholder="Text" formControlName="text" 
+                        autocomplete="off" required>
+                </mat-form-field>   
+                <div *ngIf="text.invalid && (text.dirty || text.touched)" class="reqired-field">
+                    <div *ngIf="text.errors.required">
+                        Required Field
+                    </div>
+                </div>     
+            </div> 
+
+            <div class="form-group col-md-4" >
+                <ejs-dropdownlist formControlName="social_channel" style="width: 80%;margin-top: -7px;"
+                    [dataSource]='socialChannelList' [fields]='fields'
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder' allowFiltering=true required>
+                </ejs-dropdownlist>               
+            </div>
+                                                                                   
+            <div class="col-lg-12 example-button-row">     
+                <button (click)="submitTemplateForm()" mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

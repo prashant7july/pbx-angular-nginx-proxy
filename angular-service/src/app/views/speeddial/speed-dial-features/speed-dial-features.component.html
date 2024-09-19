@@ -1,0 +1,1414 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>SPEED DIAL LIST</strong>
+        </div>
+        <div class="card-body">
+          <div class="help-button row" style="float:right;">
+            <button mat-raised-button (click)="showInfo()"
+              style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+              <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+              HELP
+            </button>
+          </div>
+          <form [formGroup]="speedDialForm" (ngSubmit)="submitspeedDialForm()" class="row" style="margin-top: 50px;">
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit0"
+                  id="digit0" maxlength="2" placeholder="*0" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck && !cg0">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox0 && !cg0" (change)="toggleVisibility0($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox0">
+              <div *ngIf="speeddialNumber0">
+                <ejs-dropdownlist formControlName="extension0" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi0_number" [floatLabelType]="'Auto'" style="width: 80%;margin-top:  -7px;"
+                  [dataSource]='extensionInfo' [fields]='fields' [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension0" (openedChange)="HandleDropdownFilter('filterExOne',ExOneFilter)" [(ngModel)]="digi0_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExOne = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExOne' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber0">
+                <ejs-dropdownlist formControlName="extension0" (filtering)="Extensionremovedspace($event)"
+                  [floatLabelType]="'Auto'" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1'
+                  allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension0" (openedChange)="HandleDropdownFilter('filterExOne',ExOneFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExOne = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExOne' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox0 && !cg0" >
+              <div *ngIf="countryExists0">
+                <ejs-dropdownlist formControlName="country0" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id0" (change)="getCountryCode0($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country0" (openedChange)="HandleDropdownFilter('filterConOne',CountryOneFilter)" (selectionChange)="getCountryCode0($event)"
+                    [value]="country_id0" [(ngModel)]="country_id0" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConOne = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConOne' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists0">
+                <ejs-dropdownlist formControlName="country0" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode0($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country0" (openedChange)="HandleDropdownFilter('filterConOne',CountryOneFilter)" (selectionChange)="getCountryCode0($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConOne = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConOne' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country0.invalid && (country0.dirty || country0.touched)" class="reqired-field">
+                <div class="error" *ngIf="country0.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox0 && !cg0" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists0">
+                  <input matInput [hidden]="true" formControlName="country_code0" [value]="country_Code0"
+                    [(ngModel)]="country_Code0" />
+                </div>
+                <div *ngIf="!countryExists0">
+                  <input matInput [hidden]="true" formControlName="country_code0" [value]="countryCode0"
+                    [(ngModel)]="countryCode0" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit0_number" id="digit0_number" placeholder="" maxlength="10" value={{extNumber0}}
+                  [(ngModel)]="extNumber0" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists0"> {{country_Code0}}</span>
+                <span matPrefix *ngIf="!countryExists0">{{countryCode0}}</span>
+              </mat-form-field>
+              <div *ngIf="digit0_number.invalid && (digit0_number.dirty || digit0_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit0_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit0_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg0" >
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup0" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue0"
+                  [popupWidth]='popupWidth' [readonly]="true"> 
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digit 0 end -->
+            <!-- digi 1 start -->
+            <div class="form-group col-md-4 mt-3" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit1"
+                  id="digit1" maxlength="2" placeholder="*1" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg1">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox1  && !cg1" (change)="toggleVisibility1($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox1">
+              <div *ngIf="speeddialNumber1">
+                <ejs-dropdownlist  formControlName="extension1" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi1_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension1" (openedChange)="HandleDropdownFilter('filterExTwo',ExTwoFilter)" [(ngModel)]="digi1_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExTwo = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExTwo' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber1">
+                <ejs-dropdownlist formControlName="extension1" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension1" (openedChange)="HandleDropdownFilter('filterExTwo',ExTwoFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExTwo = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExTwo' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox1 && !cg1">
+              <div *ngIf="countryExists1">
+                <ejs-dropdownlist formControlName="country1" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id1" (change)="getCountryCode1($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country1" (openedChange)="HandleDropdownFilter('filterConTwo',CountryTwoFilter)" (selectionChange)="getCountryCode1($event)"
+                    [value]="country_id1" [(ngModel)]="country_id1" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConTwo = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConTwo' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists1">
+                <ejs-dropdownlist formControlName="country1" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode1($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country1" (openedChange)="HandleDropdownFilter('filterConTwo',CountryTwoFilter)" (selectionChange)="getCountryCode1($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConTwo = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConTwo' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country1.invalid && (country1.dirty || country1.touched)" class="reqired-field">
+                <div class="error" *ngIf="country1.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox1 && !cg1" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists1">
+                  <input matInput [hidden]="true" formControlName="country_code1" [value]="country_Code1"
+                    [(ngModel)]="country_Code1" />
+                </div>
+                <div *ngIf="!countryExists1">
+                  <input matInput [hidden]="true" formControlName="country_code1" [value]="countryCode1"
+                    [(ngModel)]="countryCode1" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit1_number" id="digit1_number" placeholder="" maxlength="10" value={{extNumber1}}
+                  [(ngModel)]="extNumber1" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists1">{{country_Code1}}</span>
+                <span matPrefix *ngIf="!countryExists1">{{countryCode1}}</span>
+              </mat-form-field>
+              <div *ngIf="digit1_number.invalid && (digit1_number.dirty || digit1_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit1_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit1_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg1">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup1" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue1"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digit 1 end -->
+            <!-- digit 2 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit2"
+                  id="digit2" maxlength="2" placeholder="*2" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg2">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox2  && !cg2" (change)="toggleVisibility2($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox2">
+              <div *ngIf="speeddialNumber2">
+                <ejs-dropdownlist formControlName="extension2" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi2_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension2" (openedChange)="HandleDropdownFilter('filterExThree',ExThreeFilter)" [(ngModel)]="digi2_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExThree = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExThree' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber2">
+                <ejs-dropdownlist formControlName="extension2" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension2" (openedChange)="HandleDropdownFilter('filterExThree',ExThreeFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExThree = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExThree' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox2 && !cg2">
+              <div *ngIf="countryExists2">
+                <ejs-dropdownlist formControlName="country2" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id2" (change)="getCountryCode2($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label> 
+                  <mat-select formControlName="country2" (openedChange)="HandleDropdownFilter('filterConThree',CountryThreeFilter)" (selectionChange)="getCountryCode2($event)"
+                    [value]="country_id2" [(ngModel)]="country_id2" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConThree = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConThree' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists2">
+                <ejs-dropdownlist formControlName="country2" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode2($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country2" (openedChange)="HandleDropdownFilter('filterConThree',CountryThreeFilter)" (selectionChange)="getCountryCode2($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConThree = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConThree' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country2.invalid && (country2.dirty || country2.touched)" class="reqired-field">
+                <div class="error" *ngIf="country2.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox2 && !cg2" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists2">
+                  <input matInput [hidden]="true" formControlName="country_code2" [value]="country_Code2"
+                    [(ngModel)]="country_Code2" />
+                </div>
+                <div *ngIf="!countryExists2">
+                  <input matInput [hidden]="true" formControlName="country_code2" value={{countryCode2}}
+                    [(ngModel)]="countryCode2" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit2_number" id="digit2_number" placeholder="" maxlength="10" value={{extNumber2}}
+                  [(ngModel)]="extNumber2" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists2">{{country_Code2}}</span>
+                <span matPrefix *ngIf="!countryExists2">{{countryCode2}}</span>
+              </mat-form-field>
+              <div *ngIf="digit2_number.invalid && (digit2_number.dirty || digit2_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit2_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit2_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg2">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup2" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue2"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 2 end -->
+            <!-- digit 3 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit3"
+                  id="digit3" maxlength="2" placeholder="*3" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg3">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox3  && !cg3" (change)="toggleVisibility3($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox3">
+              <div *ngIf="speeddialNumber3">
+                <ejs-dropdownlist formControlName="extension3" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi3_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension3" (openedChange)="HandleDropdownFilter('filterExFour',ExFourFilter)" [(ngModel)]="digi3_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExFour = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExFour' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber3">
+                <ejs-dropdownlist formControlName="extension3" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension3" (openedChange)="HandleDropdownFilter('filterExFour',ExFourFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExFour = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExFour' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox3 && !cg3">
+              <div *ngIf="countryExists3">
+                <ejs-dropdownlist formControlName="country3" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id3" (change)="getCountryCode3($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label> 
+                  <mat-select formControlName="country3" (openedChange)="HandleDropdownFilter('filterConFour',CountryFourFilter)" (selectionChange)="getCountryCode3($event)"
+                    [value]="country_id3" [(ngModel)]="country_id3" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConFour = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConFour' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists3">
+                <ejs-dropdownlist formControlName="country3" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode3($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country3" (openedChange)="HandleDropdownFilter('filterConFour',CountryFourFilter)" (selectionChange)="getCountryCode3($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConFour = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConFour' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country3.invalid && (country3.dirty || country3.touched)" class="reqired-field">
+                <div class="error" *ngIf="country3.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox3 && !cg3" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists3">
+                  <input matInput [hidden]="true" formControlName="country_code3" [value]="country_Code3"
+                    [(ngModel)]="country_Code3" />
+                </div>
+                <div *ngIf="!countryExists3">
+                  <input matInput [hidden]="true" formControlName="country_code3" value={{countryCode3}}
+                    [(ngModel)]="countryCode3" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit3_number" id="digit3_number" placeholder="" maxlength="10" value={{extNumber3}}
+                  [(ngModel)]="extNumber3" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists3">{{country_Code3}}</span>
+                <span matPrefix *ngIf="!countryExists3">{{countryCode3}}</span>
+              </mat-form-field>
+              <div *ngIf="digit3_number.invalid && (digit3_number.dirty || digit3_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit3_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit3_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg3">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup3" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue3"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 3 end -->
+            <!-- digit 4 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit4"
+                  id="digit4" maxlength="2" placeholder="*4" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg4">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox4  && !cg4" (change)="toggleVisibility4($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox4">
+              <div *ngIf="speeddialNumber4">
+                <ejs-dropdownlist formControlName="extension4" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi4_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension4" (openedChange)="HandleDropdownFilter('filterExFive',ExFiveFilter)" [(ngModel)]="digi4_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExFive = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExFive' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber4">
+                <ejs-dropdownlist formControlName="extension4" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension4" (openedChange)="HandleDropdownFilter('filterExFive',ExFiveFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExFive = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExFive' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox4 && !cg4">
+              <div *ngIf="countryExists4">
+                <ejs-dropdownlist formControlName="country4" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id4" (change)="getCountryCode4($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country4" (openedChange)="HandleDropdownFilter('filterConFive',CountryFiveFilter)"  (selectionChange)="getCountryCode4($event)"
+                    [value]="country_id4" [(ngModel)]="country_id4" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConFive = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConFive' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists4">
+                <ejs-dropdownlist formControlName="country4" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode4($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country4" (openedChange)="HandleDropdownFilter('filterConFive',CountryFiveFilter)" (selectionChange)="getCountryCode4($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConFive = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConFive' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country4.invalid && (country4.dirty || country4.touched)" class="reqired-field">
+                <div class="error" *ngIf="country4.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox4 && !cg4" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists4">
+                  <input matInput [hidden]="true" formControlName="country_code4" [value]="country_Code4"
+                    [(ngModel)]="country_Code4" />
+                </div>
+                <div *ngIf="!countryExists4">
+                  <input matInput [hidden]="true" formControlName="country_code4" value={{countryCode4}}
+                    [(ngModel)]="countryCode4" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit4_number" id="digit4_number" placeholder="" maxlength="10" value={{extNumber4}}
+                  [(ngModel)]="extNumber4" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists4">{{country_Code4}}</span>
+                <span matPrefix *ngIf="!countryExists4">{{countryCode4}}</span>
+              </mat-form-field>
+              <div *ngIf="digit4_number.invalid && (digit4_number.dirty || digit4_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit4_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit4_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg4">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup4" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue4"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 4 end -->
+            <!-- digit 5 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit5"
+                  id="digit5" maxlength="2" placeholder="*5" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg5">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox5  && !cg5" (change)="toggleVisibility5($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox5">
+              <div *ngIf="speeddialNumber5">
+                <ejs-dropdownlist formControlName="extension5" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi5_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension5" (openedChange)="HandleDropdownFilter('filterExSix',ExSixFilter)" [(ngModel)]="digi5_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExSix = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExSix' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber5">
+                <ejs-dropdownlist formControlName="extension5" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension5" (openedChange)="HandleDropdownFilter('filterExSix',ExSixFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExSix = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExSix' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox5 && !cg5">
+              <div *ngIf="countryExists5">
+                <ejs-dropdownlist formControlName="country5" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id5" (change)="getCountryCode5($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country5" (openedChange)="HandleDropdownFilter('filterConSix',CountrySixFilter)" (selectionChange)="getCountryCode5($event)"
+                    [value]="country_id5" [(ngModel)]="country_id5" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConSix = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConSix' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists5">
+                <ejs-dropdownlist formControlName="country5" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode5($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country5" (openedChange)="HandleDropdownFilter('filterConSix',CountrySixFilter)" (selectionChange)="getCountryCode5($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConSix = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConSix' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country5.invalid && (country5.dirty || country5.touched)" class="reqired-field">
+                <div class="error" *ngIf="country5.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox5 && !cg5" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists5">
+                  <input matInput [hidden]="true" formControlName="country_code5" [value]="country_Code5"
+                    [(ngModel)]="country_Code5" />
+                </div>
+                <div *ngIf="!countryExists5">
+                  <input matInput [hidden]="true" formControlName="country_code5" value={{countryCode5}}
+                    [(ngModel)]="countryCode5" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit5_number" id="digit5_number" placeholder="" maxlength="10" value={{extNumber5}}
+                  [(ngModel)]="extNumber5" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists5">{{country_Code5}}</span>
+                <span matPrefix *ngIf="!countryExists5">{{countryCode5}}</span>
+              </mat-form-field>
+              <div *ngIf="digit5_number.invalid && (digit5_number.dirty || digit5_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit5_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit5_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg5">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup5" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue5"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 5 end -->
+            <!-- digit 6 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit6"
+                  id="digit6" maxlength="2" placeholder="*6" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg6">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox6  && !cg6" (change)="toggleVisibility6($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox6">
+              <div *ngIf="speeddialNumber6">
+                <ejs-dropdownlist formControlName="extension6" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi6_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension6" (openedChange)="HandleDropdownFilter('filterExSev',ExSevFilter)" [(ngModel)]="digi6_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExSev = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExSev' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber6">
+                <ejs-dropdownlist formControlName="extension6" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension6" (openedChange)="HandleDropdownFilter('filterExSev',ExSevFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExSev = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExSev' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox6 && !cg6">
+              <div *ngIf="countryExists6">
+                <ejs-dropdownlist formControlName="country6" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id6" (change)="getCountryCode6($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country6" (openedChange)="HandleDropdownFilter('filterConSev',CountrySevFilter)" (selectionChange)="getCountryCode6($event)"
+                    [value]="country_id6" [(ngModel)]="country_id6" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConSev = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConSev' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists6">
+                <ejs-dropdownlist formControlName="country6" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode6($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country6" (openedChange)="HandleDropdownFilter('filterConSev',CountrySevFilter)" (selectionChange)="getCountryCode6($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConSev = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConSev' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country6.invalid && (country6.dirty || country6.touched)" class="reqired-field">
+                <div class="error" *ngIf="country6.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox6 && !cg6" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists6">
+                  <input matInput [hidden]="true" formControlName="country_code6" [value]="country_Code6"
+                    [(ngModel)]="country_Code6" />
+                </div>
+                <div *ngIf="!countryExists6">
+                  <input matInput [hidden]="true" formControlName="country_code6" value={{countryCode6}}
+                    [(ngModel)]="countryCode6" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit6_number" id="digit6_number" placeholder="" maxlength="10" value={{extNumber6}}
+                  [(ngModel)]="extNumber6" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists6">{{country_Code6}}</span>
+                <span matPrefix *ngIf="!countryExists6">{{countryCode6}}</span>
+              </mat-form-field>
+              <div *ngIf="digit6_number.invalid && (digit6_number.dirty || digit6_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit6_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit6_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg6">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup6" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue6"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 6 end -->
+            <!-- digit 7 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit7"
+                  id="digit7" maxlength="2" placeholder="*7" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck && !cg7">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox7 && !cg7" (change)="toggleVisibility7($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox7">
+              <div *ngIf="speeddialNumber7">
+                <ejs-dropdownlist formControlName="extension7" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi7_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension7" (openedChange)="HandleDropdownFilter('filterExEig',ExEigFilter)" [(ngModel)]="digi7_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExEig = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExEig' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber7">
+                <ejs-dropdownlist formControlName="extension7" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension7" (openedChange)="HandleDropdownFilter('filterExEig',ExEigFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExEig = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExEig' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox7 && !cg7">
+              <div *ngIf="countryExists7">
+                <ejs-dropdownlist formControlName="country7" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id7" (change)="getCountryCode7($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country7" (openedChange)="HandleDropdownFilter('filterConEig',CountryEigFilter)" (selectionChange)="getCountryCode7($event)"
+                    [value]="country_id7" [(ngModel)]="country_id7" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConEig = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConEig' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists7">
+                <ejs-dropdownlist formControlName="country7" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode7($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country7" (openedChange)="HandleDropdownFilter('filterConEig',CountryEigFilter)" (selectionChange)="getCountryCode7($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConEig = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConEig' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country7.invalid && (country7.dirty || country7.touched)" class="reqired-field">
+                <div class="error" *ngIf="country7.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox7 && !cg7" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists7">
+                  <input matInput [hidden]="true" formControlName="country_code7" [value]="country_Code7"
+                    [(ngModel)]="country_Code7" />
+                </div>
+                <div *ngIf="!countryExists7">
+                  <input matInput [hidden]="true" formControlName="country_code7" value={{countryCode7}}
+                    [(ngModel)]="countryCode7" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit7_number" id="digit7_number" placeholder="" maxlength="10" value={{extNumber7}}
+                  [(ngModel)]="extNumber7" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists7">{{country_Code7}}</span>
+                <span matPrefix *ngIf="!countryExists7">{{countryCode7}}</span>
+              </mat-form-field>
+              <div *ngIf="digit7_number.invalid && (digit7_number.dirty || digit7_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit7_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit7_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg7">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup7" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue7"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 7 end -->
+            <!-- digit 8 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit8"
+                  id="digit8" maxlength="2" placeholder="*8" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck && !cg8">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox8" (change)="toggleVisibility8($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox8  && !cg8">
+              <div *ngIf="speeddialNumber8">
+                <ejs-dropdownlist formControlName="extension8" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi8_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension8" (openedChange)="HandleDropdownFilter('filterExNine',ExNineFilter)" [(ngModel)]="digi8_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExNine = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExNine' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber8">
+                <ejs-dropdownlist formControlName="extension8" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension8" (openedChange)="HandleDropdownFilter('filterExNine',ExNineFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExNine = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExNine' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox8 && !cg8">
+              <div *ngIf="countryExists8">
+                <ejs-dropdownlist formControlName="country8" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id8" (change)="getCountryCode8($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country8" (openedChange)="HandleDropdownFilter('filterConNine',CountryNineFilter)" (selectionChange)="getCountryCode8($event)"
+                    [value]="country_id8" [(ngModel)]="country_id8" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConNine = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConNine' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists8">
+                <ejs-dropdownlist formControlName="country8" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode8($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country8" (openedChange)="HandleDropdownFilter('filterConNine',CountryNineFilter)" (selectionChange)="getCountryCode8($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConNine = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConNine' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country8.invalid && (country8.dirty || country8.touched)" class="reqired-field">
+                <div class="error" *ngIf="country8.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox8 && !cg8" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists8">
+                  <input matInput [hidden]="true" formControlName="country_code8" [value]="country_Code8"
+                    [(ngModel)]="country_Code8" />
+                </div>
+                <div *ngIf="!countryExists8">
+                  <input matInput [hidden]="true" formControlName="country_code8" value={{countryCode8}}
+                    [(ngModel)]="countryCode8" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit8_number" id="digit8_number" placeholder="" maxlength="10" value={{extNumber8}}
+                  [(ngModel)]="extNumber8" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists8">{{country_Code8}}</span>
+                <span matPrefix *ngIf="!countryExists8">{{countryCode8}}</span>
+              </mat-form-field>
+              <div *ngIf="digit8_number.invalid && (digit8_number.dirty || digit8_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit8_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit8_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg8">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup8" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue8"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 8 end -->
+            <!-- digit 9 start -->
+            <div class="form-group col-md-4" style="margin-left: 1px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digit</mat-label>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="digit9"
+                  id="digit9" maxlength="2" placeholder="*9" readonly>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-2" style="margin-right: -63px;" *ngIf="pstnCheck  && !cg9">
+              <mat-label>Dial PSTN</mat-label>
+              <div>
+                <input type="checkbox" [checked]="!theCheckbox9 && !cg9" (change)="toggleVisibility9($event)">
+              </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="theCheckbox9">
+              <div *ngIf="speeddialNumber9">
+                <ejs-dropdownlist formControlName="extension9" (filtering)="Extensionremovedspace($event)"
+                  [(ngModel)]="digi9_number" style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo'
+                  [fields]='fields' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension9" (openedChange)="HandleDropdownFilter('filterExTen',ExTenFilter)" [(ngModel)]="digi9_number" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExTen = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExTen' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+              <div *ngIf="!speeddialNumber9">
+                <ejs-dropdownlist formControlName="extension9" (filtering)="Extensionremovedspace($event)"
+                  style="width: 80%;margin-top:  -7px;" [dataSource]='extensionInfo' [fields]='fields'
+                  [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Extension</mat-label>
+                  <mat-select formControlName="extension9" (openedChange)="HandleDropdownFilter('filterExTen',ExTenFilter)" [value]="0" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="extensionInfo" [displayMember]="'extension'" (filteredReturn)="filterExTen = $event"></mat-select-filter>
+                    <mat-option value="0">Select</mat-option>
+                    <mat-option *ngFor='let extension of filterExTen' [value]="extension.ext_number">
+                      {{extension.extension}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <div class="reqired-field" style="margin-top:2px;">
+                  <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension
+                    which has DND enable not listed here.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox9 && !cg9">
+              <div *ngIf="countryExists9">
+                <ejs-dropdownlist formControlName="country9" (filtering)="Countryremovedspace($event)"
+                  [(ngModel)]="country_id9" (change)="getCountryCode9($event)" style="width:   129%;margin-top:  -7px;"
+                  [dataSource]='countryList' [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight'
+                  [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country9" (openedChange)="HandleDropdownFilter('filterConTen',CountryTenFilter)" (selectionChange)="getCountryCode9($event)"
+                    [value]="country_id9" [(ngModel)]="country_id9" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConTen = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConTen' [value]="country.id">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="!countryExists9">
+                <ejs-dropdownlist formControlName="country9" (filtering)="Countryremovedspace($event)"
+                  (change)="getCountryCode9($event)" style="width:   129%;margin-top:  -7px;" [dataSource]='countryList'
+                  [fields]='fields1' [floatLabelType]="'Auto'" [popupHeight]='popupHeight' [popupWidth]='popupWidth1'
+                  [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select formControlName="country9" (openedChange)="HandleDropdownFilter('filterConTen',CountryTenFilter)" (selectionChange)="getCountryCode9($event)"
+                    [value]="countryID.id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterConTen = $event"></mat-select-filter>
+                    <mat-option *ngFor='let country of filterConTen' [value]="country.id">{{country.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+              </div>
+              <div *ngIf="country9.invalid && (country9.dirty || country9.touched)" class="reqired-field">
+                <div class="error" *ngIf="country9.errors.required">
+                  Required country
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2" *ngIf="!theCheckbox9 && !cg9" style="margin-left: 25px;">
+              <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <div *ngIf="countryExists9">
+                  <input matInput [hidden]="true" formControlName="country_code9" [value]="country_Code9"
+                    [(ngModel)]="country_Code9" />
+                </div>
+                <div *ngIf="!countryExists9">
+                  <input matInput [hidden]="true" formControlName="country_code9" value={{countryCode9}}
+                    [(ngModel)]="countryCode9" />
+                </div>
+                <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                  formControlName="digit9_number" id="digit9_number" placeholder="" maxlength="10" value={{extNumber9}}
+                  [(ngModel)]="extNumber9" autocomplete="off" appBlockCopyPaste required>
+                <span matPrefix *ngIf="countryExists9">{{country_Code9}}</span>
+                <span matPrefix *ngIf="!countryExists9">{{countryCode9}}</span>
+              </mat-form-field>
+              <div *ngIf="digit9_number.invalid && (digit9_number.dirty || digit9_number.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="digit9_number.errors.required">
+                  Required Field
+                </div>
+                <div class="error" *ngIf="digit9_number.errors.pattern"> Number can not start with 0 and not less than
+                  10
+                  digits.</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-left: 111px;" *ngIf="cg9">
+              <mat-label>Call Group</mat-label>
+              <ejs-dropdownlist style="width: 80%;" id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields1'
+                  placeholder='Select Call Group' formControlName="callGroup9" [popupHeight]='popupHeight' [(ngModel)]="callGroupValue9"
+                  [popupWidth]='popupWidth' [readonly]="true">
+              </ejs-dropdownlist>
+              <!-- <div *ngIf="callGroup0.invalid && (callGroup0.dirty || callGroup0.touched)" class="reqired-field mt-1">
+                  <div *ngIf="callGroup0.errors.required">
+                      Required Field
+                  </div>
+              </div> -->
+            </div>
+            <!-- digi 9 end -->
+            <div class="form-group col-md-12">
+              <button type="submit" [disabled]="!speedDialForm.valid" mat-raised-button
+                color="primary">Submit</button>&nbsp;
+            </div>
+          </form>
+        </div>
+        <!-- <small style="color: blue; font-weight:600">*Note</small><small> The Extension which has DND enable not listed here.</small> -->
+      </div>
+    </div>
+  </div>
+</div>

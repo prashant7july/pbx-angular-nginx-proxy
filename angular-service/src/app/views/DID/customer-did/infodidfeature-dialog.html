@@ -1,0 +1,36 @@
+<h3 class="card-header-style">DID FEATURE MAPPING HISTORY</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">DID</th>
+                    <!-- <th scope="col">did id</th> -->
+                    <!-- <th scope="col">product</th> -->
+                    <th scope="col">Time Group</th>
+                    <th scope="col">Feature</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Reservation Date</th>
+                    <th scope="col">Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of didHistoryList">
+                    <th scope="row">{{item.did_number}}</th>
+                    <!-- <td>{{item.did_id}}</td> -->
+                    <!-- <td>{{item.product}}</td> -->
+                    <td>{{item.time_group_name}}</td>  
+                    <td>{{item.firstIndex}}</td>
+                    <td>{{item.LastIndex}}</td>
+                    <!-- <td>{{item.assigned_to}}</td> -->
+                    <td>{{item.reservation_date}}</td>
+                    <td>{{item.release_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-lg-12 example-button-row">
+            <!-- <button mat-raised-button [disabled]="!callPlanGroupForm.valid" color="primary" >Submit</button> -->
+            <button mat-raised-button color="warn" (click)="cancleDialog($event)">Close</button>
+        </div>
+    </div>
+</div>

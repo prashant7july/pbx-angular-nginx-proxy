@@ -1,0 +1,508 @@
+<h3 class="card-header-style">PACKAGE LOG INFO</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <table class="table">
+            <!-- <thead class="thead-light">
+                <tr>
+                    <th scope="col">DID</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Assigned</th>
+                    <th scope="col">Reservation Date</th>
+                    <th scope="col">Release Date</th>
+                </tr>
+            </thead> -->
+            <tbody>
+                <tr>
+                    
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item" *ngFor="let item of packageLogList">
+                            <h2 class="accordion-header" id="headingOne" style="background-color: darkgray;">
+                                <!-- <h5 class="mb-0"> -->
+                                    <button class="btn btn-link"  style="color: white;" type="button" data-toggle="collapse" [attr.data-target]="'#'+ item.id" aria-expanded="false" >
+                                        {{item.action}} - {{item.created_at}}
+                                    </button>
+                                <!-- </h5> -->
+                            </h2>
+                    
+                            <div id={{item.id}} class="accordion-collapse collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        
+                                        <div class="form-group col-md-4 switch-div">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Concurrent Calls" value={{item.all_features.concurrent_call}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Extension Limit" value={{item.all_features.extension_limit}} readonly>
+                                            </mat-form-field>
+                                          </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Phone Book Limit" value={{item.all_features.phone_book}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- <div class="form-group col-md-4 switch-div">
+                                            Caller ID
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.is_caller_id=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.is_caller_id=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div> -->
+                                        <div class ="form-group col-md-4 switch-div">
+                                            Feature Rate
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.is_feature_rate=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.is_feature_rate=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div"   *ngIf="item.all_features.is_feature_rate=='1'" >
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Feature Rate" value={{item.all_features.feature_rate_id}} readonly>
+                                            </mat-form-field>
+                                          </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Feedback Call
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.feed_back_call=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.feed_back_call=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                 
+                                        <div class="form-group col-md-4 switch-div">
+                                            SMS
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.is_sms=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.is_sms=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.is_sms=='1'">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="SMS Plan" value={{item.all_features.sms_id}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Miss Call Alert(MCA)
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.miss_call_alert=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.miss_call_alert=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                  
+                                    
+                                        <div class="hr-sect">Calling Plan feature Group</div>
+
+                                        <div class="form-group col-md-4 switch-div">
+                                            Minute Plan
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.minute_plan=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.minute_plan=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.minute_plan == '1'">
+                                            DID Bundle Minute Plan
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.is_bundle_type=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.is_bundle_type=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.is_bundle_type=='1'">
+                                            <mat-form-field>
+                                                <input matInput type="text" placeholder="DID Bundle" value={{item.all_features.bundle_plan_id}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.minute_plan == '1'">
+                                            Outgoing Bundle Minute Plan
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.out_bundle_type=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.out_bundle_type=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.out_bundle_type=='1'">
+                                            <mat-form-field>
+                                                <input matInput type="text" placeholder="Outgoing Bundle" value={{item.all_features.out_bundle_call_plan_id}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                       
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.minute_plan == '1'">
+                                            Roaming Minute Plan
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.is_roaming_type=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.is_roaming_type=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.is_roaming_type=='1'">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Roaming" value={{item.all_features.roaming_plan_id}} readonly>
+                                            </mat-form-field>
+                                          </div>
+
+
+                                          <div class="form-group col-md-4 switch-div">
+                                            TC Minute Plan
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.teleconsultation=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.teleconsultation=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.teleconsultation=='1'">
+                                            <mat-form-field>
+                                                <input matInput type="text" placeholder="Tele Consultation" value={{item.all_features.teleConsultancy_call_plan_id}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Outbound
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.outbound_call=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.outbound_call=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            ClickToCall
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.click_to_call=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.click_to_call=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Circle
+                                            <label style="float: right; font-weight: bold;">
+                                              <span *ngIf="item.all_features.is_circle=='1'"><img class="serviceStatus" src="assets/img/brand/check.svg" /></span>
+                                              <span *ngIf="item.all_features.is_circle=='0'"><img class="serviceStatus" src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                          </div>
+                                   
+                                    
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.is_circle == '1'">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Circle" value={{item.circle_name}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.outbound_call == '1'">
+                                            <mat-form-field>
+                                              <input matInput type="text" placeholder="Call Plan" value={{item.all_features.call_plan_id}} readonly>
+                                            </mat-form-field>
+                                        </div>
+                                      
+
+                            <div class="hr-sect">Basic Call Feature</div>
+                                    
+                                       
+                                        <div class="form-group col-md-4 switch-div">
+                                            Call Barging
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.barging=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.barging=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Call Group
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.call_group=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.call_group=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Call Forwarding
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.forward=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.forward=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Call Transfer
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.call_transfer=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.call_transfer=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Find Me Follow Me
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.find_me_follow_me=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.find_me_follow_me=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            One To One Video Call
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.one_to_one_video_call=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.one_to_one_video_call=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Speed Dial
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.speed_dial=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.speed_dial=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                      
+                            <div class="hr-sect">Advance Call Feature</div>
+                            <div class="form-group col-md-4 switch-div">
+                                CID Routing
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.CID_routing=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.CID_routing=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Custom ACL
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.custom_acl=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.custom_acl=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Geo Tracking
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.geo_tracking=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.geo_tracking=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Paging
+                                            <label style="float: right; font-weight: bold;">
+                                              <span *ngIf="item.all_features.paging=='1'"><img class="serviceStatus" src="assets/img/brand/check.svg" /></span>
+                                              <span *ngIf="item.all_features.paging=='0'"><img class="serviceStatus" src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            SIP Trunk
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.sip_trunk=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.sip_trunk=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-4 switch-div">
+                                            Sticky Agent
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.sticky_agent=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.sticky_agent=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group col-md-4 switch-div">
+                                            Voicebot
+                                            <label style="float: right; font-weight: bold;">
+                                                <span *ngIf="item.all_features.voicebot=='1'"><img class="serviceStatus"
+                                                        src="assets/img/brand/check.svg" /></span>
+                                                <span *ngIf="item.all_features.voicebot=='0'"><img class="serviceStatus"
+                                                        src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group col-md-4 switch-div">
+                                            WhatsApp
+                                            <label style="float: right; font-weight: bold;">
+                                              <span *ngIf="item.all_features.whatsapp=='1'"><img class="serviceStatus" src="assets/img/brand/check.svg" /></span>
+                                              <span *ngIf="item.all_features.whatsapp=='0'"><img class="serviceStatus" src="assets/img/brand/cross.svg" /></span>
+                                            </label>
+                                          </div>
+                            <div class="hr-sect">Storage Associated Features</div>
+                            <div class="form-group col-md-4 switch-div">
+                                Storage
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.storage=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.storage=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                Appointment
+                                <label style="float: right; font-weight: bold;">
+                                  <span *ngIf="item.all_features.appointment=='1'"><img class="serviceStatus" src="assets/img/brand/check.svg" /></span>
+                                  <span *ngIf="item.all_features.appointment=='0'"><img class="serviceStatus" src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                              </div>
+                              <div class="form-group col-md-4 switch-div">
+                                Broadcast
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.broadcasting=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.broadcasting=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                Custom Prompts
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.custom_prompt=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.custom_prompt=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                Call Recording
+                                 <label style="float: right; font-weight: bold;">
+                                     <span *ngIf="item.all_features.recording=='1'"><img class="serviceStatus"
+                                             src="assets/img/brand/check.svg" /></span>
+                                     <span *ngIf="item.all_features.recording=='0'"><img class="serviceStatus"
+                                             src="assets/img/brand/cross.svg" /></span>
+                                 </label>
+                             </div>
+                             <div class="form-group col-md-4 switch-div">
+                                Conference
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.conference=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.conference=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                             <div class="form-group col-md-4 switch-div">
+                                Dynamic IVR
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.dynamic_ivr=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.dynamic_ivr=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                IVR
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.ivr=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.ivr=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                Music On Hold (MOH)
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.music_on_hold=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.music_on_hold=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                OBD
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.obd=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.obd=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                         
+                               <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.obd=='1'">
+                                <mat-form-field>
+                                  <input matInput type="text" placeholder="Call Per Second (CPS)" value={{item.all_features.obd_cps}}
+                                    readonly />
+                                </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-4 switch-div" *ngIf="item.all_features.obd=='1'">
+                                <mat-form-field>
+                                  <input matInput type="text" placeholder="OBD Channel Limit" value={{item.all_features.obd_channel}}
+                                    readonly />
+                                </mat-form-field>
+                              </div>  
+                              <div class="form-group col-md-4 switch-div">
+                                Outbound Conference
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.outbound_conference=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.outbound_conference=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div> 
+                            <div class="form-group col-md-4 switch-div">
+                                Playback Services
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.playback=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.playback=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                          
+                            <div class="form-group col-md-4 switch-div">
+                                Queue
+                                <label style="float: right; font-weight: bold;">
+                                    <span *ngIf="item.all_features.queue=='1'"><img class="serviceStatus"
+                                            src="assets/img/brand/check.svg" /></span>
+                                    <span *ngIf="item.all_features.queue=='0'"><img class="serviceStatus"
+                                            src="assets/img/brand/cross.svg" /></span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field>
+                                  <input matInput type="text" placeholder="Storage Size (In GB)" value={{item.all_features.file_storage_size}}
+                                    readonly />
+                                </mat-form-field>
+                              </div>
+                  
+                              <div class="form-group col-md-4 switch-div">
+                                <mat-form-field>
+                                  <input matInput type="text" placeholder="Storage Duration" value={{item.all_features.file_storage_duration}}
+                                    readonly>
+                                </mat-form-field>
+                              </div>
+                              
+                                   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-lg-12 example-button-row">
+            <button mat-raised-button color="warn" (click)="cancleDialog($event)">Close</button>
+        </div>
+    </div>
+</div>

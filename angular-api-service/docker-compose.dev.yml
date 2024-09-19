@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  angular-api-service:
+    container_name: 'angular-api-service'
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    networks:
+      - pbxswitch-net
+    volumes:
+      - .:/usr/src/app
+      - node_modules_api:/usr/src/app/node_modules
+    environment:
+      - DB_WRITE_HOST=103.163.40.130
+      - DB_USERNAME=ccuser
+      - DB_PASSWORD=cloudVirAmiNag119
+      - DB_DATABASE=cc_master
+      # With Data
+      - DB_PORT=3324
+      # Without Data Note: for blank data API `http://localhost:3000/auth/login` not work
+      #- DB_PORT=3325
+
+volumes:
+  node_modules_api:
+
+networks:
+  pbxswitch-net:
+    external: true
+    name: pbxswitch-net
+
+# docker-compose -f docker-compose.dev.yml up
+# curl -X POST 'http://localhost:3000/auth/login' -H 'Content-Type: application/json' -H 'type: pbx' -d '{"user": {"username": "ccadmin2019","password":"@3iT1235","ip": "192.168.2.27"}}'
+
+## Database with Data
+# phpmyadmin - 103.163.40.130:8880
+# Host - 103.163.40.130
+# Port - 3324
+# Database - cc_master
+# Username - ccuser
+# Password - cloudVirAmiNag119
+
+## Database with No Data
+# phpmyadmin - 103.163.40.130:8881
+# Host - 103.163.40.130
+# Port - 3325
+# Database - cc_master
+# Username - ccuser
+# Password - cloudVirAmiNag119

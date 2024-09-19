@@ -1,0 +1,435 @@
+<h3 class="card-header-style">Create Plugin</h3>
+<div mat-dialog-content style="overflow-x: clip;">
+    <div class="card-body">
+        <form [formGroup]="PluginForm" class="row">
+            <!-- <div class="row"> -->
+
+                <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" [(ngModel)]="pluginData.name" formControlName="name" maxlength="50" autocomplete="off" required >
+                </mat-form-field>
+                <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+
+                </div> -->
+                 </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description"  [(ngModel)]="pluginData.description" formControlName="description" maxlength="100" autocomplete="off" >
+                </mat-form-field>
+                <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+
+                </div> -->
+            </div>
+
+
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Default Action Name</mat-label>
+                    <input matInput placeholder="Action Name" [(ngModel)]="pluginData.default_action_name" formControlName="action_name" maxlength="50" autocomplete="off" required >
+                </mat-form-field>
+                <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+
+                </div> -->
+            </div>
+
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                  <mat-label>Action Type </mat-label>
+                  <mat-select formControlName="action_type" placeholder="Action Type" [(ngModel)]="pluginData.default_action_type" (selectionChange)="getDestinationList($event)" value="value" required>
+                      <mat-option value = "2">IVR Extension</mat-option>
+                      <mat-option value = "4">Queue Extension</mat-option>
+                      <mat-option value = "5">Call Group Extension</mat-option>
+                      <mat-option value = "1">Extension</mat-option>
+                      <mat-option value = "3">External Number</mat-option>
+                  </mat-select>
+              </mat-form-field>
+           </div>
+
+           <div class="form-group col-md-4"  *ngIf='action_value' style="margin-top: -15px;">
+
+
+                 <ejs-dropdownlist id='ddlelement' [floatLabelType]="'Auto'" (filtering)="removedspace($event)" style="width: 100%; margin-top: 8px;" [(ngModel)]="external_num" [dataSource]='destination_data' [fields]='fields' formControlName="action_value" (select)="getactionValue($event)" required
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Action Value' allowFiltering=true>
+                </ejs-dropdownlist>
+          </div>
+
+          <div class="form-group col-md-4" *ngIf="phone" style="margin-top: -15px;">
+            <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [dataSource]='countryList' [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" 
+             [fields]='fields' formControlName="country" (change)="getCountryCode($event)" required
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+                </ejs-dropdownlist>
+            <!-- <mat-form-field>
+                <mat-label>Select Country</mat-label>
+                <mat-select formControlName="country" (selectionChange)="getCountryCode($event)"
+                      [disableOptionCentering]="true" #select1 placeholder="Auto Focus" required>
+                    <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                    <mat-option value="" selected disabled>Select Country</mat-option>
+                    <mat-option *ngFor='let country of filter' [value]="country.id">
+                        {{ country.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <!-- <div *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                <div *ngIf="country.errors.required">
+                    Required Field
+                </div>
+            </div> -->
+        </div>
+        <div class="form-group col-md-4" *ngIf="phone">
+            <mat-form-field class="example-full-width" style="width:72.4% !important">
+                <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode"  />
+                <input matInput formControlName="phonee" (keypress)="commonService.numberOnly($event)"
+                    maxlength="10" autocomplete="off" [(ngModel)]="external_num"
+                     >
+                <span matPrefix >{{countryCode}}</span>
+            </mat-form-field>
+            <div *ngIf="phonee.invalid && (phonee.dirty || phonee.touched)" class="reqired-field">
+                <!-- <div *ngIf="phonee.errors.required">
+                    Required Field
+                </div> -->
+                <div *ngIf="phonee.errors.pattern"> Number can not start with 0 and not less than 10 digits.</div>
+            </div>
+        </div>
+<!--
+           <div class="form-group col-md-4">
+            <mat-form-field class="example-full-width" style="width: 100%;">
+              <mat-label>Action Value </mat-label>
+              <mat-select formControlName="action_value" placeholder="Action value">
+                <mat-option *ngFor="let extension of extensions" [value]="extension">{{extension}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+       </div> -->
+
+
+       <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <mat-label>Call Type </mat-label>
+          <mat-select formControlName="call_type" placeholder="Call Type" [(ngModel)]="pluginData.call_type" (selectionChange)="changeCallType($event)">
+              <mat-option value = "0">WEBRTC</mat-option>
+              <mat-option value = "1">Call Back</mat-option>
+              <mat-option value = "2">Both</mat-option>
+          </mat-select>
+          <!-- </mat-radio-group> -->
+      </mat-form-field>
+   </div>
+
+
+   <!-- <div class="form-group col-md-4"  *ngIf='isPluginExt'>
+          
+
+    <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [(ngModel)]="extensionNo" [dataSource]='pluginExt' [fields]='fields1' formControlName="ext_number" required
+     [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Extension' allowFiltering=true>
+   </ejs-dropdownlist>
+</div> -->
+
+    <div class="form-group col-md-4" *ngIf="isPluginExt">
+        <!-- <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [disabled]="readOnly" [floatLabelType]="'Auto'" (filtering)="pluginExtremovedspace($event)"
+         [(ngModel)]="extensionNo" [dataSource]='pluginExt' [fields]='fields1' formControlName="ext_number" required 
+        [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Extension' allowFiltering=true>
+      </ejs-dropdownlist> -->
+        <mat-form-field>
+            <mat-label>Extension Number</mat-label>
+            <mat-select formControlName="ext_number" [(ngModel)]="extensionNo"
+                  [disableOptionCentering]="true" #select1 placeholder="Auto Focus" required>
+                <mat-select-filter *ngIf="select1.focused" [array]="pluginExt" [displayMember]="'ext_number'" ></mat-select-filter>
+                <mat-option value="" selected disabled>Select Plugin Extension</mat-option>
+                <mat-option *ngFor='let country of pluginExt' [value]="country.ext_number" [disabled]="country.flag == '1'">
+                    {{country.ext_number}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+
+<div class="form-group col-md-4" style="margin-top: -15px;">
+    <!-- <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [dataSource]='language' (filtering)="Languageremovedspace($event)" [(ngModel)]="pluginData.lang" [floatLabelType]="'Auto'"
+    [fields]='fields' formControlName="language" (change)="getCountryCode2($event)" required
+         [popupHeight]='popupHeight'  [placeholder]='placeholder2' allowFiltering=true>
+       </ejs-dropdownlist> -->
+    <mat-form-field>
+        <mat-label>Language</mat-label>
+        <mat-select formControlName="language" [(ngModel)]="pluginData.lang"
+              [disableOptionCentering]="true" #select1 placeholder="Auto Focus" required>
+            <mat-select-filter *ngIf="select1.focused" [array]="language" [displayMember]="'name'" (filteredReturn)="country = $event"></mat-select-filter>
+            <mat-option value="" selected disabled>Select Language</mat-option>
+            <mat-option *ngFor='let country of language' [value]="country.name">
+                {{country.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+       <!-- <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <mat-label>Language </mat-label>
+          <mat-select formControlName="language" placeholder="Language" [(ngModel)]="pluginData.lang" >
+              <mat-option  value = "English">English</mat-option>
+
+          </mat-select>
+           </mat-radio-group> -->
+        <!-- </mat-form-field> -->
+      <!-- </div> -->
+
+       <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width" style="width: 100%;">
+          <mat-label>Default state </mat-label>
+          <mat-select formControlName="default_state" placeholder="Default state" [(ngModel)]="default_state" >
+              <mat-option value = "">Minimize</mat-option>
+              <mat-option value = "1">Maximize</mat-option>
+
+          </mat-select>
+          <!-- </mat-radio-group> -->
+        </mat-form-field>
+      </div>
+
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Display Delay Time (Sec)</mat-label>
+                    <input matInput placeholder="Display Delay Time" formControlName="display_time" (keypress)="commonService.numberOnly($event)"  autocomplete="off" [(ngModel)]="pluginData.display_delay_time"  maxlength="2" required >
+                </mat-form-field>
+                <div *ngIf="display_time.invalid && (display_time.dirty || display_time.touched)" class="reqired-field"> 
+                    <div *ngIf="display_time.errors.pattern"> Display Time should be between 0 to 60. </div>
+                    <!-- <div *ngIf="display_time.errors.required">
+                        Required Field
+                    </div> -->
+                 </div>
+            </div>
+
+
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Expand Delay Time (Sec)</mat-label>
+                    <input matInput placeholder="Expand Delay Time" formControlName="expand_time" (keypress)="commonService.numberOnly($event)" autocomplete="off" [(ngModel)]="pluginData.expand_delay_time"  maxlength="2" required>
+                </mat-form-field>
+                 <div *ngIf="expand_time.invalid && (expand_time.dirty || expand_time.touched)" 
+                class="reqired-field">
+                <div *ngIf="expand_time.errors.pattern"> Expand Time should be between 0 to 60. </div>
+                <!-- <div *ngIf="expand_time.errors.required">
+                    Required Field
+                </div> -->
+                <!-- </div> -->
+            </div> 
+                <!-- <div *ngIf="PluginForm.controls['expand_time'].invalid && (PluginForm.controls['expand_time'].dirty || PluginForm.controls['expand_time'].touched)"
+                class="alert">
+                <div *ngIf="PluginForm.controls['expand_time'].errors.required"
+                    style="margin-top:-25px; margin-left:-20px; color:red;">
+                    Required Field
+                </div>
+            </div> -->
+                    <!-- <div *ngIf="expand_time.invalid && (expand_time.dirty || expand_time.touched)" class="reqired-field">
+                        <div *ngIf="expand_time.errors.required">
+                            Required Field
+                    </div>
+
+                </div> -->
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Footer Name</mat-label>
+                    <input matInput placeholder="Footer Name" [(ngModel)]="pluginData.footer_name" formControlName="footer_name" maxlength="50" autocomplete="off" required >
+                </mat-form-field>
+                <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+
+                </div> -->
+                 </div>
+
+            <div class="form-group col-md-4" style="margin-top:10px;">
+                <mat-slide-toggle formControlName="status" [(ngModel)]="pluginData.status"
+                    style="margin-top: 13px;">Status</mat-slide-toggle>
+                    <div class="hrt" style="width:820px;">
+                    </div>
+            </div>
+
+            <!-- <div>
+                <label for="favcolor">Select your favorite color:</label>
+                <input type="color" id="favcolor" name="favcolor" formControlName="value" value="#ff0000"><br><br>
+            </div> -->
+
+          <div class="form-group col-md-4" style="margin-top:10px;" >
+            <mat-label>Plugin Color</mat-label><br>
+            <input ejs-colorpicker type="color" class="form-control" id="colorpicker" placeholder="Select Color" formControlName="value" [(ngModel)]="pluginData.plugin_color" name="colorpicker" />
+        </div>
+
+
+
+        <div class="hr-sect">Add Plugin Destination</div>
+    <div class="row" *ngIf="data.id">
+
+        <div class="form-group col-md-4" style="margin-top: -15px;  max-width: 25%;">
+            <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px; margin-left: 155px;" [dataSource]='countryList' [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" 
+            [fields]='fields' formControlName="add_country" (change)="getCountryCode2($event)" required
+                 [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+               </ejs-dropdownlist>           
+        </div>
+
+        <div class="form-group col-md-4" style="margin-left: 166px;" >
+            <mat-form-field class="example-full-width" style="width:72.4% !important">
+                <input matInput [hidden]="true" formControlName="add_country_code" [(ngModel)]="countryCode2" />
+                <input matInput formControlName="phone2" (keypress)="commonService.numberOnly($event)" readonly
+                    maxlength="10" autocomplete="off"
+                     >
+                <span matPrefix >{{countryCode2}}</span>
+            </mat-form-field>           
+        </div>
+
+        <div class="form-group col-md-4" style="margin-left: -73px">
+            <mat-slide-toggle formControlName="OTP_verification" [(ngModel)]="pluginData.OTP_verification"
+                style="margin-top: 13px;">OTP Verification</mat-slide-toggle>
+                <div class="hrt" style="width:820px;">
+                </div>
+        </div>
+
+        <div class="form-group " >
+            <button mat-raised-button color="primary" style="margin-left: 516px;" (click)="addDestination()" >Add Destination</button>
+        </div>    
+
+    </div>
+
+    <div class="row" *ngIf="data.cust_id">
+
+        <div class="form-group col-md-4" style="margin-top: -15px;">
+            <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [dataSource]='countryList' [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" 
+            [fields]='fields' formControlName="add_country" (change)="getCountryCode2($event)" required
+                 [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+               </ejs-dropdownlist>           
+        </div>
+
+        <div class="form-group col-md-4">
+            <mat-form-field class="example-full-width" style="width:72.4% !important">
+                <input matInput [hidden]="true" formControlName="add_country_code" [(ngModel)]="countryCode2" />
+                <input matInput formControlName="phone2" (keypress)="commonService.numberOnly($event)" readonly
+                    maxlength="10" autocomplete="off"
+                     >
+                <span matPrefix >{{countryCode2}}</span>
+            </mat-form-field>           
+        </div>
+
+        <div class="form-group col-md-4">
+            <mat-slide-toggle formControlName="OTP_verification" [(ngModel)]="pluginData.OTP_verification"
+                style="margin-top: 13px;">OTP Verification</mat-slide-toggle>
+                <div class="hrt" style="width:820px;">
+                </div>
+        </div>
+
+        <div class="form-group " >
+            <button mat-raised-button color="primary" style="margin-left: 358px;" (click)="addDestination()" >Add Destination</button>
+        </div>    
+
+    </div>
+
+        <div *ngIf="data.id">
+            <div class="hr-sect" style="margin-left: -22px; width: 79em;">Destination List</div>
+                <div class="card-body" style="margin-right: 100px;margin-left: 231px;width: 650px;">
+                    <app-grid  [columnDefs]="columnDefs2" [dataSource]="dataSource2" (actionClick)="manageAction($event)">
+                    </app-grid>
+                </div>
+        </div>
+
+        <div *ngIf="data.cust_id">
+            <div class="hr-sect" style="margin-left: -8px;">Destination List</div>
+                <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;">
+                    <app-grid  [columnDefs]="columnDefs2" [dataSource]="dataSource2" (actionClick)="manageAction($event)">
+                    </app-grid>
+                </div>
+        </div>
+
+
+            <div class="hr-sect" style="margin-left: 20px;">Add Plugin Action</div>
+
+         <div class="row" style="margin-left: 30px; margin-right: 70px; justify-content: space-between;">
+            <div class="form-group" style="margin-left: 50px;">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Default Action Name</mat-label>
+                    <input matInput placeholder="Action Name" formControlName="add_action_name" maxlength="50" autocomplete="off" >
+                </mat-form-field>            
+            </div>
+
+            <div class="form-group " >
+                <mat-form-field class="example-full-width" style="width: 100%; margin-left: 30px;">
+                  <mat-label>Action Type </mat-label>
+                  <mat-select formControlName="add_action_type" placeholder="Action Type" (selectionChange)="getDestinationList2($event)" value="value">
+                      <mat-option value = "2">IVR Extension</mat-option>
+                      <mat-option value = "4">Queue Extension</mat-option>
+                      <mat-option value = "5">Call Group Extension</mat-option>
+                      <mat-option value = "1">Extension</mat-option>
+                      <mat-option value = "3">External Number</mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+           </div>
+
+           <div class="form-group "   *ngIf="isPluginActionValue" style="margin-top: -15px;">
+            <ejs-dropdownlist id='ddlelement' [floatLabelType]="'Auto'" style="width: 100%; margin-left: 60px; margin-top: -2px; padding: 0.6999em;" [dataSource]='destination_data2' [fields]='fields' formControlName="add_action_value"
+             [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Action Value' allowFiltering=true>
+           </ejs-dropdownlist>
+         </div>        
+
+          <div class="form-group col-md-4 "  *ngIf="isPluginExtension" style="margin-top: -15px;">
+            <ejs-dropdownlist id='ddlelement' style="width: 100%; margin-top: 8px;" [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" [dataSource]='countryList'
+            [fields]='fields' formControlName="action_country" (change)="getCountryCode3($event)" [(ngModel)]="countryID.id" required
+                 [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+               </ejs-dropdownlist>            
+        </div>
+
+        <div class="form-group col-md-4 "  *ngIf="isPluginExtension" >
+            <mat-form-field class="example-full-width" style="width:72.4% !important; margin-left: 30px;">
+                <input matInput [hidden]="true" formControlName="action_country_code" [(ngModel)]="countryCode3" />
+                <input matInput formControlName="phone3"  (keypress)="commonService.numberOnly($event)" required
+                    maxlength="10" autocomplete="off" >
+                <span matPrefix >{{countryCode3}}</span>
+            </mat-form-field>
+            <div *ngIf="phone3.invalid && (phone3.dirty || phone3.touched)" class="reqired-field">
+                <!-- <div *ngIf="phone3.errors.required">
+                    Required Field
+                </div> -->
+                <div *ngIf="phone3.errors.pattern"> Number can not start with 0 and not less than 10 digits.</div>
+            </div>
+        </div>
+    </div>
+
+
+
+        <div class="row">
+
+            <div class="form-group col-md-4" *ngIf="data.id">
+                <button mat-raised-button color="primary" style="margin-left: 490px;" (click)="addPluginAction()" >Add Plugin Action</button>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="data.cust_id">
+                <button mat-raised-button color="primary" style="margin-left: 349px;" (click)="addPluginAction()" >Add Plugin Action</button>
+            </div>
+
+            <div class="hr-sect" style="margin-left: -8px;">Plugin List</div>
+                <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;">
+                    <app-grid  [columnDefs]="columnDefs3" [dataSource]="dataSource3" (actionClick)="manageAction($event)">
+                    </app-grid>
+                </div>
+        </div>
+
+        <div class="col-lg-12 example-button-row" style="margin-left: 330px;">
+            <button mat-raised-button color="primary" [disabled]="!PluginForm.valid" (click)="submitPluginForm()">Submit</button>
+            <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+        </div>
+
+        </form>
+    </div>
+</div>

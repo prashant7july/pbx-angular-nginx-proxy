@@ -1,0 +1,193 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <strong>TRUNK</strong>
+      </div>
+      <br>
+      <div class="card-body" style="margin-top: 5px;">
+        <form [formGroup]="TrunkForm" class="row">
+          <div class="form-group col-md-4 ">
+            <mat-form-field class="example-full-width">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" id="name" formControlName="name" [(ngModel)]="trunkData.name"
+                placeholder="Name" autocomplete="off" required title="Enter Trunk name." [readonly]="edit == false"
+                maxlength="20">
+            </mat-form-field>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+              <div *ngIf="name.errors.pattern">Invalid Name</div>
+            </div>
+          </div>
+          <div class="hr-sect" style="width: 65%;">Outbound Trunk Configuration</div>
+          <br>
+          <br>
+
+          <div class="form-group col-md-4">
+            <mat-slide-toggle formControlName="outbound_trunk" (change)="changeToggleOut($event)"
+              [(ngModel)]="trunkData.use_as_out" style="margin-top: 13px;"
+              title="Whether to use PBX as Trunk Service or not.">Use as Outbound Trunk</mat-slide-toggle>
+            <div class="hrt" style="width:820px;"></div>
+          </div>
+          <div class="form-group col-md-4" *ngIf="flagOut">
+            <mat-form-field class="example-full-width">
+              <mat-label>Username</mat-label>
+              <input matInput type="text" id="name" formControlName="username" [(ngModel)]="userToken"
+                placeholder="Username" autocomplete="off" required maxlength="20"
+                title="Trunk Username which will be used for the Trunk Registration process.">
+            </mat-form-field>
+            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="reqired-field">
+              <div *ngIf="username.errors.pattern">Invalid Username</div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Max Simultaneous Calls</mat-label>
+              <input matInput type="text" id="name" formControlName="max_simultaneous_calls" (change)="manageCps($event)"
+                (keypress)="commonService.numberOnly($event)" [(ngModel)]="trunkData.max_call" maxlength="5"
+                placeholder="Max Simultaneous Calls" autocomplete="off" [value]="0"
+                title="Specify the number of calls that are Dialed/Received simultaneously through this trunk.(Here 0 means Unlimited).">
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-4" >
+            <mat-form-field>    
+                <mat-label>Call Per Second (CPS)</mat-label>                
+                <input matInput type="text" id="name" formControlName="cps" 
+                (keypress)="commonService.numberOnly($event)" [(ngModel)]="trunkData.cps" maxlength="3"
+                placeholder="CPS" autocomplete="off">
+            </mat-form-field>            
+        </div>
+          <div class="form-group col-md-4">
+            <mat-form-field class="example-full-width">
+              <mat-label>Caller ID</mat-label>
+              <input matInput type="text" id="name" formControlName="caller_id"
+                (keypress)="commonService.numberOnly($event)" [(ngModel)]="trunkData.caller_id" maxlength="15"
+                minlength="5" placeholder="Caller ID" autocomplete="off"
+                title="Enter caller ID which will be sent on the call which is dialed using this trunk.">
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-4 " *ngIf="flagOut">
+            <ejs-dropdownlist id='ddlelement' [floatLabelType]="'Auto'" [dataSource]='authentication' [fields]='fields'
+              formControlName="authentication" (change)="changeAuth($event)" [popupHeight]='popupHeight'
+              [popupWidth]='popupWidth' placeholder='Authentication' allowFiltering=true title="Select Authentication for outbound trunk configuration.
+                 Registration: Username and Password will be used for the registration purpose in your VOIP Setup.
+                 Whitelist IP: Call will be accepted only if it's received from the defined whitelist IP.
+                 Whitelist IP + Username/Contact:To use Whitelist IP Authentication, You need to send Trunk Username in Contact User field in the SIP 
+                 INVITE along with the added IPs for the Authentication.">
+            </ejs-dropdownlist>
+          </div>
+          <div class="form-group col-md-4" *ngIf="auth1">
+            <mat-form-field class="example-full-width" style="width:57% !important">
+              <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" placeholder="Password"
+                autocomplete="new-password" maxlength="16" minlength="6" [(ngModel)]="trunkData.password">
+              <button mat-icon-button matSuffix (click)="hide1 = !hide1; $event.preventDefault();"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+                <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-4 " *ngIf="auth2">
+            <mat-form-field class="example-full-width">
+              <mat-label>whitelist IP</mat-label>
+              <input matInput type="text" id="name" formControlName="whitelist_ip" [(ngModel)]="whitelist"
+                placeholder="whitelist IP" autocomplete="off" required
+                title="Enter Whitelist IPs, Call will be accepted only if it's received from the defined whitelist IPs along with Trunk Username in SIP INVITE.">
+            </mat-form-field>
+            <div *ngIf="whitelist_ip.invalid && (whitelist_ip.dirty || whitelist_ip.touched)" class="reqired-field">
+              <div *ngIf="whitelist_ip.errors.pattern">IP Must be valid</div>
+              <div *ngIf="whitelist_ip.errors.maxlength">IP max length is 20 character long.</div>
+            </div>
+          </div>
+          <div class="form-group col-md-12" *ngIf="auth3" style="width: 100%;" >
+            <mat-form-field class="example-chip-list" style="width: 100%;">
+              <mat-chip-list #chipList aria-label="Rule">
+                <mat-chip *ngFor="let rule of whitelistIPs" (removed)="remove(rule)" [disabled]="trunkMenu.all_permission">
+                  {{rule}}
+                  <button matChipRemove
+                    style="border:none; background: gainsboro; margin-bottom: 6px; margin-right: 8px;">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input formControlName="whitelist_ip2" maxlength="20" [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+                  placeholder="Whitelist IP*" [readonly]="trunkMenu.all_permission">
+              </mat-chip-list>
+            </mat-form-field>
+            <div *ngIf="whitelist_ip2.invalid && (whitelist_ip2.dirty || whitelist_ip2.touched)" class="reqired-field">
+              <div *ngIf="whitelist_ip2.errors.pattern">IP Must be valid</div>
+              <div *ngIf="whitelist_ip2.errors.maxlength">IP max length is 20 character long.</div>
+            </div>
+          </div>
+
+          <div class="hr-sect" style="width: 65%;">Inbound Trunk Configuration</div>
+          <br>
+          <br>
+
+          <div class="form-group col-md-4">
+            <mat-slide-toggle formControlName="inbound_trunk" (change)="changeToggleIn($event)"
+              [(ngModel)]="trunkData.use_as_in" style="margin-top: 13px;"
+              title="Enable or disable use as inbound trunk.">Use as Inbound Trunk</mat-slide-toggle>
+            <div class="hrt" style="width:820px;"></div>
+          </div>
+          <div class="form-group col-md-4" *ngIf="flagIn">
+            <mat-slide-toggle formControlName="allow_calls" (change)="changeToggleReg($event)" [disabled]="!auth1"
+              [(ngModel)]="trunkData.allow_calls_in_registration" style="margin-top: 13px;"
+              title="If Enabled, then call will be forwarded to the destination from where call is received.">Allow
+              Calls in Registration</mat-slide-toggle>
+            <div class="hrt" style="width:820px;"></div>
+          </div>
+          <div class="form-group col-md-4" *ngIf="flagIn && !allowFlag">
+            <mat-form-field class="example-full-width">
+              <mat-label>External URI</mat-label>
+              <input matInput type="text" id="name" formControlName="external_uri" [(ngModel)]="trunkData.uri"
+                placeholder="External URI" autocomplete="off" required
+                title="Enter External URI on which call needs to be forwarded when you route calls to this Trunk.">
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-4 " *ngIf="flagIn && !allowFlag">
+            <ejs-dropdownlist id='name' [floatLabelType]="'Auto'" [dataSource]='profiles' [fields]='fields3'
+              formControlName="profile" required style="width:50%" [(ngModel)]="sofia" [popupHeight]='popupHeight'
+              [popupWidth]='popupWidth' placeholder='Profile' allowFiltering=true title="tnk_profile_id"
+              [readonly]="!edit">
+            </ejs-dropdownlist>
+          </div>
+
+          <div class="form-group col-md-4 ">
+            <ejs-dropdownlist id='customer' [floatLabelType]="'Auto'" [dataSource]='customer_list' [fields]='fields2'
+              formControlName="customer" required [disabled]="!edit" style="width:50%" [(ngModel)]="customer"
+              [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Company' allowFiltering=true
+              title="Customer list" [readonly]="!edit">
+            </ejs-dropdownlist>
+          </div>
+          <br>
+          <br>
+          <div class="col-lg-12 example-button-row" style="margin-left: 535px;">
+            <button mat-raised-button color="primary" [disabled]="!TrunkForm.valid"
+              (click)="submitTrunkForm()">Submit</button>
+            <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+          </div>
+        </form>
+        <br>
+        <hr />
+        <br>
+        <span class="card-header"
+          style="border: 2px solid; width: fit-content; background-color: #d44b4b!important; border-radius: 15px!important;">NOTE</span>
+        <br>
+        <br>
+        <div class="card-body" style="border: 1px solid!important;;">
+          <b>Directions to Use as Outbound Trunk :</b>
+          <br>
+          Use sip3.cloud-connect.in:7065 as a domain in your VoIP Setup.
+          <br>
+          To use Whitelist IP Authentication, You need to send Trunk Username in Contact User field in the SIP INVITE
+          along with the added IPs for the Authentication.
+          <br>
+          You can add IPs in CIDR notation as well to include network range.
+          <br><br>
+          <b>Directions to Use as Inbound Trunk :</b>
+          <br>
+          You can input Domain or IP address in External URI.
+          <br>
+          PBX will forward External Incomming Calls to Mentioned URI when you route calls to this Trunk.
+        </div>
+      </div>
+    </div>

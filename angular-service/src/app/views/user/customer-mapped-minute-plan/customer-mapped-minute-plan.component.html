@@ -1,0 +1,206 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Customer's Information</strong>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mt-4">
+            <h3 class="cmpny_name"><b>{{companyName}}</b></h3>
+            <button backButton mat-raised-button color="primary" style="float: right;margin-top: -2em;margin-right: 2em;"><i class="fa fa-reply fa-fw"></i>Back</button>
+          </div>
+          <div class="hr-sect" style="width: 50%; padding: 17px;"><b> PLAN DETAILS</b></div>
+          <h5 class="card-title" style="margin-left: 35px;"><strong>Standard Plan: {{callPlanName}}</strong></h5>
+          <!-- <h2 class="card-title" style="margin-left: 5px; text-align: left;"><b style="margin-left: 5px; text-align: left;">Plan Details</b></h2> -->
+          <div class="hr-sect" style="width: 50%; padding: 17px;"><b>MINUTE PLAN DETAILS</b></div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h5 class="card-title"><strong> DID Bundle Plan</strong></h5>
+              <div id="pbx_feature" class="row" *ngIf="bundlePlan[0].id; else templateName1">
+                <div class="form-group col-md-12 switch-div" *ngFor="let b of bundlePlan">
+                  <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br />
+                    <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b.charge*1 + b.extra_fee_total*1}}</strong><br />
+                    <!-- <i class="fa fa-phone-square"aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br /> -->
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.validity}}</strong>
+                  </div>
+                </div>
+                <!-- <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div> -->
+              </div>
+              <ng-template #templateName1>
+                <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                  <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <!-- <i class="fa fa-phone-square"
+                    aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br /> -->
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong>
+  
+                </div>
+                <!-- <i>No Bundle Plan assign.</i>  -->
+                <div class="row">
+                  <div class="col-md-12 example-button-row mt-3">
+                    <!-- <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button> -->
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h5 class="card-title"><strong>Outgoing Bundle Plan</strong></h5>
+              <div id="pbx_feature" class="row" *ngIf="OutgoingPlan[0].id; else templateName1">
+                <div class="form-group col-md-12 switch-div" *ngFor="let b of OutgoingPlan">
+                  <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br />
+                    <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b.charge*1 + b.extra_fee_total*1}}</strong><br />
+                    <!-- <i class="fa fa-phone-square"aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br /> -->
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.validity}}</strong>
+                  </div>
+                </div>
+                <!-- <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div> -->
+              </div>
+              <ng-template #templateName1>
+                <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                  <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <!-- <i class="fa fa-phone-square"
+                    aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br /> -->
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong>
+  
+                </div>
+                <!-- <i>No Bundle Plan assign.</i>  -->
+                <div class="row">
+                  <div class="col-md-12 example-button-row mt-3">
+                    <!-- <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button> -->
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h5 class="card-title"><strong>Roaming Plan</strong></h5>
+              <div id="pbx_feature" class="row" *ngIf="roamingPlan[0].id; else templateName2">
+                <div class="form-group col-md-12 switch-div" *ngFor="let b of roamingPlan">
+                  <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.name}}</strong><br />
+                    <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b.charge*1 + b.extra_fee_total*1}}</strong><br />
+                    <!-- <i class="fa fa-phone-square"
+                      aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br /> -->
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.validity}}</strong>
+    
+                  </div>
+                </div>
+                <!-- <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div> -->
+              </div> 
+              <ng-template   #templateName2>
+                <!-- <i style="border: 1px solid #b5b5b5;">No Roaming Plan assign.</i> -->
+                <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                  <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <!-- <i class="fa fa-phone-square"
+                    aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br /> -->
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong>
+  
+                </div>
+                <!-- <div class="row">
+                  <div class="col-md-12 example-button-row mt-3">
+                    <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                  </div>
+                </div> -->
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h5 class="card-title"><strong>Teleconsultancy Plan</strong></h5>
+              <div id="pbx_feature" class="row" *ngIf="tcPlan[0].id; else templateName3">
+                <div class="form-group col-md-12 switch-div" *ngFor="let b of tcPlan">
+                  <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                    <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.name}}</strong><br />
+                    <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b.charge*1 + b.extra_fee_total*1}}</strong><br />
+                    <!-- <i class="fa fa-phone-square"
+                      aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.call_plan_name}}</strong><br /> -->
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{b?.validity}}</strong>
+    
+                  </div>
+                </div>
+                <!-- <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div> -->
+              </div>
+              <ng-template  #templateName3>
+                <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;" (click)='showDialog(b)'>
+                  <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br />
+                  <!-- <i class="fa fa-phone-square"
+                    aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong><br /> -->
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{'N/A'}}</strong>
+  
+                </div>
+                <!-- <i>No Teleconsultancy Plan assign.</i> -->
+                <!-- <div class="row">
+                  <div class="col-md-12 example-button-row mt-3">
+                    <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                  </div>
+                </div> -->
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="hr-sect" style="padding: 17px;"><b>DID DETAILS</b></div>
+        <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs3"  [dataSource]="dataSource3" 
+        [pageSize]='defaultPageSize'   >
+        </app-grid>
+
+        <div class="hr-sect" style="padding: 17px;"><b>FEATURE RATE DETAILS</b></div>
+        <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2"  [dataSource]="dataSource2" 
+        [pageSize]='defaultPageSize'   >
+        </app-grid>
+
+        <div class="hr-sect" style="padding: 17px;"><b><u>INVOICE DETAILS</u></b></div>
+        <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs"  [dataSource]="dataSource"
+        [pageSize]='defaultPageSize' resizable >
+        </app-grid>
+
+        <div class="hr-sect" style="padding: 17px;"><b>API CONSUMPTION</b></div>
+        <div class="row">
+        <h5 style="margin-left: 60px;"><b><u>Total API hits:</u></b></h5>&nbsp;&nbsp;<h5><b>{{totalHit}}</b></h5>
+        <h5 style="margin-left: 110px;"><b><u>Consume hits:</u></b></h5>&nbsp;&nbsp;<h5><b>{{consumeHit}}</b></h5>
+        </div>
+
+        <div class="hr-sect" style="padding: 17px;"><b>SMS DETAILS</b></div>
+        <div class="row" *ngIf="validity">
+        <h5 style="margin-left: 60px;"><b><u>SMS plan type:</u></b></h5>&nbsp;&nbsp;<h5>{{validity}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>Charge:</u></b></h5>&nbsp;&nbsp;<h5>{{charge}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>SMS Limit:</u></b></h5>&nbsp;&nbsp;<h5>{{limit}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>Remaining SMS:</u></b></h5>&nbsp;&nbsp;<h5>{{remaining}}</h5>
+        </div>
+        <div class="row" *ngIf="!validity">
+        <h5 style="margin-left: 60px;"><b><u>SMS plan type:</u></b></h5>&nbsp;&nbsp;<h5>{{'N/A'}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>Charge:</u></b></h5>&nbsp;&nbsp;<h5>{{'N/A'}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>SMS Limit:</u></b></h5>&nbsp;&nbsp;<h5>{{'N/A'}}</h5>
+        <h5 style="margin-left: 60px;"><b><u>Remaining SMS:</u></b></h5>&nbsp;&nbsp;<h5>{{'N/A'}}</h5>
+        </div>
+
+        <div class="hr-sect" style="padding: 17px;"><b>TOP DIAL OUT</b></div>
+        <ol *ngIf="dialoutData1">
+          <li><h5 style="margin-left: 10px;"><b>{{dialoutData1?.name}}</b></h5></li>
+          <li><h5 style="margin-left: 10px;"><b>{{dialoutData2?.name}}</b></h5></li>
+          <li><h5 style="margin-left: 10px;"><b>{{dialoutData3?.name}}</b></h5></li>
+          <li><h5 style="margin-left: 10px;"><b>{{dialoutData4?.name}}</b></h5></li>
+          <li><h5 style="margin-left: 10px;"><b>{{dialoutData5?.name}}</b></h5></li>
+        </ol>
+        <i *ngIf="!dialoutData1">No Dialout records available</i>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

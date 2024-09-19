@@ -1,0 +1,392 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <button (click)="downloadPDF()" mat-raised-button color="primary"
+                style=" margin:11px;top:-10px;left:10px;background-color: #CD5C5C !important;">Download PDF</button>
+                <button (click)="payNow()" mat-raised-button color="primary"  *ngIf="loginUserType == UserTypeCustomer && invoiceData['paid_status'] != '1' && invoiceData['amount_with_gst'] > 0"
+                style=" margin:11px;top:-10px;left:10px;background-color: #0ca9f1fa !important;"> <i class="fa fa-inr"></i>Pay Now</button>
+                <button mat-raised-button backButton *ngIf="userRole == '4'"
+                style="background-color: #16709e!important; margin:11px;top:-10px;left:10px;color: #ffffff;cursor: pointer;overflow: hidden;">
+                <i class="fa fa-reply fa-fw"  style="font-size:1.50em !important;" aria-hidden="true"></i>
+                Back
+              </button>
+            </div>                        
+          </div>
+          <div class="offset-xl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 padding"  paperSize="A4" margin="2cm" >
+          <div class="card p-2" id="invoice_pdf">
+              <div class="row" style="text-align: left; margin-left: 122px; margin-right: 160px;">
+                <div class="tarun" style="display:flex;">
+                  <div>
+                    <div class="col-12"><a class="pt-2 d-inline-block mt-4" href="/dashboard" data-abc="true"><img src="{{product_logo}}" alt="ECTL_logo_new.name" style="width: 225px; text-align: left;"></a></div>
+                  </div>
+                  <div class="headings" style="margin-top: 40px; text-align: center; margin-left: 55px;" >
+                    <div class="col-12"><h2 class="text-dark mb-1"><u>TAX INVOICE</u></h2></div>
+                    <div class="col-12"><h1 class="text-dark mb-1">{{organization_name}}</h1></div>
+                    <!-- <div class="col-12"><h3 class="text-dark mt-1 mb-1"><b style="color: deepskyblue;">{{organization_name}}</b></h3></div> -->
+                    <!-- <div class="col-12"><h3 class="text-dark mb-1">-35, 3rd Floor, Panchsheel Park</h3></div>
+                    <div class="col-12"><h3 class="text-dark mb-1">New Delhi, Delhi-11001</h3></div> -->
+                    <div class="col-12"><h4 class="text-dark mb-1">{{organization_address}}</h4></div>
+                    <div class="col-12"><h6 class="text-dark mb-1"><b>GSTIN - {{organization_gstin}}</b></h6></div>
+                    <div class="col-12"><h6 class="text-dark mb-1"><b>CIN - {{organization_cin}}</b>&nbsp;&nbsp;&nbsp;<b>PAN- {{organization_pan}}</b></h6></div>
+                    <div class="col-12"><h6 class="text-dark mb-1"><b>TEL - {{organization_mobile}}</b>&nbsp;&nbsp;&nbsp;<b>Email- {{organization_email}}</b></h6></div>
+                  </div>
+                </div>
+
+
+            
+
+              <!-- <div class="row"> -->
+                <table style="width:100%;"  class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="border-color: deepskyblue; width:50%">
+                        <div>Date : {{invoice_date}}</div>
+                        <div>Invoice # : {{reference_num}}</div>
+                        <div>Total Due Amount :  {{amount_with_gst}}</div>
+                        <div>Invoice Period  : {{invoice_period}}</div>
+                        <!-- <div>Due Date </div>
+                        <div>Remaining Advance Balance</div>
+                        <div>P.O Number</div>
+                        <div>P.I Number</div> -->
+                      </th>
+                      <th scope="col" style="border-color: deepskyblue;">
+                        <div>Due Date : {{invoice_due_date}}</div>
+                        <div>Remaining Advance Balance : {{previous_invoice_balance}}</div>
+                        <div>P.O Number : {{po_number}}</div>
+                        <div>P.I Number : {{pi_number}}</div>
+                        <!-- <div>{{invoice_date}}</div>
+                        <div>{{reference_num}}</div>
+                        <div>{{amount_with_gst}} </div>
+                        <div>{{invoice_period}}</div>
+                        <div>{{invoice_due_date}} </div>
+                        <div>{{previous_invoice_balance}}</div>
+                        <div>{{pan_number}}</div>
+                        <div>{{po_number}}</div>
+                        <div>{{pi_number}}</div> -->
+                      </th>
+                    </tr>
+                    <tr>
+                      <th scope="col" style="border-color: deepskyblue;">
+                        <h3 class="mb-3" style="font-weight: bold;"><u>Billed To:</u></h3><br>
+                        <div><h3 class="text-dark mb-1">{{company_name}}</h3></div>
+                        <div>{{company_address}}</div>
+                        <div>Email: {{email}}</div>
+                        <div>Phone: {{phone}}</div>
+                        <div>GSTIN / UIN: {{comp_gst}}</div>
+                        <div>PAN: {{pan_number}}</div>
+                      </th>
+                      <th scope="col" style="border-color: deepskyblue;">
+                        <h3 class="mb-3" style="font-weight: bold;"><u>Shipped To:</u></h3><br>
+                        <div><h3 class="text-dark mb-1">{{company_name}}</h3></div>
+                        <div>{{company_address}}</div>
+                        <div>Email: {{email}}</div>
+                        <div>Phone: {{phone}}</div>
+                        <div>GSTIN / UIN: {{comp_gst}}</div>
+                        <div>PAN: {{pan_number}}</div>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              <!-- </div> -->
+
+              <!-- <div class="row"> -->
+                <table style="width:100%;border: 1px solid deepskyblue">
+                  <tr style="border: 1px solid deepskyblue">
+                    <th style="border: 1px solid deepskyblue; padding: 4px;">
+                      <div style="border: 1px solid deepskyblue;text-align: center;">
+                        <div>Previous Balance</div>
+                        <div>{{advance_balance}}</div>
+                      </div>
+                    </th>
+                    <th style="border: 1px solid deepskyblue; padding: 4px;">
+                      <div style="border: 1px solid deepskyblue;text-align: center;">
+                        <div>This Month Charges</div>
+                        <div>{{amount_with_gst}}</div>
+                      </div>
+                    </th>
+                    <th style="border: 1px solid deepskyblue; padding: 4px;">
+                      <div style="border: 1px solid deepskyblue;text-align: center;">
+                        <div>Adjustment</div>
+                        <div>{{adjustment_payment}}</div>
+                      </div>
+                    </th>
+                    <th style="border: 1px solid deepskyblue; padding: 4px;">
+                      <div style="border: 1px solid deepskyblue;text-align: center;">
+                        <div>Final Payments</div>
+                        <div>{{final_payment}}</div>
+                      </div>
+                    </th>
+                  </tr>
+                </table>
+
+                <table class="table table-bordered mt-4">
+                  <tr style="background: deepskyblue;">
+                    <th  scope="col" style="color: white;">Description</th>
+                    <th  scope="col" style="color: white;">Quantity</th>
+                    <th  scope="col" style="color: white;">Amount</th>
+                  </tr>
+                  <tr *ngFor="let itemData of itemData, let i = index">
+                    <td *ngIf="itemData.item_type == '4' || itemData.item_type == '1' || itemData.item_type == '5'|| itemData.item_type == '6' || itemData.item_type == '7' || itemData.item_type == '10' || itemData.item_type == '3'; else others">{{(itemData.description).split('-')[0]}}</td>
+                    <ng-template #others>
+                      <td>{{itemData.description}}</td>
+                    </ng-template>
+
+                    <ng-container [ngTemplateOutlet]="(itemData.item_type == '1' || itemData.item_type == '5' || itemData.item_type == '6' || itemData.item_type == '7' || itemData.item_type == '10' || itemData.item_type == '3') ? first : itemData.item_type == '4' ? second : third">
+                    </ng-container>
+                    <ng-template #first>
+                      <td>{{(itemData.description).split('-')[1]}}</td>
+                    </ng-template>
+                    <ng-template #second>
+                      <td>{{(itemData.description).split('-')[1]}}</td>
+                    </ng-template>
+                    <ng-template #third>
+                      <td>1</td>
+                    </ng-template>
+                    <td>{{itemData.amount}}</td>
+                  </tr>
+                 <tr>
+                  <td style="background: deepskyblue;">Note</td>
+                  <td><b>Subtotal</b></td>
+                  <td><b>{{inv_amount}}</b></td>
+                 </tr>
+                 <tr>
+                  <td rowspan="4">
+                   <div> 1.Total payment due in <b>{{payment_day}}</b> Days</div>
+                   <div> 2.Please include the invoice number on your cheque </div>
+                   <div> 3.BANK NAME: <b>{{payment_detail}}</b> </div>
+                   <hr style="background: deepskyblue;">
+                   <tr>
+                    <th  scope="col" style="color: black;">Tax Rate</th>
+                    <th  scope="col" style="color: black;">IGST Tax</th>
+                    <th  scope="col" style="color: black;">CGST Tax</th>
+                    <th  scope="col" style="color: black;">Total Tax</th>
+                  </tr>
+                  <tr>
+                  <td>18%</td>
+                  <td>{{sgst_amount}}</td>
+                  <td>{{cgst_amount}}</td>
+                  <td>{{sgst_amount + cgst_amount}}</td>
+                </tr>
+                 
+                  </td>
+                  <td>IGST (9%)</td>
+                  <td>{{sgst_amount}}</td>
+                 </tr>
+                 <tr>
+                  <!-- <td>1.Please include the invoice number on your cheque</td> -->
+                  <td>CGST (9%)</td>
+                  <td>{{cgst_amount}}</td>
+                 </tr>
+                 <tr>
+                  <!-- <td>1.BANK NAME: AXIS BANK LIMITED </td> -->
+                  <td><b>TOTAL</b></td>
+                  <td><b>{{amount_with_gst}}</b></td>
+                 </tr>
+                 <tr>                                    
+                  <td><b>Final Payment After Adjustment</b></td>
+                  <td><b>{{final_payment}}</b></td>
+                 </tr>
+                 <!-- <tfoot> -->
+                  <tr>
+                    <td colspan="3">
+                      <div style="text-align: center;">
+                        <b>If you have any questions about this invoice, please contact </b>
+                        <h6>[Email-{{organization_email}}, Phone #+91-{{organization_mobile}}, Ext- {{organization_extension}}]</h6>
+                        <b> Thank You for Your Business! </b>
+                      </div>
+                    </td>
+                  </tr>
+                  <div class="md-12 d-flex">
+                    <div class="column">
+                      <b style="margin-left: 10px;">ALL-IN_ONE QR</b>
+                      <img src="../../../../assets/img/ectl-paytm.png" alt="ECTL_logo_new.name" style="width: 130px; text-align: left; padding: 8px;">
+                    </div>
+                    <div class="column" style="margin-left:-65px; padding: 15px;" >
+                      <!-- <img src="{{product_logo}}" alt="ECTL_logo_new.name" style="width: 150px; text-align: centre;"> -->
+                      <b>Terms & Conditions</b>
+                      <h6> E.& O.E. </h6>                                     
+                       <h6> 1. Goods once sold will not be taken back.     For CloudConnect Communications (P) Ltd.</h6>
+                        <h6>2. Interest @ 18% p.a. will be charged if the  payment is not made with in the stipulated time</h6>
+                        <h6>3. Subject to 'Delhi' Jurisdiction only</h6>
+                    </div>
+                    <div class="column" style="margin-right:-430px ;">
+                      <b style="margin-left: 8px;">Reciever's Signature-</b>
+                      <img src="../../../../assets/img/ECTl-stamp.png" alt="ECTL_logo_new.name" style="width: 150px; text-align: right; padding: 8px; border-radius: 65px;">
+                    </div>
+                  </div>
+                 <!-- </tfoot> -->
+
+                </table>
+
+              <!-- <div class="card-footer bg-white">
+                <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div>
+              </div> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div [innerHtml]="htmlCode"></div>
+  </div>
+</div>
+
+
+<!--
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <button (click)="downloadPDF()" mat-raised-button color="primary"
+                style=" margin:11px;top:-10px;left:10px;background-color: #CD5C5C !important;">Download PDF</button>
+                <button (click)="payNow()" mat-raised-button color="primary"  *ngIf="loginUserType == UserTypeCustomer && invoiceData['paid_status'] != '1' && invoiceData['amount_with_gst'] > 0"
+                style=" margin:11px;top:-10px;left:10px;background-color: #0ca9f1fa !important;"> <i class="fa fa-inr"></i>Pay Now</button>
+            </div>
+          </div>
+          <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+            <div class="card invoice_pdf">
+              <div class="p-4">
+                <a class="pt-2 d-inline-block" href="/dashboard" data-abc="true"><img src="assets/img/brand/ectl_logo_150x60.png"></a>
+                <div class="float-right">
+                  <h3 class="mb-0">Invoice #{{reference_num}}</h3>
+                  Date of Invoice: {{invoice_date}}<br />
+
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row mb-4">
+                  <div class="col-sm-6">
+                    <h5 class="mb-3">From:</h5>
+                    <h3 class="text-dark mb-1">Enhanced Communications and Technologies</h3>
+                    <div>E-145, Okhla Phase III</div>
+                    <div>New Delhi 110034</div>
+                    <div>Email: support@cloudconnect.in</div>
+                    <div>Phone: +91 XXXXXXXXXX</div>
+                  </div>
+                  <div class="col-sm-6" style="text-align: right;">
+                    <h5 class="mb-3">To:</h5>
+                    <h3 class="text-dark mb-1">{{company_name}}</h3>
+                    <div>{{company_address}}</div>
+                    <div>Email: {{email}}</div>
+                    <div>Phone: {{phone}}</div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-lg-4 col-sm-5">
+                  </div>
+                  <div class="col-lg-6 col-sm-5 ml-auto table-border">
+                    <table class="table table-clear">
+                      <tbody>
+                        <tr>
+                          <td class="left">
+                            <strong class="text-dark">Subtotal</strong>
+                          </td>
+                          <td class="right">&#8377; {{inv_amount}}</td>
+                        </tr>
+
+                        <tr *ngIf="isDelhi">
+                          <td class="left">
+                            <strong class="text-dark">GST (18%)</strong>
+                          </td>
+                          <td class="right">&#8377; {{invoiceData.total_gst_amount}}</td>
+                        </tr>
+                        <tr *ngIf="!isDelhi">
+                          <td class="left">
+                            <strong class="text-dark">CGST (9%)</strong>
+                          </td>
+                          <td class="right">&#8377; {{invoiceData.cgst_amount}}</td>
+                        </tr>
+                        <tr *ngIf="!isDelhi">
+                          <td class="left">
+                            <strong class="text-dark">SGST (9%)</strong>
+                          </td>
+                          <td class="right">&#8377; {{invoiceData.sgst_amount}}</td>
+                        </tr>
+                        <tr>
+                        <tr>
+                          <td class="left">
+                            <strong class="text-dark">Total</strong> </td>
+                          <td class="right">
+                            <strong class="text-dark">&#8377; {{amount_with_gst}}</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <label style="font-weight:bold;">DIDs Charges</label>
+                <div class="table-responsive-sm">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th class="center">Description</th>
+                        <th class="left"></th>
+                        <th class="right">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let itemData of itemData, let i = index">
+                      <tr *ngIf = "itemData.item_type == '1'">
+                        <td class="center">{{itemData.description}}</td>
+                        <td class="left"></td>
+                        <td class="right">{{itemData.amount}}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th style="text-align:right;" colspan="2">Total :</th>
+                        <td><strong>&#8377;</strong> {{didSum.toFixed(2)}}</td>
+                      </tr>
+                     </tfoot>
+                  </table>
+                </div>
+                <label style="font-weight:bold;">Calls Charges</label>
+                <div class="table-responsive-sm">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th class="center">Date</th>
+                        <th class="left">Source</th>
+                        <th class="right">Destination</th>
+                        <th class="center">Charge (In &#8377;)</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let cdrData of cdrData, let i = index">
+                      <tr>
+                        <td class="center">{{cdrData.start_time | date:'short':'IST'}}</td>
+                        <td class="left">{{cdrData.src}}</td>
+                        <td class="right">{{cdrData.dst}}</td>
+                        <td class="center">{{cdrData.sessionbill.toFixed(2)}}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th style="text-align:right;" colspan="3">Total :</th>
+                        <td><strong>&#8377;</strong> {{cdrSum.toFixed(2)}}</td>
+                      </tr>
+                     </tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="card-footer bg-white">
+                <div class="col-md-12 example-button-row">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div [innerHtml]="htmlCode"></div>
+  </div>
+</div> -->

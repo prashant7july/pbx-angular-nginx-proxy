@@ -1,0 +1,59 @@
+<h3 class="card-header-style">MANAGE GATEWAY</h3>
+<div id="scrollId" class="card-body" style="display: flex;">
+    
+        <div class="col-md-12" style="flex: 1; max-width: 77%;">
+            <div style="width: 323px; margin-left: 128px; margin-right: 682px; padding-bottom: 209px;">
+                <mat-card
+                    style="background-color:#16709e !important;color:white  !important;border-color:#16709e !important; width: 342px; 
+                    text-align: center; border-radius: 0px;
+                    padding: 0.571em 1em;">                            
+                    <h4>Select Gateway</h4>
+                </mat-card>
+                <br>
+                <div >
+                    <mat-form-field>
+                        <mat-label>Select Gateway</mat-label>
+                        <mat-select style="width: 100%;" (selectionChange)="gatewaySelect($event)" multiple>
+                             <mat-option *ngFor='let gateway of dataSource' [value]="gateway.id" >
+                                {{gateway.provider}} - {{gateway.name}}  {{gateway.domain}}
+                            </mat-option>                            
+                        </mat-select>
+                    </mat-form-field>  
+                    <!-- <ejs-multiselect id='multiselectelement'   [fields]='fields' [mode] = 'mode' (change)="gatewaySelect($event)"
+                    [placeholder]='placeholder' [popupHeight]='popupHeight' [dataSource] = 'dataSource' [popupWidth]='popupWidth' showSelectAll=true style="width: 80%;">                    
+                </ejs-multiselect>    -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" style="flex: 1;">
+            <div style=" margin-left: -229px; width: 327px; padding-bottom: 208px;">
+                <mat-card
+                    style=
+                    "background-color:#16709e !important;color:white  !important;border-color:#16709e !important;
+                     width: 342px; text-align: center; border-radius: 0px;
+                     padding: 0.571em 1em;">                            
+                    <h4>Allow Gateway</h4>
+                </mat-card>
+                <br>
+                <div style="text-align:center; width: 100px; border-top: 5px solid-trans">
+                    <mat-form-field>
+                        <mat-label>Select Gateway</mat-label>
+                        <mat-select style="width: 100%;" (selectionChange)="gatewaySelectNew($event)" required>                                
+                             <mat-option *ngFor='let gateway of dataSource' [value]="gateway.id" >
+                                {{gateway.provider}} - {{gateway.name}} {{gateway.domain}}
+                            </mat-option>                            
+                        </mat-select>
+                    </mat-form-field>   
+                      <!-- <ejs-dropdownlist id='ddltooltip' (change)="gatewaySelectNew($event)" style="width: 100%;"   [dataSource]='dataSource'  [fields]='fields'
+                            [popupHeight]='popupHeight'  [popupWidth]='popupWidth'   [placeholder]='placeholder' allowFiltering=true style="width: 80%; margin-left: 10%;">
+                        </ejs-dropdownlist> -->
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="row">
+    <div class="col-lg-12 example-button-row">                
+            <button mat-raised-button color="primary" [disabled]="!(gateway_new && gateway_old)" (click)="Submit()">Submit</button>
+            <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+        </div>
+    </div>

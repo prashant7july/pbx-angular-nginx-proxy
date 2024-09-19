@@ -1,0 +1,65 @@
+<div class="app flex-row align-items-center">
+  <main class="col-md-12">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card-group">
+            <div class="card p-4" style="background-color: transparent; border-color: transparent; border-left: #FFFFFF 0px solid !important">
+              <div class="card-body">
+                <form [formGroup]="authForm" (ngSubmit)="login()">
+                  <div class="text-center mb-4">
+                    <img src="{{logoUrl}}" alt="Cloud Connect" style="max-height: 120px; margin-bottom: 20px;" />
+                  </div>
+                  <div class="input-group mt-2 mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: #3f93ba; border:none;">
+                        <i class="fa fa-user" aria-hidden="true" style="padding: 2px; color: #fff;"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Username" formControlName="username" autofocus tabindex="1" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" (keydown.space)="$event.preventDefault();" />
+                    <div *ngIf="f.submitted && f.invalid" class="invalid-feedback">
+                      <div *ngIf="username.errors.required">Username is required</div>
+                    </div>
+                  </div>
+                  <div class="input-group mt-2 mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: #3f93ba; border:none;">
+                        <i class="fa fa-key" aria-hidden="true" style="color: #fff;"></i>
+                      </span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Password" formControlName="password" tabindex="2" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required (keydown.space)="$event.preventDefault();" />
+                    <div *ngIf="f.submitted && f.invalid" class="invalid-feedback">
+                      <div *ngIf="password?.errors.required">Password is required</div>
+                    </div>
+                  </div> 
+                  <!-- <div class="input-group mt-2 mb-3" style="margin-left: 25px;">
+                    <div class="input-group-prepend">
+                  <re-captcha
+                  (resolved)="resolved($event)"
+                  siteKey="6LcsqiAqAAAAAP7XBM7UMzsBQZG8hhOMR41zFBSf"
+                  formControlName="recaptcha"
+                ></re-captcha>
+                    </div></div> -->
+                  <div class="text-center mt-3">
+                    <button type="submit" [disabled]="!authForm.valid" class="btn btn-primary btn-block" style="border-radius: 6px; width: 150px;">Login</button>
+                  </div>
+                  <div class="text-center mt-3">
+                    <button type="button" class="btn btn-link" (click)="toggleShow()">Forgot Password?</button>
+                  </div>
+                  <div class="text-center mt-3" *ngIf="evalUser == true">
+                    <button type="button" class="btn btn-link" (click)="forgetPassword()">Customer? Click Here!</button>
+                    <button type="button" class="btn btn-link" (click)="extensionForgetPassword()">Extension? Click Here!</button>
+                  </div>
+                  <div class="text-center mt-3" *ngIf="is_poweredBy == 1">
+                    <div style="color:grey;">Powered by</div>
+                    <img src="{{powered_by}}" alt="roam_1" style="width: 120px; height: 80px;">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

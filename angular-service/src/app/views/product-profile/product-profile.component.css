@@ -1,0 +1,58 @@
+/* Override padding in card-body */
+.card-body {
+  padding: 25px !important;
+}
+
+/* Hide the input for image upload */
+.image-upload > input {
+  display: none;
+}
+
+/* Style for displayed images */
+.image {
+  border-radius: 0;
+  height: 190px;
+  width: 156px;
+  margin-left: 100px;  
+}
+
+/* Style for image upload icon */
+.image-upload img {
+  width: 58px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  background: transparent;
+  left: 236px;
+  top: 206px;
+}
+
+::ng-deep .card-header strong {
+  display: block;
+  text-align: center;
+}
+
+::ng-deep .card-header strong.centered-text {
+  display: inline-block; /* Ensures the text doesn't fill the full width */
+  text-align: left; /* Aligns the text to the left within its container */
+}
+
+::ng-deep .space {
+  margin-bottom: 70px; /* Adjust the margin value as needed */
+}
+
+::ng-deep .space1 {
+  margin-bottom: 20px; /* Adjust the margin value as needed */
+}
+
+::ng-deep .center-image-upload {
+  text-align: center;
+}
+
+::ng-deep .image-upload img {
+  border: none !important;
+}
+
+.animated {
+  overflow-y: hidden; /* Hide vertical scroll bar */
+}

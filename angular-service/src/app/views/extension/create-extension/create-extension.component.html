@@ -1,0 +1,580 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>CREATE EXTENSION</strong>
+                </div>
+                <div class="card-body">
+                    <!-- <div class="row" style="float:right;">
+                        <div class="view-button" *ngIf="billing_type =='3' || billing_type=='2'">
+                            <label style="background-color: cornflowerblue; padding: 5px;">Available Minute Balance:
+                                {{minute_balance}}</label>
+                        </div>
+                    </div> -->
+                    <br /><br /><br />
+                    <form [formGroup]="extensionForm" (ngSubmit)="submitExtensionForm()" autocomplete="off">
+                        <div class="row">
+                            <div class="form-group col-md-4" *ngIf="userRole=='5'">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="plan" placeholder="Call Plan"
+                                        [(ngModel)]="billing_name" readonly>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Extension Type</mat-label>
+                                    <mat-select (selectionChange)="showExtType($event)" formControlName="eType"
+                                        required>
+                                        <mat-option value="1" selected>Single Extension</mat-option>
+                                        <mat-option value="2">Range Extension</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="eType.invalid && (eType.dirty || eType.touched)" class="reqired-field">
+                                    <div *ngIf="eType.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field class="example-full-width" style="width:56.4% !important">
+                                    <input matInput type="text" formControlName="extension_number"
+                                        (keypress)="commonService.numberOnly($event)" (change)="checkExt($event)"
+                                        placeholder="Extension Number" maxlength={{extensionLengthLimit}} autocomplete="off" required>
+                                    <span matPrefix>{{userId}}-</span>
+                                </mat-form-field>
+                                <div *ngIf="extension_number.invalid && (extension_number.dirty || extension_number.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="extension_number.errors.required">
+                                        Required Field
+                                    </div>
+                                    <div *ngIf="extension_number.errors.minlength">Extension must be 2 digits minimum only.
+                                    </div>
+                                    <div *ngIf="extension_number.errors.maxlength">Extension must be {{extensionLengthLimit}} digits long only.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="!isExtNumber">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <mat-form-field class="example-full-width" style="width:100% !important">
+                                            <input matInput type="text" [(ngModel)]="ext_from"
+                                                formControlName="extension_from" maxlength={{extensionLengthLimit}}
+                                                (keypress)="commonService.numberOnly($event)" 
+                                                placeholder="ex. 3201" autocomplete="off" required>
+                                            <span matPrefix>{{userId}}-</span>
+                                        </mat-form-field>
+                                        <div *ngIf="extension_from.invalid && (extension_from.dirty || extension_from.touched)"
+                                            class="reqired-field">
+                                            <div *ngIf="extension_from.errors.required">
+                                                Required Field
+                                            </div>
+                                            <div *ngIf="extension_from.errors.minlength">Extension must be 2 digits minimum only.
+                                            </div>
+                                            <!-- <div *ngIf="extension_from.errors.maxlength">Extension must be 4 digits long
+                                                only.
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <mat-form-field class="example-full-width" style="width:100% !important">
+                                            <input matInput type="text" [(ngModel)]="ext_to" maxlength={{extensionLengthLimit}}
+                                                formControlName="extension_to" (change)="checkRangeMaxExtLimit($event);"
+                                                (keypress)="commonService.numberOnly($event)" 
+                                                placeholder="ex. 3210" autocomplete="off" required>
+                                            <span matPrefix>{{userId}}-</span>
+                                        </mat-form-field>
+                                        <div *ngIf="extension_to.invalid && (extension_to.dirty || extension_to.touched)"
+                                            class="reqired-field">
+                                            <div *ngIf="extension_to.errors.required">
+                                                Required Field
+                                            </div>
+                                            <div *ngIf="extension_to.errors.minlength">Extension must be 2 digits minimum only.
+                                            </div>
+                                            <!-- <div *ngIf="extension_to.errors.maxlength">Extension must be 4 digits long
+                                                only.
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field class="example-full-width" style="width:56.4% !important">
+                                    <input matInput type="text" maxlength="25" [(ngModel)]="userName"
+                                        formControlName="ext_name" autocomplete="new-user" placeholder="Extension Name"
+                                        required>
+                                </mat-form-field>
+                                <div *ngIf="ext_name.invalid && (ext_name.dirty || ext_name.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="ext_name.errors.required"> Required Field </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field style="width:56.4% !important">
+                                    <input matInput [type]="hide1 ? 'password' : 'text'" [ngModel]="securePassword"
+                                        formControlName="web_pass" placeholder="Web Password"
+                                        (keypress)="commonService.webPasswordOnly($event)" autocomplete="new-password"
+                                        maxlength="25" required>
+                                    <button mat-icon-button matSuffix (click)="hide1 = !hide1; $event.preventDefault();"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+                                        <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <div *ngIf="web_pass.invalid && (web_pass.dirty || web_pass.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="web_pass.errors.required"> Required Field </div>
+                                    <div *ngIf="web_pass.errors.pattern">Password must be contain- 1 number, 1 upper
+                                        char., 1 lower and 1 special char. with minimum 8 characters long.</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mt-2" *ngIf="isExtNumber">
+                                <mat-slide-toggle (change)="setEmailId($event)" value="1"
+                                    formControlName="is_email_from_notificationemail">
+                                    Set Email from Notification Email
+                                </mat-slide-toggle>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="email" maxlength="30" (change)="checkEmail($event)"
+                                        [(ngModel)]="emailId" formControlName="email" [readonly]="readonly"
+                                        (keypress)="commonService.charOnly($event)" placeholder="Email"
+                                        autocomplete="new-email" required>
+                                </mat-form-field>
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="reqired-field">
+                                    <div *ngIf="email.errors.required"> Required Field </div>
+                                    <div *ngIf="email.errors.pattern"> Enter a valid email </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <ejs-dropdownlist id='ddltooltip' (filtering)="Countryremovedspace($event)" formControlName="dial_prefix"
+                                style="width: 70%;margin-top:-7px;" [dataSource]='countryList' [fields]='fields' [(ngModel)]="countryID.id" (ngModelChange)="getCountryCode($event)"
+                                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+                                </ejs-dropdownlist>                                 
+                                <!-- <mat-form-field>
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="dial_prefix" (openedChange)="HandleDropdownFilter('filter',CountryFilter)" [(ngModel)]="countryID.id" (ngModelChange)="getCountryCode($event)" [disableOptionCentering]="true" #select1 placeholder="Auto Focus" >
+                                <mat-select-filter  *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+
+                                        <mat-option *ngFor='let plan of filter' [value]="plan.id">
+                                            {{plan.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="dial_prefix.invalid && (dial_prefix.dirty || dial_prefix.touched)" class="reqired-field">
+                                    <div *ngIf="dial_prefix.errors.required">
+                                        Required Field
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber" >
+                                <mat-form-field class="example-full-width">
+                                  <input type="hidden" [(ngModel)]="countryCode" [ngModelOptions]="{standalone: true}" />
+                                  <input matInput type="text"  (keypress)="commonService.numberOnly($event)"
+                                    formControlName="mobile" id="mobile" placeholder="Mobile Number" minlength="10" maxlength="10"
+                                     autocomplete="off">
+                                  <span matPrefix>{{countryCode}}</span>   
+                                </mat-form-field>
+                                <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="reqired-field">
+                                  <!-- <div *ngIf="mobile.errors.required">
+                                    Required Field
+                                  </div> -->
+                                  <div *ngIf="mobile.errors.pattern"> Number can not start with 0 and not less than 10 digits.</div>
+                                </div>
+                              </div>
+                      
+
+                            <!-- <div class="form-group col-md-4" *ngIf="isShowAPIToken">
+                                <mat-slide-toggle value="1" formControlName="apiToken">
+                                    API Token
+                                </mat-slide-toggle>
+                            </div> -->
+
+                            <div class="col-md-4" *ngIf="isShowAPIToken && isExtNumber">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>API Token</mat-label>
+                                    <input matInput [type]="hideToken ? 'password' : 'text'" formControlName="token"
+                                        readonly>
+                                    <button type="button" mat-icon-button matSuffix (click)="hideToken = !hideToken"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideToken">
+                                        <mat-icon>{{hideToken ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber && isWithOutPool">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" maxlength="8" formControlName="ext_minute_bal" value="0"
+                                        placeholder="Minute Balance" (keypress)="commonService.numberOnly($event)"
+                                        (keyup)="checkMinuteBal($event)" autocomplete="off">
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+
+                        <div class="hr-sect">Call Settings</div>
+                        <div class="row">
+
+                            <div class="form-group col-md-4 mt-2" *ngIf="isExtNumber">
+                                <mat-slide-toggle (change)="setCallerIdName($event)" value="1"
+                                    formControlName="is_callerId_from_extNumber">
+                                    Set Caller Id from Ext. Number
+                                </mat-slide-toggle>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="caller_id_name" [readonly]="readonlyy"
+                                        placeholder="Caller ID Name" maxlength="25" autocomplete="off" required>
+                                </mat-form-field>
+                                <div *ngIf="caller_id_name.invalid && (caller_id_name.dirty || caller_id_name.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="caller_id_name.errors.required"> Required Field </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber">
+                                <mat-form-field style="width:56.4% !important">
+                                    <input matInput [type]="hide ? 'password' : 'text'" [ngModel]="sipPwd"
+                                        formControlName="sip_pass" placeholder="SIP Password" maxlength="22"
+                                        autocomplete="new-password" required>
+                                    <button mat-icon-button matSuffix (click)="hide = !hide; $event.preventDefault();"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <div *ngIf="sip_pass.invalid && (sip_pass.dirty || sip_pass.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="sip_pass.errors.required">Required Field</div>
+                                    <div *ngIf="sip_pass.errors.minlength">Password must be at least 6 characters long.
+                                    </div>
+                                    <div *ngIf="sip_pass.errors.maxlength">Password can not be more than 20 characters
+                                        long.</div>
+                                    <div *ngIf="sip_pass.errors.pattern">Only alphanumeric password allowed. </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="userRole=='1'">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="ring_time_out"
+                                        (keypress)="commonService.numberOnly($event)"
+                                        placeholder="Ring Time Out (In Sec.)" maxlength="3"  autocomplete="off" required>
+                                </mat-form-field>
+                                <div *ngIf="ring_time_out.invalid && (ring_time_out.dirty || ring_time_out.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="ring_time_out.errors.required || ring_time_out.touched">
+                                        Range should be from 5 to 60                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="userRole=='1'">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="dial_time_out"
+                                        (keypress)="commonService.numberOnly($event)" placeholder="Dial Time Out (Sec.)"
+                                        maxlength="3" autocomplete="off" required>
+                                </mat-form-field>
+                                <div *ngIf="dial_time_out.invalid && (dial_time_out.dirty || dial_time_out.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="dial_time_out.errors.required ||  dial_time_out.touched">
+                                        Range should be from 5 to 60                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber && userRole=='5'">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="external_caller_id" maxlength="25"
+                                        placeholder="External Caller ID" autocomplete="off">
+                                </mat-form-field>
+
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <mat-form-field>
+                                    <mat-label>DTMF Type</mat-label>
+                                    <mat-select formControlName="dtmf_type">
+                                        <mat-option value="0">RFC2833</mat-option>
+                                        <mat-option value="1">SIP Info</mat-option>
+                                        <mat-option value="2">In Band</mat-option>
+                                        <mat-option value="3">Auto</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <mat-form-field>
+                                    <mat-label>Caller ID Header Type</mat-label>
+                                    <mat-select formControlName="header_type">
+                                        <mat-option value="0" selected>None</mat-option>
+                                        <mat-option value="1">P-Asserted-Identity</mat-option>
+                                        <mat-option value="2">Remote-Party-ID</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- <div class="row" style="margin-left: 20px;">
+                                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='intercomList' [fields]='fields'
+                                    placeholder='Intercom Dialout' formControlName="intercom_dialout" [popupHeight]='popupHeight' [(ngModel)]="intercomDialout"
+                                    [popupWidth]='popupWidth'>
+                                </ejs-multiselect>
+                            </div> -->
+
+                            <div class="form-group col-md-4">
+                                <ejs-dropdownlist id='ddltooltip' (filtering)="Intercomremovedspace($event)" formControlName="intercom_dialout"
+                                style="width: 70%;margin-top:-7px;" [dataSource]='intercomList' [fields]='fields'
+                                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' placeholder='Intercom Dialout' allowFiltering=true>
+                                </ejs-dropdownlist>                                 
+                            </div>
+
+                            <div class="form-group col-md-4" *ngIf="isExtNumber && userRole=='5'">
+                                <mat-checkbox [checked]="!theCheckbox" (change)="toggleVisibility($event)">
+                                    Is caller Id header value different from caller Id?</mat-checkbox>
+                            </div>
+                            <div class="form-group col-md-4" *ngIf="!theCheckbox && userRole=='5'">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" maxlength="25" formControlName="callerID_headervalue"
+                                         [ngModel]="callerIdHeaderValue"
+                                        placeholder="Caller Id header value" [readonly]="theCheckbox"
+                                        autocomplete="off">
+                                </mat-form-field>
+                                <div *ngIf="callerID_headervalue.invalid && (callerID_headervalue.dirty || callerID_headervalue.touched)"
+                                    class="reqired-field">
+                                    <div *ngIf="callerID_headervalue.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" *ngIf="userRole=='5'">
+                            <div class="form-group col-md-8">
+                                <label for="codec">Codec</label>
+                                <p-pickList [source]="sourceCodec" [target]="targetCodec" sourceHeader="Codec"
+                                    targetHeader="Allow Codec" [showSourceControls]="false" [showTargetControls]="false"
+                                    [responsive]="true" dragdrop="true" [sourceStyle]="{'height':'135px'}"
+                                    [targetStyle]="{'height':'135px'}">
+                                    <ng-template let-codec pTemplate="codec">
+                                        <div class="ui-helper-clearfix">
+                                            <div style="font-size:14px;float:right;">{{codec.codec}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-pickList>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="isVoicemail">
+                            <div class="hr-sect" *ngIf="isExtNumber">Voice Mail Settings</div>
+                            <div class="row" *ngIf="isExtNumber">
+
+                                <div class="form-group col-md-4">
+                                    <mat-slide-toggle (change)="showVoiceMailPwd($event)" value="1"
+                                        formControlName="voice_mail">
+                                        Voicemail
+                                    </mat-slide-toggle>
+                                </div> 
+
+                                <!-- <div class="form-group col-md-4 switch-div-left" *ngIf="isVMpwd"> -->
+                                    <div class="form-group col-md-4 switch-div-left" *ngIf="extensionForm.get('voice_mail').value">
+                                    <mat-form-field class="example-full-width" style="width:100% !important">
+                                        <input matInput type="text" [type]="hide2 ? 'password' : 'text'"
+                                            [ngModel]="VMPwd" maxlength="16" formControlName="voice_mail_pwd"
+                                            placeholder="Voicemail Password" autocomplete="new-password" required>
+                                        <button mat-icon-button matSuffix
+                                            (click)="hide2 = !hide2; $event.preventDefault();"
+                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2"
+                                            (keypress)="commonService.numberOnly($event)">
+                                            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                    <div *ngIf="voice_mail_pwd.invalid && (voice_mail_pwd.dirty || voice_mail_pwd.touched)"
+                                        class="reqired-field">
+                                        <div *ngIf="voice_mail_pwd.errors.required">
+                                            Required Field
+                                        </div>
+                                        <div *ngIf="voice_mail_pwd.errors.minlength">Password must be at least 4
+                                            characters long.
+                                        </div>
+                                        <div *ngIf="voice_mail_pwd.errors.maxlength">Password can not be more than 16
+                                            characters
+                                            long.</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- <div *ngIf="featureDiv"> -->
+                        <div>
+                            <div class="hr-sect">Feature Settings</div>
+                            <div class="row">
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="userRole=='1' || userRole == UserTypeAccountManager">
+                                    <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isCheckAllFeatureSetting"
+                                        formControlName="isCheckAllFeatureSettings" (change)="checkAllFeatureSettings($event.checked)"
+                                        [disabled]="userRole == UserTypeAccountManager">
+                                        Select All
+                                    </mat-slide-toggle>
+                                    <!-- <mat-checkbox   [(ngModel)]="isCheckAllFeatureSetting"
+                                                                formControlName="isCheckAllFeatureSettings" (change)="checkAllFeatureSettings($event.checked)" [disabled]="userRole == UserTypeAccountManager">
+                                                                Select All</mat-checkbox> -->
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="admin">
+                                         Admin
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="bal_restriction">
+                                        Balance Restriction
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isForward">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="call_forward">
+                                        Call Forward
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                        
+                                <div class="form-group col-md-4  switch-div-right" *ngIf="isCallTransfer">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="call_transfer">
+                                        Call Transfer
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isOutbound">
+                                    <mat-slide-toggle [color]="accent" (change)="manageSelectAllBtn()" value="1" formControlName="outbound" [disabled]="!isOutboundCall && !isBundlePlan">
+                                        Dial Out
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="dnd">
+                                        Do Not Disturb
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isFindMeFollowMe">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="find_me_follow_me">
+                                        Find Me Follow me
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isIntercom">
+                                    <mat-slide-toggle value="1"  formControlName="intercom_calling" [disabled]="!isIntercom">
+                                        Intercom Calling
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="multiple_reg">
+                                        Multiple Registration
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isMissCallAlert">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="misscall_notify" [disabled]="!isMCA">
+                                        Missed Call Alert(MCA)
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isShowSMS">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="outbound_sms_notification">
+                                        Outbound SMS Notification
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isRecording">
+                                    <mat-slide-toggle [color]="accent" (change)="manageSelectAllBtn()" value="1" formControlName="recording">
+                                        Recording
+                                    </mat-slide-toggle>
+                                </div>
+                        
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isRoaming">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="roaming">
+                                        Roaming
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isCustomPrompt">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="ringtone">
+                                        Ringtone
+                                </mat-slide-toggle>
+                                </div>
+                        
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isSpeedDial">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="speed_dial">
+                                        Speed Dial
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isStickyAgent">
+                                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="sticky_agent">
+                                        Sticky Agent
+                                    </mat-slide-toggle>
+                                </div>
+
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isClick2Call">
+                                     <mat-slide-toggle value="1" (change)="manageSelectAllBtn()"  formControlName="click_to_call">
+                                         Click to Call
+                                     </mat-slide-toggle>
+                                </div> 
+
+                                <div class="form-group col-md-4 switch-div-right" *ngIf="isPlugIn">
+                                    <mat-slide-toggle value="1"   formControlName="plug_in" (change)="plugInCheck($event.checked)" [disabled]=" userRole == UserTypeAccountManager || !isPlugIn">
+                                        Plug In
+                                    </mat-slide-toggle>
+                               </div> 
+
+                               <div class="form-group col-md-4 switch-div-right">
+                                <mat-slide-toggle value="1" formControlName="call_waiting" (change)="manageSelectAllBtn()" (change)="isChnageToggle($event)">
+                                    Call Waiting
+                                </mat-slide-toggle>
+                           </div>
+                              <div class="form-group col-md-4 switch-div-right" *ngIf="extensionForm.get('call_waiting').value">
+                            <mat-slide-toggle value="1"   formControlName="call_persistent" (change)="manageSelectAllBtn()">
+                                Call Persistent
+                            </mat-slide-toggle>
+                       </div> 
+                       <div class="form-group col-md-4 switch-div-right" *ngIf="isWhatsapp">
+                        <mat-slide-toggle [color]="accent" (change)="manageSelectAllBtn()" value="1" formControlName="whatsapp">
+                            Whatsapp
+                        </mat-slide-toggle>
+                    </div>
+                                
+                                <!-- <div class="form-group col-md-4" *ngIf="isPlayPosition"  >
+                                    <mat-form-field>
+                                    <mat-label>Click to Call</mat-label>
+                                    <mat-select formControlName="c2c_value">
+                                        <mat-option value="0">SIP</mat-option>
+                                        <mat-option value="1">Mobile Number</mat-option>
+                                        <mat-option value="2">Both</mat-option>
+                                    </mat-select>
+                                    </mat-form-field>
+                                 </div> -->
+
+                        
+                            </div>
+                        </div>
+                        <div class="col-lg-12 example-button-row">
+                            <button mat-raised-button [disabled]="!extensionForm.valid" color="primary">Submit</button>
+                            <button mat-raised-button color="warn" (click)="cancleForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

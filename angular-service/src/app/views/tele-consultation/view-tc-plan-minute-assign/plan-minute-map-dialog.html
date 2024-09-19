@@ -1,0 +1,126 @@
+<h3 class="card-header-style">TC PLAN MINUTE ASSIGN</h3>
+<div mat-dialog-content *ngIf="isEdit">
+    <div class="card-body">
+        <form [formGroup]="minAssignForm"  (ngSubmit)="submitRatePlan()" class="row example-form">
+            <!-- <div class="form-group col-md-12">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Balance Minute</mat-label>
+                    <input matInput formControlName="balance_minute"  autocomplete="off"
+                        (keypress)="commonService.decimalWIth2digits ($event)" readonly>
+                </mat-form-field>
+            </div> -->
+
+            <div class="form-group col-md-12">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Plan Name</mat-label>
+                    <mat-select formControlName="name" [(ngModel)]="planData.name" (ngModelChange)="onPlanSelect($event)" required>
+                        <mat-option *ngFor='let g of groupList' [value]="g.id">
+                            {{g?.name }}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                    <div *ngIf="name.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Price</mat-label>
+                    <input matInput maxlength="10" formControlName="price" [(ngModel)]="planData.price" autocomplete="off" required
+                        readonly>
+                </mat-form-field>
+                <div *ngIf="price.invalid && (price.dirty || price.touched )" class="reqired-field">
+                    <div *ngIf="price.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12" >
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                  <mat-label>Select Destination *</mat-label>
+                  <mat-select multiple formControlName="destinations" [(ngModel)]="planData.selectedExtensionList" (selectionChange)="getDestinationDetails($event)">
+                    <mat-option *ngFor='let d of destinationList'  [value]="d.dial_prefix">
+                      {{ d.destination }} - {{d.minute_plan_type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div  class="form-group col-md-12" formArrayName="minutManageForm" *ngFor="let d of getMinutePlanControls(); let i=index">
+                <!-- Use the index for each formGroup inside the formArray -->
+                <div [formGroupName]="i">
+                    <!-- <div class="row" style="background: black;display: flow-root;">
+                        <h3 style="color: white;margin-left: 8px;margin-top: 8px;float: left;">{{getDestinationName(d,'country_name')}} </h3>
+                        <h3 style="color: white;margin-right: 8px;margin-top: 8px;float: right;">{{getDestinationName(d,'remaining_minutes')}}</h3>
+                    </div> -->
+  
+                    <!-- <div formArrayName="ext" >
+                        <div [formGroupName]="x" *ngFor="let a of d.controls.ext.controls; let x = index"> -->
+                          <div class="row">
+                            <div class="form-group col-md-4">
+                                <!-- <mat-form-field class="example-full-width">
+                                    <mat-label>Destination</mat-label>
+                                    <input matInput type="text" formControlName="destination" 
+                                          autocomplete="off" readonly>
+                                </mat-form-field> -->
+                                <h6 style="margin-top: 8px;">{{getDestinationName(d,'country_name')}}</h6>
+                                <hr style="background: darkgray;">
+                            </div>
+                            <!-- <div class="form-group col-md-4"> -->
+                                <!-- <mat-form-field class="example-full-width">
+                                    <mat-label>Total Minutes</mat-label>
+                                    <input matInput type="text"
+                                          autocomplete="off" readonly>
+                                </mat-form-field> -->
+
+                                <!-- <h6>{{getDestinationName(d,'remaining_minutes')}}</h6> -->
+                            <!-- </div> -->
+                            <div class="form-group col-md-4">
+                              <mat-form-field class="example-full-width">
+                                  <mat-label>Assigned Minutes</mat-label>
+                                  <input matInput (keypress)="commonService.numberWithNegative($event)" formControlName="minutes"
+                                        autocomplete="off">
+                              </mat-form-field>
+                          </div>
+                        <!-- </div>
+                      </div> -->
+                    </div>
+      
+                </div>
+            </div>
+              
+            <!-- <div class="form-group col-md-12">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Assign Minute</mat-label>
+                    <input matInput maxlength="10" (keypress)="commonService.numberOnly($event)" formControlName="assign_minute" (input)="onMinuteValueChange($event.target.value)" 
+                    [(ngModel)]="planData.assign_minute" autocomplete="off" maxlength="5" required >
+                </mat-form-field>
+                <small *ngIf="data" style="position: relative;top: -16px;color: orangered;">* Remainig Minutes (</small> <small *ngIf="data" style="position: relative;top: -16px;font-weight: bold;">{{(planData.assign_minute) - (planData.used_minute)}}</small> <small *ngIf="data" style="position: relative;top: -16px;color:orangered;">)</small>
+                <small *ngIf="data" style="position: relative;top: -16px;color:rgb(214, 103, 140);margin-left: 2%;">* Used Minutes (</small> <small *ngIf="data" style="position: relative;top: -16px;font-weight: bold;">{{planData.used_minute}}</small> <small *ngIf="data" style="position: relative;top: -16px;color:palevioletred;">)</small>
+                <div *ngIf="assign_minute.invalid && (assign_minute.dirty || assign_minute.touched )" class="reqired-field">
+                    <div *ngIf="assign_minute.errors.required"> Required Field</div>
+                </div>
+            </div> -->
+
+            <div class="form-group col-md-12">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>User</mat-label>
+                    <mat-select formControlName="user_id"  [disabled]="isDisabledAssignUserDropDown" [(ngModel)]="planData.user_id" required>
+                        <mat-option *ngFor='let u of userList' [value]="u.id">
+                            {{u?.name }}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="user_id.invalid && (user_id.dirty || user_id.touched )" class="reqired-field">
+                    <div *ngIf="user_id.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button [disabled]="minAssignForm.invalid"
+                    color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

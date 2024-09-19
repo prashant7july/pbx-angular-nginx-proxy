@@ -1,0 +1,71 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>PROVIDERS CALL CHARGES</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <button (click)="downloadPDF()" mat-raised-button color="primary"
+              style=" margin:11px;top:-10px;left:10px;background-color: #CD5C5C !important;">Download PDF</button>
+            <button (click)="exportToExcel()" mat-raised-button color="warn"
+              style=" margin:11px; top:-10px; background-color: #01A89E !important;">Excel Export</button>
+              <div class="help-button">
+                <button mat-raised-button (click)="showInfo()"
+                  style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+                  <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                  HELP
+                </button>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="row"> 
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Date Range</mat-label>
+                    <input matInput placeholder="Pick a Date Range" formControlName="by_range" bsDaterangepicker readonly
+                      autocomplete="off"
+                      [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', customTodayClass: 'custom-today-class', rangeInputFormat: 'DD/MM/YYYY'}" />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3 mt-2">
+                  <ejs-multiselect id='multiselectelement' style="width: 80%;" [dataSource]='companyList' [fields]='fields' [placeholder]='placeholder'
+                      formControlName="by_provider" [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode'
+                      [selectAllText]='selectAllText' showSelectAll=true>
+                  </ejs-multiselect>
+              </div>
+
+                <div class="form-group col-md-3">
+                  <button (click)="filterData()" mat-raised-button color="primary">Search</button>&nbsp;
+                  <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+
+          <div class="example-wrapper" style="margin-top:75px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+              <mat-form-field class="float-right">
+                <mat-label>Number of records</mat-label>
+                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)"
+                  id="page-size">
+                  <mat-option value="10" selected>10</mat-option>
+                  <mat-option value="50">50</mat-option>
+                  <mat-option value="100">100</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="false"
+              [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+            </app-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

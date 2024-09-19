@@ -1,0 +1,165 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>VIEW PROFILE</strong>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm">
+            <div class="centered-content">
+              <!-- hr -->
+              <div class="hr-sect">Personal Information</div>
+              <!-- hr -->
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>First Name</mat-label>
+                    <input matInput type="text" autofocus formControlName="first_name" id="first_name"
+                      [(ngModel)]="userData.first_name" maxlength="20" placeholder="First Name">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput type="text" formControlName="last_name" id="last_name"
+                      [(ngModel)]="userData.last_name" maxlength="20" placeholder="Last Name">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" id="email" [(ngModel)]="userData.email"
+                      placeholder="Email" style="background-color: #FFFFFF;">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" [(ngModel)]="userData.username" style="background-color: #FFFFFF;"
+                      formControlName="username" id="username" placeholder="Make your username">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field>
+                    <mat-label>Select Country</mat-label>
+                    <mat-select formControlName="country" [(ngModel)]="userData.country_id"
+                      style="background-color: #FFFFFF;">
+                      <mat-option value="" disabled selected>Select Country</mat-option>
+                      <mat-option *ngFor='let country of countryList' [value]="country.id">
+                        {{ country.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Mobile</mat-label>
+                    <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode" />
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="mobile"
+                      id="mobile" [(ngModel)]="userData.mobile" placeholder="Mobile Number" maxlength="10"
+                      style="background-color: #FFFFFF;">
+                    <span matPrefix disabled>{{countryCode}}</span>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="userRole !='3'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Token</mat-label>
+                    <input matInput type="text" [(ngModel)]="userData.token" style="background-color: #FFFFFF;"
+                      formControlName="token" id="token">
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-4" *ngIf="userRole == '1'" style="margin-top: 5px;">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" [(ngModel)]="userData.threshold" formControlName="threshold" placeholder="Threshold" maxlength="4" (keypress)="commonService.numberOnly($event)">
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="userRole !='3'">
+                  <mat-slide-toggle value="1" [(ngModel)]="userData.is_email_notification"
+                    formControlName="email_notification" [disabled]="userRole == UserTypeAccountManager">
+                    Email Notification
+                  </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="userRole !='3'">
+                  <mat-slide-toggle value="1" [(ngModel)]="userData.is_sms_notification"
+                    formControlName="sms_notification" [disabled]="userRole == UserTypeAccountManager">
+                    SMS Notification
+                  </mat-slide-toggle>
+                </div>
+
+
+                <!-- hr -->
+                <div class="hr-sect">Company Details</div>
+                <!-- hr -->
+                <div class="form-group col-md-4" *ngIf="userRole !='3'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Company Name</mat-label>
+                    <textarea matInput type="text" formControlName="company_name" id="company_name"
+                      placeholder="Enter your company name"
+                      [(ngModel)]="userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2' ? companyData.name : userData.company_name"
+                      style="background-color: #FFFFFF;">
+                      </textarea>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="text" formControlName="company_phone"
+                      [(ngModel)]="userRole=='0' || userRole=='4'|| userRole=='5' || userRole=='2' ? companyData.phone : userData.phone "
+                      id="company-phone" placeholder="Enter your company phone number" maxlength="15"
+                      style="background-color: #FFFFFF;">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput formControlName="company_address" placeholder="Enter your company address"
+                      [(ngModel)]="userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2' ? companyData.address : userData.company_address "
+                      style="background-color: #FFFFFF;"></textarea>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Account Number</mat-label>
+                    <input matInput type="text" formControlName="account_no" id="account_no"
+                      placeholder="Enter account number" [(ngModel)]="userData.account_number"
+                      style="background-color: #FFFFFF;" maxlength="15">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Domain</mat-label>
+                    <textarea matInput type="text" formControlName="domain" placeholder="Domain Name"
+                      [(ngModel)]="userRole=='0' || userRole=='4'|| userRole=='5' || userRole=='2' ? companyData.domain : userData.domain"
+                      style="background-color: #FFFFFF;">
+                      </textarea>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole == '1'">
+                  <mat-form-field>
+                    <mat-label>Time Zone</mat-label>
+                    <mat-select formControlName="time_zone" style="background-color: #FFFFFF;" [(ngModel)]="timeZoneId">
+                      <mat-option value="" selected disabled>Please Select Time Zone</mat-option>
+                      <mat-option *ngFor='let zone of timeZone' [value]="zone.id">{{zone.gmtzone}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole == '1'">
+                  <img src="{{userData.profile_img}}" onerror="this.src='assets/img/Profile-Image.png';"
+                    style="height: 190px; width: 138px;object-fit: contain;" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.col-->
+</div>

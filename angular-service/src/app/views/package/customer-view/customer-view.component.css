@@ -1,0 +1,10 @@
+.switch-div{
+    border-right: 1px solid #09aee4;
+}
+.serviceStatus{
+    width: 25px;
+}
+::ng-deep 
+.card-body {
+    padding: 25px;
+}

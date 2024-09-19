@@ -1,0 +1,2271 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>CREATE BASIC IVR</strong>
+        </div>
+        <div class="card-body">
+          <form
+            [formGroup]="basicIVRForm"
+            (ngSubmit)="submitbasicIVRForm()"
+            class="row"
+          >
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Name"
+                  formControlName="name"
+                  maxlength="20"
+                  [(ngModel)]="ivrName"
+                  (keypress)="commonService.charOnly($event)"
+                  autocomplete="off"
+                  appBlockCopyPaste
+                  required
+                />
+              </mat-form-field>
+              <div
+                *ngIf="name.invalid && (name.dirty || name.touched)"
+                class="reqired-field"
+              >
+                <div *ngIf="name.errors.required">Required Field</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <ejs-dropdownlist
+                formControlName="welcome_prompt"
+                (filtering)="promptremovedWelcome($event)"
+                [floatLabelType]="'Auto'"
+                style="width: 63%; margin-top: -8px"
+                [dataSource]="selectedIVRValueWelcome"
+                [fields]="fields"
+                [disabled]="welcomePrompt != 1"
+                [popupHeight]="popupHeight"
+                [popupWidth]="popupWidth"
+                [floatLabelType]="'Auto'"
+                [placeholder]="placeholder"
+                allowFiltering="true"
+              
+              >
+              </ejs-dropdownlist>  
+              <!-- <div style="margin-top: 1px;" *ngIf="welcome_prompt.invalid && (welcome_prompt.dirty || welcome_prompt.touched)" class="reqired-field">
+                <div *ngIf="welcome_prompt.errors.required">Required Field</div>
+              </div> -->
+
+            </div>
+            <div class="form-group col-md-4">
+              <ejs-dropdownlist
+                formControlName="repeat_prompt"
+                (filtering)="promptremovedspaceSelection($event)"
+                [floatLabelType]="'Auto'"
+                style="width: 63%; margin-top: -7px"
+                [dataSource]="selectedIVRValueSelection"
+                [fields]="fields"
+                [disabled]="welcomePrompt != 1"
+                [popupHeight]="popupHeight"
+                [popupWidth]="popupWidth"
+                [floatLabelType]="'Auto'"
+                [placeholder]="placeholder1"
+                allowFiltering="true"
+                required
+              >
+              </ejs-dropdownlist>
+                 <div style="margin-top: 1px;" *ngIf="repeat_prompt.invalid && (repeat_prompt.dirty || repeat_prompt.touched)" class="reqired-field">
+                <div *ngIf="repeat_prompt.errors.required">Required Field</div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <ejs-dropdownlist
+                formControlName="invalid_prompt"
+                (filtering)="promptremovedspace($event)"
+                [floatLabelType]="'Auto'"
+                style="width: 63%; margin-top: -7px"
+                [dataSource]="selectedIVRValue"
+                [fields]="fields"
+                [disabled]="welcomePrompt != 1"
+                [popupHeight]="popupHeight"
+                [popupWidth]="popupWidth"
+                [floatLabelType]="'Auto'"
+                [placeholder]="placeholder2"
+                allowFiltering="true"
+                required
+              >
+              </ejs-dropdownlist>
+            </div>
+            <div class="form-group col-md-4">              
+              <ejs-dropdownlist
+                formControlName="timeout_prompt"
+                (filtering)="promptremovedspaceTime($event)"
+                [floatLabelType]="'Auto'"
+                style="width: 63%; margin-top: -7px"
+                [dataSource]="selectedIVRValueTime"
+                [fields]="fields"
+                [disabled]="welcomePrompt != 1"
+                [popupHeight]="popupHeight"
+                [popupWidth]="popupWidth"
+                [floatLabelType]="'Auto'"
+                [placeholder]="placeholder3"
+                allowFiltering="true"
+                required
+              >
+              </ejs-dropdownlist>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Digits Timeout(Sec)</mat-label>
+                <input
+                  matInput
+                  placeholder="Digit Timeout(Sec)"
+                  formControlName="digit_timeout"
+                  maxlength="2"
+                  (keypress)="commonService.numberOnly($event)"
+                  autocomplete="off"
+                  appBlockCopyPaste
+                  required
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  digit_timeout.invalid &&
+                  (digit_timeout.dirty || digit_timeout.touched)
+                "
+                class="reqired-field"
+              >
+                <div *ngIf="digit_timeout.errors.required">Required Field</div>
+                <div *ngIf="digit_timeout.errors.max">
+                  Digits timeout can't be more than 60
+                </div>
+                <div *ngIf="digit_timeout.errors.min">
+                  Digits timeout can't be less than 1
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Intermediate Digits Timeout(Sec)</mat-label>
+                <input
+                  matInput
+                  placeholder="Inter-Digit Timeout(Sec)"
+                  formControlName="inter_digit_timeout"
+                  maxlength="2"
+                  (keypress)="commonService.numberOnly($event)"
+                  autocomplete="off"
+                  appBlockCopyPaste
+                  required
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  inter_digit_timeout.invalid &&
+                  (inter_digit_timeout.dirty || inter_digit_timeout.touched)
+                "
+                class="reqired-field"
+              >
+                <div *ngIf="inter_digit_timeout.errors.required">
+                  Required Field
+                </div>
+                <div *ngIf="inter_digit_timeout.errors.max">
+                  Intermediate Digits timeout can't be more than 60
+                </div>
+                <div *ngIf="inter_digit_timeout.errors.min">
+                  Intermediate Digits timeout can't be less than 1
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Max Timeout Try</mat-label>
+                <input
+                  matInput
+                  placeholder="Max Timeout Try"
+                  formControlName="max_timeout_try"
+                  maxlength="1"
+                  (keypress)="commonService.numberOnly($event)"
+                  autocomplete="off"
+                  appBlockCopyPaste
+                  required
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  max_timeout_try.invalid &&
+                  (max_timeout_try.dirty || max_timeout_try.touched)
+                "
+                class="reqired-field"
+              >
+                <div *ngIf="max_timeout_try.errors.required">
+                  Required Field
+                </div>
+                <div *ngIf="max_timeout_try.errors.max">
+                  Max timeout try can't be more than 3
+                </div>
+                <div *ngIf="max_timeout_try.errors.min">
+                  Max timeout try can't be less than 1
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="example-full-width">
+                <mat-label>Max Invalid Try</mat-label>
+                <input
+                  matInput
+                  placeholder="Max Invalid Try"
+                  formControlName="max_invalid_try"
+                  maxlength="1"
+                  (keypress)="commonService.numberOnly($event)"
+                  autocomplete="off"
+                  appBlockCopyPaste
+                  required
+                />
+              </mat-form-field>
+              <div
+                *ngIf="
+                  max_invalid_try.invalid &&
+                  (max_invalid_try.dirty || max_invalid_try.touched)
+                "
+                class="reqired-field"
+              >
+                <div *ngIf="max_invalid_try.errors.required">
+                  Required Field
+                </div>
+                <div *ngIf="max_invalid_try.errors.max">
+                  Max invalid try can't be more than 3
+                </div>
+                <div *ngIf="max_invalid_try.errors.min">
+                  Max invalid try can't be less than 1
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-slide-toggle
+                formControlName="directExtenDial"
+                [(ngModel)]="isShowDirectExten"
+              >
+                Direct Exten Dial
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-slide-toggle
+                (change)="multilevelIVRToggle($event)"
+                formControlName="multilevel_ivr"
+                [(ngModel)]="isEnableMultilevelIVR"
+              >
+                Multilevel IVR
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isShowFeedBackIVR">
+              <mat-slide-toggle
+                formControlName="feedbackIVR"
+                [(ngModel)]="feedBackIVR"
+                (change)="feedbackIVRToggle($event)"
+              >
+                Feedback IVR
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isShowSelectionDTMF">
+              <mat-slide-toggle
+                style="margin-top: 12px"
+                (change)="dtmfRequiredToggle($event)"
+                formControlName="selection_dtmf_required"
+                [(ngModel)]="selection_dtmf_required"
+              >
+                Selection DTMF Required
+              </mat-slide-toggle>
+            </div>
+            <!-- hr -->
+            <div class="hr-sect" *ngIf="isShowDTMFSelectionPart">
+              DTMF SELECTION
+            </div>
+            <!-- hr -->
+            <div
+              class="row"
+              style="margin-left: 1px"
+              *ngIf="isShowDTMFSelectionPart"
+            >
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit0"
+                    id="digit0"
+                    maxlength="2"
+                    placeholder="0"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action0"
+                    (openedChange)="
+                      HandleDropdownFilter(
+                        'filterFeatureZero',
+                        FeatureFilterZero
+                      )
+                    "
+                    (selectionChange)="getValueData0($event)"
+                    #class0
+                  >
+                    <mat-select-filter
+                      *ngIf="class0.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureZero = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureZero"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction0">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value0"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueZero', ValueFilterZero)
+                    "
+                    required
+                    #Value0
+                  >
+                    <mat-select-filter
+                      *ngIf="Value0.focused"
+                      [array]="valueData0"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueZero = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueZero"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value0.invalid && (value0.dirty || value0.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value0.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction0">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value0_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber0">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country0"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryZero', CountryZero)
+                    "
+                    (selectionChange)="getCountryCode0($event)"
+                    #Country0
+                  >
+                    <mat-select-filter
+                      *ngIf="Country0.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryZero = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country0 of filterCountryZero"
+                      [value]="country0.id"
+                    >
+                      {{ country0.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="
+                    country0.invalid && (country0.dirty || country0.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country0.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber0">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code0"
+                    [(ngModel)]="countryCode0"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value0_Number"
+                    id="phone1"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode0 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value0_Number.invalid &&
+                    (value0_Number.dirty || value0_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value0_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value0_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!--------------------------------------------------  0 end ------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit1"
+                    id="digit1"
+                    maxlength="2"
+                    placeholder="1"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action1"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureOne', FeatureFilterOne)
+                    "
+                    (selectionChange)="getValueData1($event)"
+                    #class1
+                  >
+                    <mat-select-filter
+                      *ngIf="class1.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureOne = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureOne"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction1">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value1"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueOne', ValueFilterOne)
+                    "
+                    required
+                    #Value1
+                  >
+                    <mat-select-filter
+                      *ngIf="Value1.focused"
+                      [array]="valueData1"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueOne = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueOne"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value1.invalid && (value1.dirty || value1.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value1.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction1">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value1_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber1">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country1"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryOne', CountryOne)
+                    "
+                    (selectionChange)="getCountryCode1($event)"
+                    #Country1
+                  >
+                    <mat-select-filter
+                      *ngIf="Country1.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryOne = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country1 of filterCountryOne"
+                      [value]="country1.id"
+                    >
+                      {{ country1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country1.invalid && (country1.dirty || country1.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country1.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber1">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code1"
+                    [(ngModel)]="countryCode1"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value1_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode1 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value1_Number.invalid &&
+                    (value1_Number.dirty || value1_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value1_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value1_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-----------------------------------------------------  1 end ------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit2"
+                    id="digit2"
+                    maxlength="2"
+                    placeholder="2"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action2"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureTwo', FeatureFilterTwo)
+                    "
+                    (selectionChange)="getValueData2($event)"
+                    #class2
+                  >
+                    <mat-select-filter
+                      *ngIf="class2.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureTwo = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureTwo"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction2">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value2"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueTwo', ValueFilterTwo)
+                    "
+                    required
+                    #Value2
+                  >
+                    <mat-select-filter
+                      *ngIf="Value2.focused"
+                      [array]="valueData2"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueTwo = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueTwo"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value2.invalid && (value2.dirty || value2.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value2.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction2">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value2_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber2">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country2"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryTwo', CountryTwo)
+                    "
+                    (selectionChange)="getCountryCode2($event)"
+                    #Country2
+                  >
+                    <mat-select-filter
+                      *ngIf="Country2.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryTwo = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country2 of filterCountryTwo"
+                      [value]="country2.id"
+                    >
+                      {{ country2.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country2.invalid && (country2.dirty || country2.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country2.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber2">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code2"
+                    [(ngModel)]="countryCode2"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value2_Number"
+                    id="phone1"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode2 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value2_Number.invalid &&
+                    (value2_Number.dirty || value2_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value2_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value2_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-------------------------------------------- 2 end ----------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit3"
+                    id="digit3"
+                    maxlength="2"
+                    placeholder="3"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action3"
+                    (openedChange)="
+                      HandleDropdownFilter(
+                        'filterFeatureThree',
+                        FeatureFilterThree
+                      )
+                    "
+                    (selectionChange)="getValueData3($event)"
+                    #class3
+                  >
+                    <mat-select-filter
+                      *ngIf="class3.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureThree = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureThree"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction3">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value3"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueThree', ValueFilterThree)
+                    "
+                    required
+                    #Value3
+                  >
+                    <mat-select-filter
+                      *ngIf="Value3.focused"
+                      [array]="valueData3"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueThree = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueThree"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value3.invalid && (value3.dirty || value3.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value3.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction3">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value3_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber3">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country3"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryThree', CountryThree)
+                    "
+                    (selectionChange)="getCountryCode3($event)"
+                    #Country3
+                  >
+                    <mat-select-filter
+                      *ngIf="Country3.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryThree = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country3 of filterCountryThree"
+                      [value]="country3.id"
+                    >
+                      {{ country3.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country3.invalid && (country3.dirty || country3.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country3.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber3">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code3"
+                    [(ngModel)]="countryCode3"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value3_Number"
+                    id="phone1"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode3 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value3_Number.invalid &&
+                    (value3_Number.dirty || value3_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value3_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value3_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!---------------------------------------------  3 end ---------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit4"
+                    id="digit4"
+                    maxlength="2"
+                    placeholder="4"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action4"
+                    (openedChange)="
+                      HandleDropdownFilter(
+                        'filterFeatureFour',
+                        FeatureFilterFour
+                      )
+                    "
+                    (selectionChange)="getValueData4($event)"
+                    #class4
+                  >
+                    <mat-select-filter
+                      *ngIf="class4.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureFour = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureFour"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction4">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value4"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueFour', ValueFilterFour)
+                    "
+                    required
+                    #Value4
+                  >
+                    <mat-select-filter
+                      *ngIf="Value4.focused"
+                      [array]="valueData4"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueFour = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueFour"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value4.invalid && (value4.dirty || value4.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value4.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value4_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber4">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country4"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryFour', CountryFour)
+                    "
+                    (selectionChange)="getCountryCode4($event)"
+                    #Country4
+                  >
+                    <mat-select-filter
+                      *ngIf="Country4.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryFour = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country4 of filterCountryFour"
+                      [value]="country4.id"
+                    >
+                      {{ country4.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country4.invalid && (country4.dirty || country4.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country4.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber4">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code4"
+                    [(ngModel)]="countryCode4"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value4_Number"
+                    id="phone1"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode4 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value4_Number.invalid &&
+                    (value4_Number.dirty || value4_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value4_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value4_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-------------------------------------------------  4 end --------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit5"
+                    id="digit5"
+                    maxlength="2"
+                    placeholder="5"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action5"
+                    (openedChange)="
+                      HandleDropdownFilter(
+                        'filterFeatureFive',
+                        FeatureFilterFive
+                      )
+                    "
+                    (selectionChange)="getValueData5($event)"
+                    #class5
+                  >
+                    <mat-select-filter
+                      *ngIf="class5.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureFive = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureFive"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction5">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value5"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueFive', ValueFilterFive)
+                    "
+                    required
+                    #Value5
+                  >
+                    <mat-select-filter
+                      *ngIf="Value5.focused"
+                      [array]="valueData5"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueFive = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueFive"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value5.invalid && (value5.dirty || value5.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value5.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction5">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value5_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber5">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country5"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryFive', CountryFive)
+                    "
+                    (selectionChange)="getCountryCode5($event)"
+                    #Country5
+                  >
+                    <mat-select-filter
+                      *ngIf="Country5.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryFive = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country5 of filterCountryFive"
+                      [value]="country5.id"
+                    >
+                      {{ country5.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country5.invalid && (country5.dirty || country5.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country5.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber5">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code5"
+                    [(ngModel)]="countryCode5"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value5_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode5 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value5_Number.invalid &&
+                    (value5_Number.dirty || value5_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value5_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value5_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!----------------------------------------------  5 end ----------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit6"
+                    id="digit6"
+                    maxlength="2"
+                    placeholder="6"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action6"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureSix', FeatureFilterSix)
+                    "
+                    (selectionChange)="getValueData6($event)"
+                    #class6
+                  >
+                    <mat-select-filter
+                      *ngIf="class6.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureSix = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureSix"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction6">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value6"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueSix', ValueFilterSix)
+                    "
+                    required
+                    #Value6
+                  >
+                    <mat-select-filter
+                      *ngIf="Value6.focused"
+                      [array]="valueData6"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueSix = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueSix"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value6.invalid && (value6.dirty || value6.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value6.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value6_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber6">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country6"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountrySix', CountrySix)
+                    "
+                    (selectionChange)="getCountryCode6($event)"
+                    #Country6
+                  >
+                    <mat-select-filter
+                      *ngIf="Country6.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountrySix = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country6 of filterCountrySix"
+                      [value]="country6.id"
+                    >
+                      {{ country6.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country6.invalid && (country6.dirty || country6.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country6.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber6">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code6"
+                    [(ngModel)]="countryCode6"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value6_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode6 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value6_Number.invalid &&
+                    (value6_Number.dirty || value6_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value6_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value6_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!---------------------------------------------------  6 end ----------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit7"
+                    id="digit7"
+                    maxlength="2"
+                    placeholder="7"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action7"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureSev', FeatureFilterSev)
+                    "
+                    (selectionChange)="getValueData7($event)"
+                    #class7
+                  >
+                    <mat-select-filter
+                      *ngIf="class7.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureSev = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureSev"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction7">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value7"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueSev', ValueFilterSev)
+                    "
+                    required
+                    #Value7
+                  >
+                    <mat-select-filter
+                      *ngIf="Value7.focused"
+                      [array]="valueData7"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueSev = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueSev"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value7.invalid && (value7.dirty || value7.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value7.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction7">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value7_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber7">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country7"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountrySev', CountrySev)
+                    "
+                    (selectionChange)="getCountryCode7($event)"
+                    #Country7
+                  >
+                    <mat-select-filter
+                      *ngIf="Country7.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountrySev = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country7 of filterCountrySev"
+                      [value]="country7.id"
+                    >
+                      {{ country7.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country7.invalid && (country7.dirty || country7.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country7.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber7">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code7"
+                    [(ngModel)]="countryCode7"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value7_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode7 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value7_Number.invalid &&
+                    (value7_Number.dirty || value7_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value7_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value7_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-----------------------------------------------  7 end ----------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit8"
+                    id="digit8"
+                    maxlength="2"
+                    placeholder="8"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action8"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureEig', FeatureFilterEig)
+                    "
+                    (selectionChange)="getValueData8($event)"
+                    #class8
+                  >
+                    <mat-select-filter
+                      *ngIf="class8.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureEig = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureEig"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction8">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value8"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueEig', ValueFilterEig)
+                    "
+                    required
+                    #Value8
+                  >
+                    <mat-select-filter
+                      *ngIf="Value8.focused"
+                      [array]="valueData8"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueEig = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueEig"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value8.invalid && (value8.dirty || value8.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value8.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction8">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value8_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber8">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country8"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryEig', CountryEig)
+                    "
+                    (selectionChange)="getCountryCode8($event)"
+                    #Country8
+                  >
+                    <mat-select-filter
+                      *ngIf="Country8.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryEig = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country8 of filterCountryEig"
+                      [value]="country8.id"
+                    >
+                      {{ country8.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country8.invalid && (country8.dirty || country8.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country8.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber8">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code8"
+                    [(ngModel)]="countryCode8"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value8_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode8 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value8_Number.invalid &&
+                    (value8_Number.dirty || value8_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value8_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value8_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!--------------------------------------------------  8 end -------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit9"
+                    id="digit9"
+                    maxlength="2"
+                    placeholder="9"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action9"
+                    (openedChange)="
+                      HandleDropdownFilter(
+                        'filterFeatureNine',
+                        FeatureFilterNine
+                      )
+                    "
+                    (selectionChange)="getValueData9($event)"
+                    #class9
+                  >
+                    <mat-select-filter
+                      *ngIf="class9.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureNine = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureNine"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction9">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value9"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueNine', ValueFilterNine)
+                    "
+                    required
+                    #Value9
+                  >
+                    <mat-select-filter
+                      *ngIf="Value9.focused"
+                      [array]="valueData9"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueNine = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueNine"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value9.invalid && (value9.dirty || value9.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value9.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction9">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value9_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber9">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country9"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryNine', CountryNine)
+                    "
+                    (selectionChange)="getCountryCode9($event)"
+                    #Country9
+                  >
+                    <mat-select-filter
+                      *ngIf="Country9.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryNine = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country9 of filterCountryNine"
+                      [value]="country9.id"
+                    >
+                      {{ country9.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country9.invalid && (country9.dirty || country9.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country9.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber9">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code9"
+                    [(ngModel)]="countryCode9"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value9_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode9 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value9_Number.invalid &&
+                    (value9_Number.dirty || value9_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value9_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value9_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-----------------------------------------------  9 end ------------------------------------------------>
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit10"
+                    id="digit10"
+                    maxlength="2"
+                    placeholder="*"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action10"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureTen', FeatureFilterTen)
+                    "
+                    (selectionChange)="getValueData10($event)"
+                    #class10
+                  >
+                    <mat-select-filter
+                      *ngIf="class10.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureTen = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureTen"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction10">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value10"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueTen', ValueFilterTen)
+                    "
+                    required
+                    #Value10
+                  >
+                    <mat-select-filter
+                      *ngIf="Value10.focused"
+                      [array]="valueData10"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueTen = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueTen"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value10.invalid && (value10.dirty || value10.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value10.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction10">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value10_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber10">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country10"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryTen', CountryTen)
+                    "
+                    (selectionChange)="getCountryCode10($event)"
+                    #Country10
+                  >
+                    <mat-select-filter
+                      *ngIf="Country10.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryTen = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country10 of filterCountryTen"
+                      [value]="country10.id"
+                    >
+                      {{ country10.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country10.invalid && (country10.dirty || country10.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country10.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber10">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code10"
+                    [(ngModel)]="countryCode10"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value10_Number"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode10 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value10_Number.invalid &&
+                    (value10_Number.dirty || value10_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value10_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value10_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!-----------------------------------------------  * end ----------------------------------------------------->
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Digit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="digit11"
+                    id="digit11"
+                    maxlength="2"
+                    placeholder="#"
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                  <mat-label>Feature</mat-label>
+                  <mat-select
+                    formControlName="action11"
+                    (openedChange)="
+                      HandleDropdownFilter('filterFeatureEle', FeatureFilterEle)
+                    "
+                    (selectionChange)="getValueData11($event)"
+                    #class11
+                  >
+                    <mat-select-filter
+                      *ngIf="class11.focused"
+                      [array]="activeFeature"
+                      [displayMember]="'feature'"
+                      (filteredReturn)="filterFeatureEle = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let feature of filterFeatureEle"
+                      [value]="feature.id"
+                    >
+                      {{ feature.feature }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-4" *ngIf="allAction11">
+                <mat-form-field>
+                  <mat-label>Value</mat-label>
+                  <mat-select
+                    formControlName="value11"
+                    (openedChange)="
+                      HandleDropdownFilter('filterValueEle', ValueFilterEle)
+                    "
+                    required
+                    #Value11
+                  >
+                    <mat-select-filter
+                      *ngIf="Value11.focused"
+                      [array]="valueData11"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterValueEle = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let d1 of filterValueEle"
+                      [value]="d1.id"
+                    >
+                      {{ d1.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  style="margin-top: 2px"
+                  *ngIf="value11.invalid && (value11.dirty || value11.touched)"
+                  class="reqired-field"
+                >
+                  <div *ngIf="value11.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="hangupAction11">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Value</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="value11_hanpUp"
+                    placeholder="Value"
+                    [value]=""
+                    readonly
+                  />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber11">
+                <mat-form-field>
+                  <mat-label>Select Country</mat-label>
+                  <mat-select
+                    formControlName="country11"
+                    (openedChange)="
+                      HandleDropdownFilter('filterCountryEle', CountryEle)
+                    "
+                    (selectionChange)="getCountryCode11($event)"
+                    #Country11
+                  >
+                    <mat-select-filter
+                      *ngIf="Country11.focused"
+                      [array]="countryList"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterCountryEle = $event"
+                    ></mat-select-filter>
+                    <mat-option
+                      *ngFor="let country11 of filterCountryEle"
+                      [value]="country11.id"
+                    >
+                      {{ country11.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    country11.invalid && (country11.dirty || country11.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="country11.errors.required">Required Field</div>
+                </div>
+              </div>
+              <div class="form-group col-md-2" *ngIf="externalNumber11">
+                <mat-form-field
+                  class="example-full-width"
+                  style="width: 80.4% !important"
+                >
+                  <mat-label>Number</mat-label>
+                  <input
+                    matInput
+                    [hidden]="true"
+                    formControlName="country_code11"
+                    [(ngModel)]="countryCode11"
+                  />
+                  <input
+                    matInput
+                    (keypress)="commonService.numberOnly($event)"
+                    formControlName="value11_Number"
+                    id="phone1"
+                    placeholder="Number"
+                    maxlength="10"
+                    minlength="10"
+                    autocomplete="off"
+                    appBlockCopyPaste
+                    required
+                  />
+                  <span matPrefix>{{ countryCode11 }}</span>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    value11_Number.invalid &&
+                    (value11_Number.dirty || value11_Number.touched)
+                  "
+                  class="reqired-field"
+                >
+                  <div *ngIf="value11_Number.errors.required">
+                    Required Field
+                  </div>
+                  <div *ngIf="value11_Number.errors.pattern">
+                    Number can not start with 0 and not less than 10 digits.
+                  </div>
+                </div>
+              </div>
+              <!----------------------------------------------------  # end ----------------------------------------->
+            </div>
+            <!--row end -->
+            <div class="col-lg-12 example-button-row">
+              <button
+                mat-raised-button
+                [disabled]="!basicIVRForm.valid"
+                color="primary"
+              >
+                Submit
+              </button>
+              <button mat-raised-button color="warn" (click)="cancelForm()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

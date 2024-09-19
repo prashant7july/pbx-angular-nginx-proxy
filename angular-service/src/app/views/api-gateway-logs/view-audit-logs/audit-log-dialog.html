@@ -1,0 +1,49 @@
+<div mat-dialog-content>
+    <!-- <h2>AUDIT LOG INFO</h2> -->
+    <div class="card-body">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item" *ngFor="let item of packageLogList">
+                <h2 class="accordion-header" id="headingOne" style="background-color: darkgray;">
+                    <button class="btn btn-link" style="color: white;" type="button" data-toggle="collapse"
+                        [attr.data-target]="'#'+ item.id" aria-expanded="false">
+                        {{item.message}} - {{item.created_at}}
+                    </button>
+                </h2>
+                <div id="{{item.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                    data-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="custom-table">
+                                    <div class="row">                                        
+                                        <ng-container *ngFor="let keyChunk of chunkArray(getObjectKeys(item.features), 4)">
+                                            <div class="col-md-3" *ngFor="let key of keyChunk">
+                                                <div class="value-column">                                                    
+                                                        <ng-container>                                                        
+                                                        <div class="form-group mt-3"  *ngIf="item.features[key] !== '1t' ">
+                                                            <mat-form-field class="example-full-width">
+                                                                <mat-label>{{ key }}</mat-label>
+                                                                <input matInput type="text" id="name" autocomplete="off" [value]="item.features[key]">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="key-column mb-2" *ngIf="item.features[key] === '1t'" style="display: flex; align-items: center;">
+                                                            {{ key }} &nbsp;&nbsp;&nbsp;
+                                                            <mat-slide-toggle [checked]="true" disabled></mat-slide-toggle>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 example-button-row">
+            <button mat-raised-button color="warn" (click)="cancleDialog($event)">Close</button>
+        </div>
+    </div>
+</div>

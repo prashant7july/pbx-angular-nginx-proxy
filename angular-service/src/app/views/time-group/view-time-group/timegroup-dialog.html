@@ -1,0 +1,251 @@
+<h3 class="card-header-style">Time Group</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="timeGroupForm" (ngSubmit)="submitTimeGroupForm()">
+            <div class="centered-content">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Name</mat-label>
+                            <input matInput type="text" formControlName="name" id="name" placeholder="Name"
+                                maxlength="20" [(ngModel)]="timeGroupName" autocomplete="off" appBlockCopyPaste
+                                required>
+                        </mat-form-field>
+                        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                            <div *ngIf="name.errors.required">
+                                Required Field
+                            </div>
+                            <div *ngIf="name.errors.pattern">Invalid name</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <ejs-dropdownlist formControlName="prompt" style="width: 90%;margin-top:  -7px;" [floatLabelType]="'Auto'" [dataSource]='selectedPromptValue' [fields]='fields' (filtering)="promptremovedspace($event)"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [(ngModel)]="WelcomePrompt" [placeholder]='placeholder' allowFiltering=true>
+                        </ejs-dropdownlist>
+                        <!-- <mat-form-field>
+                            <mat-label>Time Group Prompt</mat-label>
+                            <mat-select formControlName="prompt" (openedChange)="HandleDropdownFilter('filterPrompt',TimeFilter)" [disabled]="featurePrompt!=1" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="selectedPromptValue" [displayMember]="'prompt_name'" (filteredReturn)="filterPrompt = $event"></mat-select-filter>
+                                <mat-option value='0' selected>Default</mat-option>
+                                <mat-option *ngFor='let prompt of filterPrompt' [value]="prompt.id">
+                                    {{ prompt.prompt_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                    <!-- <div class="form-group col-md-3" *ngIf="timeGroupData.id">
+                        <ejs-dropdownlist formControlName="prompt" style="width: 90%;margin-top: -7px;" [floatLabelType]="'Auto'" [dataSource]='selectedPromptValue' [fields]='fields' (filtering)="promptremovedspace($event)"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [(ngModel)]="timeGroupData.prompt_id" [placeholder]='placeholder' allowFiltering=true>
+                        </ejs-dropdownlist> -->
+                        <!-- <mat-form-field>
+                            <mat-label>Time Group Prompt</mat-label>
+                            <mat-select formControlName="prompt" (openedChange)="HandleDropdownFilter('filterPrompt',TimeFilter)" [disabled]="featurePrompt!=1"
+                                [(ngModel)]="timeGroupData.prompt_id" [disableOptionCentering]="true" #select1 >
+                                <mat-select-filter  *ngIf="select1.focused" [array]="selectedPromptValue" [displayMember]="'prompt_name'" (filteredReturn)="filterPrompt = $event" ></mat-select-filter>
+                                <mat-option value='0' selected>Default</mat-option>
+                                <mat-option *ngFor='let prompt of filterPrompt' [value]="prompt.id" >
+                                    {{ prompt.prompt_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    <!-- </div> -->
+                    <!-- <div class="form-group col-md-3" *ngIf="!timeGroupData.id">
+                        <ejs-dropdownlist formControlName="prompt" style="width: 90%;margin-top:  -7px;" [floatLabelType]="'Auto'" [dataSource]='selectedPromptValue' [fields]='fields' (filtering)="promptremovedspace($event)"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [placeholder]='placeholder' allowFiltering=true>
+                        </ejs-dropdownlist> -->
+                        <!-- <mat-form-field>
+                            <mat-label>Time Group Prompt</mat-label>
+                            <mat-select formControlName="prompt" (openedChange)="HandleDropdownFilter('filterPrompt',TimeFilter)" [disabled]="featurePrompt!=1" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="selectedPromptValue" [displayMember]="'prompt_name'" (filteredReturn)="filterPrompt = $event"></mat-select-filter>
+                                <mat-option value='0' selected>Default</mat-option>
+                                <mat-option *ngFor='let prompt of filterPrompt' [value]="prompt.id">
+                                    {{ prompt.prompt_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    <!-- </div> -->
+                    <div class="form-group col-md-3" *ngIf="timeGroupData.id" >
+                        <mat-form-field class="example-full-width">
+                            <mat-label style="color: black;">Start-Finish Date</mat-label>
+                            <input matInput type="text" formControlName="month_day_start_finish" aria-invalid="false" aria-required="true"
+                                [value]="monthDayStartFinish" [(ngModel)]="timeGroupData.monthlyDateRange"
+                                (ngModelChange)="onstartFinishValueChange($event)" bsDaterangepicker autocomplete="off"
+                                [bsConfig]="{containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY'}"
+                                [minDate]="minDate" readonly style="background-color: transparent; color: black;" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-3" *ngIf="!timeGroupData.id">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Start-Finish Date</mat-label>
+                            <input matInput type="text" formControlName="month_day_start_finish" bsDaterangepicker
+                                autocomplete="off" [(ngModel)]="bsRangeValue"
+                                (ngModelChange)="onstartFinishValueChange($event)"
+                                [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY'}"
+                                [minDate]="minDate" readonly style="background-color: transparent;" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <mat-form-field>
+                            <mat-label>Start Time</mat-label>
+                            <input matInput [ngxTimepicker]="picker" [format]="24" formControlName="time_start"
+                                [(ngModel)]="startTime" readonly required>
+                            <ngx-material-timepicker #picker (timeSet)="onTimeSelect($event)"></ngx-material-timepicker>
+                        </mat-form-field>
+                        <div *ngIf="time_start.invalid && (time_start.dirty || time_start.touched)"
+                            class="reqired-field">
+                            <div *ngIf="time_start.errors.required">
+                                Required Field
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <mat-form-field>
+                            <mat-label>Finish Time</mat-label>
+                            <input matInput [ngxTimepicker]="picker1" [format]="24" formControlName="time_finish"
+                                [(ngModel)]="endTimeValue" readonly required>
+                            <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                        </mat-form-field>
+                        <div *ngIf="time_finish.invalid && (time_finish.dirty || time_finish.touched)"
+                            class="reqired-field">
+                            <div *ngIf="time_finish.errors.required">
+                                Required Field
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <mat-form-field>
+                            <mat-label>Schedule Duration</mat-label>
+                            <mat-select formControlName="sch_duration" (selectionChange)="checkDate()"
+                                [(ngModel)]="timeGroupData.schedule_duration" required>
+                                <mat-option value="0">Weekly</mat-option>
+                                <mat-option value="1">Monthly </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="sch_duration.invalid && (sch_duration.dirty || sch_duration.touched)"
+                            class="reqired-field">
+                            <div *ngIf="sch_duration.errors.required">
+                                Required Field
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <mat-form-field>
+                            <mat-label>Schedule Weekly</mat-label>
+                            <mat-select formControlName="sch_weekly" (selectionChange)="schWeekly($event)"
+                                [(ngModel)]="timeGroupData.schedule_weekly" required>
+                                <mat-option value="0">5 Days</mat-option>
+                                <mat-option value="1">6 Days</mat-option>
+                                <mat-option value="2">7 Days</mat-option>
+                                <mat-option value="3">Custom</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="sch_weekly.invalid && (sch_weekly.dirty || sch_weekly.touched)"
+                            class="reqired-field">
+                            <div *ngIf="sch_weekly.errors.required">
+                                Required Field
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3" *ngIf="showCustom">
+                        <mat-form-field>
+                            <mat-label>Select Weekdays</mat-label>
+                            <mat-select placeholder="Select Weekdays" [disableOptionCentering]="true"
+                                formControlName="schedule_weekly_custom" [(ngModel)]="selectedWeekDays"
+                                (selectionChange)="selectedOption()" multiple required>
+                                <mat-option *ngFor="let weekdays of weekDays" [value]="weekdays.value">
+                                    {{weekdays.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="form-group col-md-3" *ngIf="showCustom">
+                        <mat-form-field class="example-full-width" style="width:100%;">
+                            <textarea matInput type="text" formControlName="schedule_weekly_custom_value"
+                                id="schedule_weekly_custom_value" placeholder="" [(ngModel)]="selectedWeek" readonly
+                                [value]="selectedWeek" style="background: #FFFFFF; resize:none;">
+                              </textarea>
+                        </mat-form-field>
+                    </div> -->
+                    <div class="form-group col-md-3" style="margin-top:-1em;">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" placeholder="Description" maxlength="150"
+                                [(ngModel)]="timeGroupData.description" style="resize:none;"
+                                autocomplete="off"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-3 switch-div">
+                        <mat-slide-toggle formControlName="holidays" [(ngModel)]="timeGroupData.holidays">
+                            Holidays
+                        </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <mat-slide-toggle formControlName="failover_destination"
+                            [(ngModel)]="timeGroupData.failover_destination" (change)="onChangeFailoverDestination($event)">
+                            Failover Destination
+                        </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-3" *ngIf="failover_destination.value">
+                        <!-- <mat-form-field>
+                            <mat-label>Feature</mat-label>
+                            <mat-select formControlName="active_feature" (openedChange)="HandleDropdownFilter('filterFeature', allFilterFeature)" [(ngModel)]="timeGroupData.active_feature" 
+                                (selectionChange)="onChangeActiveFeature($event)" #select2 >
+                                <mat-select-filter  *ngIf="select2.focused" [array]="activeFeature" [displayMember]="'feature'" (filteredReturn)="filterFeature = $event"></mat-select-filter>
+                                <mat-option *ngFor='let feature of filterFeature' [value]="feature.id">
+                                    {{ feature.feature }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <ejs-dropdownlist formControlName="active_feature" [floatLabelType]="'Auto'" [(ngModel)]="timeGroupData.active_feature" (change)="onChangeActiveFeature($event)" (filtering)="timeGroupDataremovedspace($event)"
+                        style="width: 87%;margin-top:  -15px;" [dataSource]='activeFeature' [fields]='fields2' 
+                        [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+                    </ejs-dropdownlist> 
+                      <!-- <div style="margin-top:2px;" *ngIf="active_feature.invalid && (active_feature.dirty || active_feature.touched)"
+                                class="reqired-field">
+                                <div *ngIf="active_feature.errors.required">
+                                    Required Field
+                                </div>
+                            </div> -->
+                    </div>  
+
+                    <div class="form-group col-md-3" *ngIf="failover_destination.value && active_feature.value">
+                        <!-- <mat-form-field>
+                            <mat-label>Value</mat-label>                           
+                            <mat-select formControlName="active_feature_value" (openedChange)="HandleDropdownFilter('filter', allFilterValue)" [(ngModel)]="activeFeature_value" required #select1>
+                                <mat-select-filter  *ngIf="select1.focused" [array]="activeFeatureValue" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                                <mat-option *ngFor='let d1 of filter' [value]="d1.id" >
+                                    {{ d1.name }}
+                                </mat-option>
+                            </mat-select> -->
+                            <!-- <div *ngIf="active_feature_value.invalid && (active_feature_value.dirty || active_feature_value.touched)"
+                                class="reqired-field">
+                                <div *ngIf="active_feature_value.errors.required">
+                                    Required Field
+                                </div>
+                            </div> -->
+                        <!-- </mat-form-field> -->
+                        <ejs-dropdownlist formControlName="active_feature_value"
+                        style="width: 87%;margin-top:  -15px;" [dataSource]='activeFeatureValue' [floatLabelType]="'Auto'" [fields]='fields3' (filtering)="valueremovedspace($event)" [floatLabelType]="'Auto'"
+                        [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='value' [(ngModel)]="activeFeature_value" allowFiltering=true>
+                    </ejs-dropdownlist> 
+                      <!-- <div style="margin-top:2px;" *ngIf="active_feature_value.invalid && (active_feature_value.dirty || active_feature_value.touched)"
+                                class="reqired-field">
+                                <div *ngIf="active_feature_value.errors.required">
+                                    Required Field
+                                </div>
+                            </div> -->
+                    </div>
+
+                 
+                </div>
+              
+                <div class="col-lg-12 example-button-row">
+                    <button mat-raised-button [disabled]="!timeGroupData.id ? !timeGroupForm.valid :  false"
+                        color="primary">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,275 @@
+<h3 class="card-header-style">MINUTE PLAN</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="callPlanGroupForm" (ngSubmit)="submitBundlePlan()" class="row">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" formControlName="name" (keypress)="_keyUp($event)" placeholder="Name"
+                         autocomplete="off" [readonly]="readonlyMode" required>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Base Price</mat-label>
+                    <input matInput type="text" formControlName="charge" (keypress)="commonService.decimalWIth2digits($event)" (keyup)="checkPrice();"
+                    [(ngModel)]="b_price" placeholder="Base Price" autocomplete="off" [readonly]="readonlyMode" required minlength="1" tabindex="-1">
+                </mat-form-field>
+                <div *ngIf="charge.invalid && (charge.dirty || charge.touched)" class="reqired-field">
+                    <div *ngIf="charge.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>                 
+            
+            <!-- <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="isMinutePlan" [(ngModel)]="isMinutePlanShow" (change)="isChnageMinutePlan($event.checked)">
+                  Plan Type
+                </mat-slide-toggle>
+            </div> -->
+            <div class="form-group col-md-8 mt-3" *ngIf="!readonlyMode">
+                <!-- <mat-label>Plan Type</mat-label> -->
+                <mat-radio-group aria-label="Select an option" formControlName="plan_type" (change)="changeCallPlan($event.value)" [disabled]="data.id">
+                    <mat-radio-button value="1">Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Roaming</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="3">Booster</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="4">Tele Consultancy</mat-radio-button>
+                </mat-radio-group>
+            </div> 
+
+            <div class="form-group col-md-4" *ngIf="plan_type.value == '3'">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Booster For *</mat-label>
+                    <mat-select formControlName="booster_for">
+                        <mat-option value = "1">Bundle</mat-option>
+                        <mat-option value = "2">Roaming</mat-option>
+                        <mat-option value = "4">Tele Consultancy</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="booster_for.invalid && (booster_for.dirty || booster_for.touched)" class="reqired-field">
+                    <div *ngIf="booster_for.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="!readonlyMode" style="margin-top: -8px;">
+                <ejs-dropdownlist formControlName="call_plan" (filtering)="calleremovedspace($event)" style="width: 100%;" [dataSource]='callPlanList' [fields]='fields'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'  [placeholder]='placeholder' allowFiltering=true>
+                </ejs-dropdownlist>
+
+                <!-- <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Call Plan</mat-label>
+                    <mat-select formControlName="call_plan" (openedChange)="HandleDropdownFilter('filterCallPlan',CallPlanFilter)" #select>
+                        <mat-select-filter  *ngIf="select.focused"  [array]="callPlanList" [displayMember]="'name'" (filteredReturn)="filterCallPlan = $event"></mat-select-filter>
+                        <mat-option [value]="">Select</mat-option>
+                        <mat-option *ngFor='let cp of filterCallPlan' [value]="cp.id">
+                            {{ cp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="call_plan.invalid && (call_plan.dirty || call_plan.touched)" class="reqired-field">
+                    <div *ngIf="call_plan.errors.required">
+                        Required Field
+                    </div>
+                </div> 
+            </div>
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Validity *</mat-label>
+                    <mat-select formControlName="validity" [disabled]="readonlyMode" (selectionChange)="onValidityChanged($event)">
+                        <mat-option value = "weekly">Weekly</mat-option>
+                        <mat-option value = "monthly">Monthly</mat-option>
+                        <mat-option *ngIf="plan_type.value != '3'" value = "yearly">Yearly</mat-option>
+                        <mat-option value = "custom">Custom</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="validity.invalid && (validity.dirty || validity.touched)" class="reqired-field">
+                    <div *ngIf="validity.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="validity.value == 'custom'">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>No.Of Days</mat-label>
+                    <input matInput type="text" formControlName="number_of_days" placeholder="No.Of Days" 
+                         autocomplete="off" maxlength="3" (input)="checkDaysValidation($event.target.value)" (keypress)="commonService.numberOnly($event)">
+                </mat-form-field>
+                <div *ngIf="number_of_days.invalid && (number_of_days.dirty || number_of_days.touched)" class="reqired-field">
+                    <div *ngIf="number_of_days.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="plan_type.value == '1' || plan_type.value == '2'">  <!-- Not come in booster and TC -->
+                <mat-slide-toggle [disabled]="readonlyMode"  formControlName="is_overuse">
+                 Overuse
+                </mat-slide-toggle>
+            </div>
+
+
+
+
+            <div class="hr-sect" *ngIf="plan_type.value != '3'">Extra Fee Detail</div>
+            <div *ngIf="plan_type.value != '3'">
+
+                <div class="hr-sect" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">Extra Fee Detail</div>
+
+            <div class="row" style="margin-left: 1px; display: contents;" >
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="recurring"  (change)="recurring($event.checked)">
+                    Recurring Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px;">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge1" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  readonly (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: 1px; display: contents;" >
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="monthlySupport"  >
+                    Monthly Support Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px;">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge2" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  readonly (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: 1px; display: contents;" >
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="NocSupport"  >
+                    NOC Support Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px; ">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge3" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  readonly (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: -1px; display: contents;" >
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="OneTimeSupport"  >
+                    One Time Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px; ">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge4" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  readonly >
+                    </mat-form-field>
+                </div>
+            </div>
+                <!-- <div class="form-group col-md-12" formArrayName="fee_type_charges"
+                    *ngFor="let d of callPlanGroupForm.controls['fee_type_charges']['controls']; let i=index">
+             
+                    <div [formGroupName]="i">
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                          
+                                <mat-form-field style="width: 300%;">
+                                    <mat-label>Fee Type</mat-label>
+                                    <mat-select formControlName="fee_type" [disabled]="readonlyMode" (click)="selectValue()" (selectionChange)="onFeeTypeChanged($event,i,true)">
+                                        <mat-option [value]='' selected>Select</mat-option>
+                                        <mat-option *ngFor='let e of extraFeeList' [value]="e?.id" [disabled]="e.flag == '1'">{{e.name}}</mat-option>
+                                    
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4" *ngIf="selectValue">
+                                <mat-form-field class="example-full-width" style="width: 100%;">
+                                    <mat-label>Charge</mat-label>
+                                    <input matInput type="text" [readonly]="readonlyMode"  formControlName="charge" placeholder="Charge" maxlength="6" 
+                                        (keypress)="commonService.decimalWIth2digits($event)" >
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3 mt-1" *ngIf="i===0">
+                                <button class="btn btn-outline-primary" [disabled]="checkButton || readonlyMode"  style="width: 100%;" type="button"
+                                    (click)="addNewCharges()">+</button>
+            
+                            </div>                          
+                            <div class="form-group col-md-3 mt-1" *ngIf="i>0">
+                                <button class="btn btn-outline-primary" [disabled]="readonlyMode"  style="width: 100%;" type="button"
+                                    (click)="removeCharges(d.controls['fee_type'],i)">-</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <!-- <div class="row">
+                <div class="form-group col-md-6" style="margin-top: 16px;">
+                    <mat-slide-toggle formControlName="fee_type" (change)="isChnageDate($event)">
+                        Recurring charge - RECURRING
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" *ngIf="checkutton">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Charge</mat-label>
+                        <input matInput type="text" [readonly]="readonlyMode" formControlName="charge"  placeholder="Charge" maxlength="6" 
+                            (keypress)="commonService.decimalWIth2digits($event)" >
+                    </mat-form-field>
+                </div>
+                <div class="form-group col-md-6" style="margin-top: 16px;">
+                    <mat-slide-toggle>
+                        Monthly Support - RECURRNG
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Charge</mat-label>
+                        <input matInput type="text" [readonly]="readonlyMode"  placeholder="Charge" maxlength="6" 
+                            (keypress)="commonService.decimalWIth2digits($event)" >
+                    </mat-form-field>
+                </div><div class="form-group col-md-6" style="margin-top: 16px;">
+                    <mat-slide-toggle>
+                        NOC Support - ONE TIME
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Charge</mat-label>
+                        <input matInput type="text" [readonly]="readonlyMode"  placeholder="Charge" maxlength="6" 
+                            (keypress)="commonService.decimalWIth2digits($event)" >
+                    </mat-form-field>
+                </div><div class="form-group col-md-6" style="margin-top: 16px;">
+                    <mat-slide-toggle>
+                        One Time Charge - ONE TIME
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Charge</mat-label>
+                        <input matInput type="text" [readonly]="readonlyMode"  placeholder="Charge" maxlength="6" 
+                            (keypress)="commonService.decimalWIth2digits($event)" >
+                    </mat-form-field>
+                </div>
+        
+        </div> -->
+
+            <div class="col-lg-12 example-button-row">
+                <button *ngIf="!readonlyMode" mat-raised-button [disabled]="!callPlanGroupForm.valid" color="primary" >Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Close</button>
+            </div>
+        </form>
+    </div>
+</div>

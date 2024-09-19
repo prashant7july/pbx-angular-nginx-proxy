@@ -1,0 +1,89 @@
+Arguments: 
+  /usr/bin/node /root/.yarn/bin/yarn.js add ngx-wizard
+
+PATH: 
+  /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:/root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:/root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:/usr/local/rvm/gems/ruby-2.6.3/bin:/usr/local/rvm/gems/ruby-2.6.3@global/bin:/usr/local/rvm/rubies/ruby-2.6.3/bin:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/rvm/bin:/root/bin:/root/bin
+
+Yarn version: 
+  1.16.0
+
+Node version: 
+  10.16.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/ngx-wizard/-/ngx-wizard-0.0.46.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (/root/.yarn/lib/cli.js:130217:19)
+      at Object.onceWrapper (events.js:286:20)
+      at ClientRequest.emit (events.js:198:13)
+      at TLSSocket.emitRequestTimeout (_http_client.js:662:40)
+      at Object.onceWrapper (events.js:286:20)
+      at TLSSocket.emit (events.js:198:13)
+      at TLSSocket.Socket._onTimeout (net.js:442:8)
+      at ontimeout (timers.js:436:11)
+      at tryOnTimeout (timers.js:300:5)
+      at listOnTimeout (timers.js:263:5)
+
+npm manifest: 
+  {
+    "name": "crm",
+    "version": "0.0.0",
+    "scripts": {
+      "ng": "ng",
+      "start": "ng serve",
+      "build": "ng build",
+      "test": "ng test",
+      "lint": "ng lint",
+      "e2e": "ng e2e"
+    },
+    "private": true,
+    "dependencies": {
+      "@angular/animations": "~8.0.0",
+      "@angular/common": "~8.0.0",
+      "@angular/compiler": "~8.0.0",
+      "@angular/core": "~8.0.0",
+      "@angular/forms": "~8.0.0",
+      "@angular/platform-browser": "~8.0.0",
+      "@angular/platform-browser-dynamic": "~8.0.0",
+      "@angular/router": "~8.0.0",
+      "@coreui/angular": "^2.5.1",
+      "@coreui/coreui": "^2.1.12",
+      "bootstrap": "^4.3.1",
+      "font-awesome": "^4.7.0",
+      "ngx-bootstrap": "^4.3.0",
+      "ngx-perfect-scrollbar": "^8.0.0",
+      "ngx-wizard": "0.0.46",
+      "rxjs": "~6.4.0",
+      "tslib": "^1.9.0",
+      "zone.js": "~0.9.1"
+    },
+    "devDependencies": {
+      "@angular-devkit/build-angular": "~0.800.0",
+      "@angular/cli": "~8.0.1",
+      "@angular/compiler-cli": "~8.0.0",
+      "@angular/language-service": "~8.0.0",
+      "@types/node": "~8.9.4",
+      "@types/jasmine": "~3.3.8",
+      "@types/jasminewd2": "~2.0.3",
+      "codelyzer": "^5.0.0",
+      "jasmine-core": "~3.4.0",
+      "jasmine-spec-reporter": "~4.2.1",
+      "karma": "~4.1.0",
+      "karma-chrome-launcher": "~2.2.0",
+      "karma-coverage-istanbul-reporter": "~2.0.1",
+      "karma-jasmine": "~2.0.1",
+      "karma-jasmine-html-reporter": "^1.4.0",
+      "protractor": "~5.4.0",
+      "ts-node": "~7.0.0",
+      "tslint": "~5.15.0",
+      "typescript": "~3.4.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -1,0 +1,93 @@
+<h3 class="card-header-style">Prompts</h3>
+
+<div class="loader" *ngIf="pageloader"></div>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form class="row" [formGroup]="promptForm" style="margin-top:-15px;">
+      <div class="form-group col-md-4" *ngIf="!isEdit">
+          <ejs-dropdownlist id='ddltooltip' formControlName="promptType" (filtering)="Accountremovedspace($event)" style="width: 80%;" [dataSource]='activeFeature' [fields]='fields3'
+          [(ngModel)]='promptData.promptType' [popupHeight]='popupHeight'  [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true required>
+                     </ejs-dropdownlist>
+        <!-- <mat-form-field>
+          <mat-label>Prompt Type</mat-label>
+          <mat-select formControlName="promptType" [(ngModel)]='promptData.promptType' readonly="true" required>
+            <mat-option *ngFor='let feature of activeFeature' [value]="feature.id">
+              {{ feature.feature }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <div style="margin-top: 2px;" *ngIf="promptType.invalid && (promptType.dirty || promptType.touched)" class="reqired-field">
+          <div *ngIf="promptType.errors.required">
+            Required Field
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-4" *ngIf="isEdit">
+        <mat-form-field class="example-full-width">
+          <input matInput type="text" formControlName="promptType" [(ngModel)]="prompts" placeholder="Select Prompt Type"
+            autocomplete="off" appBlockCopyPaste readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width">
+          <input matInput type="text" formControlName="prompt_name" [(ngModel)]="promptData.prompt_name"
+            placeholder="Prompt Name" maxlength="25" autocomplete="off" appBlockCopyPaste required>
+        </mat-form-field>
+        <div *ngIf="prompt_name.invalid && (prompt_name.dirty || prompt_name.touched)" class="reqired-field">
+          <div *ngIf="prompt_name.errors.required">
+            Required Field
+          </div>
+          <div *ngIf="prompt_name.errors.pattern">Invalid name</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width">
+          <textarea matInput formControlName="prompt_description" placeholder="Prompt Description"
+            [(ngModel)]="promptData.prompt_desc" maxlength="200" (keypress)="commonService.charOnly($event)"
+            style="resize:none;" autocomplete="off"></textarea>
+        </mat-form-field>
+        <div *ngIf="prompt_description.invalid && (prompt_description.dirty || prompt_description.touched)"
+          class="reqired-field">
+          <div *ngIf="prompt_description.errors.required">
+            Required Field
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-8" *ngIf="!isEdit">
+        <div class="form-group row">
+          <label class="blcaklist col-sm-4" for="prompt">Upload File<span class="reqired-field">*</span></label>
+          <div class="col-sm-6">
+            <input type="file" formControlName="prompt" name="prompt" ng2FileSelect
+              [uploader]="uploader" (change)="Validate($event)" style="margin-bottom: 20px;" required />
+            <div *ngIf="prompt.invalid && (prompt.dirty || prompt.touched )" class="reqired-field">
+              <div *ngIf="prompt.errors.required">
+                Required Field
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-lg-12">
+        <div class="form-group row">
+          <div class="col-sm-12" style="text-align: center;">
+            <div class="col-lg-12 example-button-row">
+              <button mat-raised-button [disabled]="!promptForm.valid || pageloader" *ngIf="!isEdit" (click)="uploadPrompt(); pageloader=true"
+                color="primary">Submit</button>
+              <button mat-raised-button [disabled]="!promptForm.valid" *ngIf="isEdit" (click)="submitPromptForm()"
+                color="primary">Submit</button>
+              <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button><br />
+              <span *ngIf="!isEdit"><small style="color: red;">**File size must be less than or equal to 1 MB and file
+                  type must be (.wav) or (.mp3)
+                  only.</small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

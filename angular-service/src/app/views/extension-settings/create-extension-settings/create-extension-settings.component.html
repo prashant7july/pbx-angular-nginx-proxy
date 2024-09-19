@@ -1,0 +1,47 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>EXTENSION SETTINGS</strong>
+        </div>
+        <div class="card-body">
+          <div class="help-button row" style="float:right;">
+            <button mat-raised-button (click)="showInfo()"
+              style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+              <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+              HELP
+            </button>
+          </div>
+          <form [formGroup]="extensionSettingsForm" (ngSubmit)="submitExtensionSettings()" class="row" style="margin-top: 70px;">
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="dnd" [(ngModel)]="settings.dnd">
+                Do Not Disturb
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 switch-div" *ngIf="disableCallForward">
+              <mat-slide-toggle formControlName="callForward" [(ngModel)]="callForwardStatus">
+                Call Forward
+              </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 switch-div" *ngIf="disableRingtone">
+              <mat-form-field>
+                <mat-label>Ringtone</mat-label>
+                <mat-select formControlName="ringtone" [(ngModel)]="settings.ringtone_id">
+                  <mat-option value='0'>Select Ringtone</mat-option>
+                  <mat-option *ngFor='let r of ringtoneList' [value]="r.id">
+                    {{ r.prompt_name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-12  example-button-row">
+              <button type="submit" mat-raised-button color="primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

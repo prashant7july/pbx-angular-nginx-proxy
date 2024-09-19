@@ -1,0 +1,46 @@
+<h3 class="card-header-style">GLOBAL RATE</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="globatrateForm" (ngSubmit)="submitGlobaRate()" class="row">
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Feature Name</mat-label>
+                        <input matInput type="text" formControlName="feature_name" maxlength="20" [(ngModel)]="featureRateData.feature_name" required
+                         autocomplete="off"  readonly>
+                    </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Feature Limit</mat-label>
+                            <input matInput  formControlName="feature_limit" maxlength="6" minlength="0" required
+                                [(ngModel)]="featureRateData.feature_limit"
+                                autocomplete="off"  required (keypress)="commonService.onlyPositiveNumber($event)">
+                    </mat-form-field>
+                    <!-- <div *ngIf="feature_limit.invalid && (feature_limit.dirty || feature_limit.touched )" class="reqired-field">
+                        <div *ngIf="feature_limit.errors.required"> Required Field</div>
+                        <div *ngIf="feature_limit.errors.pattern">
+                            Negetive number not allowed 
+                        </div> 
+                    </div> -->
+                </div>
+                <div class="form-group col-md-4">
+                       <mat-form-field class="example-full-width">
+                        <mat-label>Feature Rate</mat-label>
+                            <input matInput  [(ngModel)]="featureRateData.feature_rate" maxlength="10"  formControlName="feature_rate"
+                            autocomplete="off" required (keypress)="commonService.decimalWIth2digits ($event)"  >
+                    </mat-form-field>
+                    <!-- <div *ngIf="feature_rate.invalid && (feature_rate.dirty || feature_rate.touched )" class="reqired-field">
+                        <div *ngIf="feature_rate.errors.required"> Required Field</div>
+                         <div *ngIf="feature_rate.errors.pattern">
+                            Space not allowed at first position
+                        </div> 
+                    </div> -->
+                </div>
+                <div class="col-lg-12 example-button-row">
+                    <button type="submit" mat-raised-button  color="primary">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                </div>
+            
+        </form>
+    </div>
+</div>

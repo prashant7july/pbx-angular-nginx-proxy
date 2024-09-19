@@ -1,0 +1,12 @@
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+.error{
+    font-size: 10px;
+    color:#d82020;
+}
+
+.digi-color{
+    background-color: white;
+}

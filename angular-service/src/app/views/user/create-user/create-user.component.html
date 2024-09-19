@@ -1,0 +1,800 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>CREATE CUSTOMER</strong>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm" (ngSubmit)="submitUserForm()" novalidate>
+            <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
+              <aw-wizard-step [stepTitle]="'User Creation'"
+                [navigationSymbol]="{ symbol: '&#xf2bc;', fontFamily: 'FontAwesome' }">
+                <div class="centered-content">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field>
+                        <mat-label>User Type</mat-label>
+                        <mat-select formControlName="user_type" (selectionChange)="showProduct($event)" required>
+                          <mat-option value="1">Customer</mat-option>
+                          <!-- <mat-option value="4">Account Manager</mat-option>
+                          <mat-option value="5">Support Manager</mat-option> -->
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="user_type.invalid && (user_type.dirty || user_type.touched)" class="reqired-field">
+                        <div *ngIf="user_type.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group">
+                    <!-- <button type="button" class="btn btn-primary" [disabled]="!buttonDisabled" -->
+                 
+                      <button type="button" class="btn btn-primary" (click)="continue(user_type.value)"
+                      [disabled]="!user_type.value" awNextStep>Continue</button>
+                  </div>
+                </div>
+
+              </aw-wizard-step>
+              <aw-wizard-step [stepTitle]="'Personal Information'"
+                [navigationSymbol]="{ symbol: '&#xf007;', fontFamily: 'FontAwesome' }">
+                <div class="centered-content">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="f_name" id="fname" (keyup)="personalInfo()"
+                          placeholder="First name" maxlength="20" autocomplete="off" appBlockCopyPaste
+                          (keypress)="commonService.charOnly($event)" required>
+                      </mat-form-field>
+                      <div *ngIf="f_name.invalid && (f_name.dirty || f_name.touched)" class="reqired-field">
+                        <div *ngIf="f_name.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="f_name.errors.pattern">Invalid name
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" maxlength="20" formControlName="l_name" id="laname"
+                          placeholder="Last name" autocomplete="off" appBlockCopyPaste>
+                      </mat-form-field>
+                      <div *ngIf="l_name.invalid && (l_name.dirty || l_name.touched)" class="reqired-field">
+                        <div *ngIf="l_name.errors.pattern">
+                          Invalid name
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="email" formControlName="email" autocomplete="new-email" id="email"
+                          (keyup)="personalInfo()" placeholder="Email" maxlength="40" (change)="checkEmail();"
+                          [(ngModel)]="emailId" required>
+                      </mat-form-field>
+                      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="reqired-field">
+                        <div *ngIf="email.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="email.errors.pattern">
+                          Email must be valid
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" (keypress)="usernamelength($event)" autocomplete='off'
+                          maxlenght="20" (keydown.space)="$event.preventDefault();" (change)="checkUsername();"
+                          value={{textboxval}} formControlName="username" id="username" [(ngModel)]="userName"
+                          placeholder="Username" (keyup)="personalInfo()" appBlockCopyPaste required>
+                      </mat-form-field>
+                      <div *ngIf="username.invalid && (username.dirty || username.touched)" class="reqired-field">
+                        <div *ngIf="username.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="username.errors.minlength">
+                          Username must be at least 8 characters long.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <ejs-dropdownlist id='ddltooltip' formControlName="country"
+                        (filtering)="countryremovedspace($event)" style="width: 63%;" [dataSource]='countryList'
+                        [fields]='fields'
+                        (change)="getCountryCode($event); personalInfo(); manageCircle($event); manageStates($event);"
+                        [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                        [placeholder]='placeholder' allowFiltering=true>
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field>
+                        <mat-label>Country</mat-label>
+                        <mat-select formControlName="country" (openedChange)="HandleDropdownFilter('filter',CountryFilter)"
+                          (selectionChange)="getCountryCode($event); personalInfo(); manageCircle($event); manageStates($event);" required [disableOptionCentering]="true" #select1>                          
+                          <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                          <mat-option *ngFor='let country of filter' [value]="country.id">
+                            {{ country.name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <div *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                        <div *ngIf="country.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-md-4"> -->
+                    <!-- <mat-form-field>
+                        <mat-label>IP</mat-label>
+                         <input matInput type="text" id="ip" formControlName="ip" (keydown.space)="$event.preventDefault();"
+                         placeholder="IP" (change)="checkValidIP($event)" maxlength="40"
+                        autocomplete="off" >
+                      </mat-form-field> -->
+                    <!-- <div *ngIf="ip.invalid && (ip.dirty || ip.touched)" class="reqired-field">
+                        <div *ngIf="ip.errors.required">
+                          Required Field
+                       </div>
+                      </div> -->
+                    <!-- </div> -->
+
+                    <div class="col-md-4" *ngIf="isState">
+                      <ejs-dropdownlist id='ddltooltip' formControlName="states" (filtering)="Stateremovedspace($event)"
+                        style="width: 63%;" [dataSource]='statesList' [fields]='fields1' (change)="personalInfo();"
+                        [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                        [placeholder]='placeholder1' allowFiltering=true>
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field>
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="states" (openedChange)="HandleDropdownFilter('filters',StateFilter)"
+                          (selectionChange)="personalInfo();" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                          <mat-select-filter *ngIf="select1.focused" [array]="statesList" [displayMember]="'state_name'" (filteredReturn)="filters = $event"></mat-select-filter>
+                          <mat-option *ngFor='let state of filters' [value]="state.id" >
+                            {{ state.state_name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <div style="margin-top:2px;" *ngIf="states.invalid && (states.dirty || states.touched)"
+                        class="reqired-field">
+                        <div *ngIf="states.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width" style="width:56.4% !important">
+                        <input type="hidden" formControlName="country_code" [(ngModel)]="countryCode" />
+                        <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                          (keyup)="personalInfo()" formControlName="mobile" autocomplete="new-mobile"
+                          placeholder="Mobile Number" minlength="10" maxlength="10" required>
+                        <span matPrefix>{{countryCode}}</span>
+                      </mat-form-field>
+                      <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="reqired-field">
+                        <div *ngIf="mobile.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="mobile.errors.pattern"> Number can not start with 0 and not less than 10 digits.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser" style="margin-top:9px;">
+                      <ejs-dropdownlist id='ddltooltip' formControlName="time_zone"
+                        (filtering)="Timeremovedspace($event)" style="width: 63%;" [dataSource]='timeZone'
+                        [fields]='fields2' (change)="personalInfo()" [popupHeight]='popupHeight'
+                        [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder2'
+                        allowFiltering=true>
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field>
+                        <mat-label>Time Zone</mat-label>
+                        <mat-select formControlName="time_zone" (openedChange)="HandleDropdownFilter('filterTimeZone',TimeZoneFilter)" (selectionChange)="personalInfo()
+                        " required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="timeZone" [displayMember]="'gmtzone'" (filteredReturn)="filterTimeZone = $event"></mat-select-filter>
+                          <mat-option *ngFor='let zone of filterTimeZone' [value]="zone.id">{{zone.gmtzone}}</mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <div style="margin-top:2px;" *ngIf="time_zone.invalid && (time_zone.dirty || time_zone.touched)"
+                        class="reqired-field">
+                        <div *ngIf="time_zone.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                      <mat-form-field>
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status">
+                          <mat-option value="0">Inactive</mat-option>
+                          <mat-option value="1">Active</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="isIndia">
+                      <mat-slide-toggle formControlName="cli_type" style="margin-top: 13px;">FLN/VMN</mat-slide-toggle>
+                      <div class="hrt" style="width:820px;">
+                      </div>
+
+                    </div>
+                 
+
+                    <!-- <div class="form-group col-md-4 mt-2 " *ngIf="isLi">
+                      <mat-slide-toggle formControlName="is_Li" (change)="changeLi($event)">
+                        Li
+                      </mat-slide-toggle>
+                    </div>
+                    <div class="form-group col-md-4 mt-2"  *ngIf="isLi">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Li text</mat-label>
+                        <input matInput type="text" formControlName="Li" id="Li" maxlength="50"
+                          placeholder="Li text"  autocomplete="off"  disabled="!gatewayData.is_Li" >
+                      </mat-form-field>
+                    </div> -->
+
+                  </div>
+               
+                  <div class="btn-group" *ngIf="isExternalUser">
+                    <button type="button" class="btn btn-primary" [disabled]="!goNextPesonalInfo"
+                      awNextStep>Continue</button>
+                  </div>
+                  <div class="btn-group" *ngIf="!isExternalUser">
+                    <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                    <button type="submit" [disabled]="!userForm.valid" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </aw-wizard-step>
+              <aw-wizard-step [stepTitle]="'Company Information'" *ngIf="isExternalUser"
+                [navigationSymbol]="{ symbol: '&#xf19c;', fontFamily: 'FontAwesome' }">
+                <div class="centered-content">
+                  <div class="row">
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="company" maxlength="80" id="company"
+                          (change)="companyInfo()" placeholder="Company name" (change)="checkCompany()"
+                          [(ngModel)]="companyName" autocomplete="off" (keypress)="commonService.charOnly($event)"
+                          required>
+                      </mat-form-field>
+                      <div *ngIf="company.invalid && (company.dirty || company.touched )" class="reqired-field">
+                        <div *ngIf="company.errors.required">
+                          Required Field
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width" style="width:56.4% !important">
+                        <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                          formControlName="company_phone" id="company-phone" placeholder="Company Phone Number"
+                          minlength="10" maxlength="15" autocomplete="off" (change)="companyInfo()">
+                      </mat-form-field>
+                      <div *ngIf="company_phone.invalid && (company_phone.dirty || company_phone.touched )"
+                        class="reqired-field">
+                        <div
+                          *ngIf="company_phone.errors.minlength || company_phone.errors.maxlength || company_phone.errors.min">
+                          Number can not start with 0 and not less than 10 digits.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <textarea matInput formControlName="company_address" placeholder="Company Address"
+                          maxlength="200" style="resize:none;" autocomplete="off"></textarea>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="domain" placeholder="Domain Name" maxlength="30"
+                          autocomplete="off" appBlockCopyPaste>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" maxlength="15" maxlength="15" formControlName="gst_number"
+                          placeholder="Company GST number" (change)="companyInfo()" style="text-transform: uppercase;"
+                          autocomplete="off">
+                      </mat-form-field>
+                      <div *ngIf="gst_number.invalid && (gst_number.dirty || gst_number.touched)" class="reqired-field">
+                        <div *ngIf="gst_number.errors.pattern">
+                          Invalid GST number
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" maxlength="15" maxlength="15" formControlName="pan_number"
+                          placeholder="Company PAN number" (change)="companyInfo()" style="text-transform: uppercase;"
+                          autocomplete="off">
+                      </mat-form-field>
+                      <!-- <div *ngIf="gst_number.invalid && (gst_number.dirty || gst_number.touched)" class="reqired-field">
+                        <div *ngIf="gst_number.errors.pattern">
+                          Invalid GST number
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" maxlength="15" maxlength="15" formControlName="p_i_number"
+                          placeholder="Company PI number" (change)="companyInfo()" style="text-transform: uppercase;"
+                          autocomplete="off">
+                      </mat-form-field>
+                      <!-- <div *ngIf="gst_number.invalid && (gst_number.dirty || gst_number.touched)" class="reqired-field">
+                        <div *ngIf="gst_number.errors.pattern">
+                          Invalid GST number
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" maxlength="15" maxlength="15" formControlName="p_o_number"
+                          placeholder="Company PO number" (change)="companyInfo()" style="text-transform: uppercase;"
+                          autocomplete="off">
+                      </mat-form-field>
+                      <!-- <div *ngIf="gst_number.invalid && (gst_number.dirty || gst_number.touched)" class="reqired-field">
+                        <div *ngIf="gst_number.errors.pattern">
+                          Invalid GST number
+                        </div>
+                      </div> -->
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <!-- <ejs-dropdownlist id='ddltooltip' formControlName="account_manager" (filtering)="Accountremovedspace($event)" style="width: 63%;" [dataSource]='managerArr' [fields]='fields3'
+                      (close)="companyInfo()" [popupHeight]='popupHeight'  [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true required>
+                     </ejs-dropdownlist> -->
+                      <mat-form-field>
+                        <mat-label>Account Manager</mat-label>
+                        <mat-select formControlName="account_manager"
+                          (openedChange)="HandleDropdownFilter('filterAccount',AcountFilter)"
+                          (selectionChange)="companyInfo()" required [disableOptionCentering]="true" #select1
+                          placeholder="Auto Focus">
+                          <!-- <mat-select-filter *ngIf="select1.focused" [array]="managerArr" [displayMember]="'first_name'" (filteredReturn)="filterAccount = $event"></mat-select-filter> -->
+                          <mat-option *ngFor='let manager of managerArr | orderBy:"first_name"' [value]="manager.id">
+                            {{manager.first_name}}
+                            {{manager.last_name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div style="margin-top: 2px;"
+                        *ngIf="account_manager.invalid && (account_manager.dirty || account_manager.touched)"
+                        class="reqired-field">
+                        <div *ngIf="account_manager.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary" [disabled]="!goNextCompanyInfo"
+                      awNextStep>Continue</button>
+                  </div>
+                </div>
+              </aw-wizard-step>
+              <aw-wizard-step [stepTitle]="'Product and Package'" *ngIf="isExternalUser"
+                [navigationSymbol]="{ symbol: '&#xf0b1;', fontFamily: 'FontAwesome' }">
+                <div class="centered-content">
+                  <div class="row">
+
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field>
+                        <mat-label>Billing Type</mat-label>
+                        <mat-select formControlName="billing_type" (selectionChange)="showCreditBox($event)">
+                          <mat-option value="1">Prepaid</mat-option>
+                          <mat-option value="2">Postpaid</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div *ngIf="billing_type.invalid && (billing_type.dirty || billing_type.touched)"
+                        class="reqired-field">
+                        <div *ngIf="billing_type.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" (keypress)="commonService.floatOnly($event)"
+                           formControlName="balance" placeholder="Balance" (input)="checkPattern($event)" maxlength="9"
+                          autocomplete="off" appBlockCopyPaste required>
+                      </mat-form-field>
+                      <div *ngIf="balance.invalid && (balance.dirty || balance.touched)" class="reqired-field">
+                        <div *ngIf="balance.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="balance.errors.pattern">
+                          Number Range should be 1 to 999999.99
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" (keypress)="commonService.floatOnly($event)"
+                       [readonly]="!isCredtiLimit" formControlName="credit_limit" (input)="checkPatternnn($event)" maxlength="9"
+                          id="company-phone" placeholder="Credit Limit" autocomplete="off"
+                          appBlockCopyPaste required>
+                      </mat-form-field>
+                      <div *ngIf="credit_limit.invalid && (credit_limit.dirty || credit_limit.touched)"
+                        class="reqired-field">
+                        <div *ngIf="credit_limit.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="credit_limit.errors.pattern">
+                          Number Range should be 1 to 999999.99
+                        </div>
+                      </div>
+                </div>
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" (keypress)="commonService.floatOnly($event)"
+                          formControlName="advance_payment" placeholder="Advance Payment"
+                          autocomplete="off" (input)="checkPatternn($event)" maxlength="9" required>
+                      </mat-form-field>
+                      <div *ngIf="advance_payment.invalid && (advance_payment.dirty || advance_payment.touched)"
+                      class="reqired-field">
+                      <div *ngIf="advance_payment.errors.required">
+                        Required Field
+                      </div>
+                      <div *ngIf="advance_payment.errors.pattern">
+                        Number Range should be 1 to 999999.99
+                      </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Invoice day</mat-label>
+                        <mat-select formControlName="invoice_day" required>
+                          <!-- <mat-option value="">Select Day</mat-option> -->
+                          <mat-option [value]="1">1</mat-option>
+                          <mat-option [value]="2">2</mat-option>
+                          <mat-option [value]="3">3</mat-option>
+                          <mat-option [value]="4">4</mat-option>
+                          <mat-option [value]="5">5</mat-option>
+                          <mat-option [value]="6">6</mat-option>
+                          <mat-option [value]="7">7</mat-option>
+                          <mat-option [value]="8">8</mat-option>
+                          <mat-option [value]="9">9</mat-option>
+                          <mat-option [value]="10">10</mat-option>
+                          <mat-option [value]="11">11</mat-option>
+                          <mat-option [value]="12">12</mat-option>
+                          <mat-option [value]="13">13</mat-option>
+                          <mat-option [value]="14">14</mat-option>
+                          <mat-option [value]="15">15</mat-option>
+                          <mat-option [value]="16">16</mat-option>
+                          <mat-option [value]="17">17</mat-option>
+                          <mat-option [value]="18">18</mat-option>
+                          <mat-option [value]="19">19</mat-option>
+                          <mat-option [value]="20">20</mat-option>
+                          <mat-option [value]="21">21</mat-option>
+                          <mat-option [value]="22">22</mat-option>
+                          <mat-option [value]="23">23</mat-option>
+                          <mat-option [value]="24">24</mat-option>
+                          <mat-option [value]="25">25</mat-option>
+                          <mat-option [value]="26">26</mat-option>
+                          <mat-option [value]="27">27</mat-option>
+                          <mat-option [value]="28">28</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div
+                        *ngIf="extension_length_limit.invalid && (extension_length_limit.dirty || extension_length_limit.touched)"
+                        class="reqired-field">
+                        <div *ngIf="extension_length_limit.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="callback_url" placeholder="Callback URL">
+                      </mat-form-field>
+                    </div>
+
+
+
+                    <div class="form-group col-md-4" *ngIf="isExternalUser">
+                      <ejs-dropdownlist id='ddltooltip' formControlName="dialout_group"
+                        (filtering)="Dialoutremovedspace($event)" style="width: 63%;" [dataSource]='dialoutGroupList'
+                        [fields]='fields9' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                        [popupWidth]='popupWidth' [placeholder]='placeholder4' allowFiltering=true>
+                      </ejs-dropdownlist>
+                      <div
+                        *ngIf="userForm.controls['dialout_group'].invalid && (userForm.controls['dialout_group'].dirty || userForm.controls['dialout_group'].touched)"
+                        class="alert">
+                        <div *ngIf="userForm.controls['dialout_group'].errors.required"
+                          style="margin-top: -12px; margin-left:-20px; color:red;">
+                          Required Field
+                        </div>
+                      </div>
+                      <!-- <mat-form-field class="example-full-width" >
+                        <mat-label>Dialout Group</mat-label>
+                        <mat-select formControlName="dialout_group" (openedChange)="HandleDropdownFilter('filterDial',DialoutFilter)" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="dialoutGroupList" [displayMember]="'name'" (filteredReturn)="filterDial = $event"></mat-select-filter>
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option *ngFor='let cp of filterDial' [value]="cp.id">
+                                {{ cp.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                    </div>
+
+
+                    <div class="col-md-4" *ngIf="isExternalUser" style="margin-top: 5px;">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="threshold" placeholder="Threshold" maxlength="4"
+                          (keypress)="commonService.numberOnly($event)">
+                      </mat-form-field>
+                    </div>
+
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>API Token</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="token" readonly>
+                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" formControlName="monthly_international_threshold"
+                          placeholder="Monthly International Thresold" maxlength="3"
+                          (keypress)="commonService.numberOnly($event)">
+                      </mat-form-field>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2">
+                      <mat-slide-toggle formControlName="is_notification_email"
+                        (change)="changeNotificationEmail($event)" >
+                        Notification Email
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="email" formControlName="notification_email" id="email"
+                          placeholder="Notification Email" maxlength="40" [readonly]="!is_notification_email.value">
+                      </mat-form-field>
+                      <div
+                        *ngIf="notification_email.invalid && (notification_email.dirty || notification_email.touched)"
+                        class="reqired-field">
+                        <div *ngIf="notification_email.errors.required">
+                          Required Field
+                        </div>
+                        <div *ngIf="notification_email.errors.pattern">
+                          Email must be valid
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2" >
+                      <mat-slide-toggle formControlName="apiToken" (change)="api_access()">
+                        API Access
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="col-md-4" style="margin-top: 5px;" *ngIf="api_hits">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="number" formControlName="request_hit" placeholder="API Hits">
+                      </mat-form-field>
+                      <div *ngIf="request_hit.invalid && (request_hit.dirty || request_hit.touched)"
+                        class="reqired-field">
+                        <div *ngIf="request_hit.errors.pattern">
+                          Maximum Limit Exceed.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2 ml-8">
+                      <mat-slide-toggle formControlName="is_dunning"
+                        >
+                        Dunning
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                      <mat-slide-toggle formControlName="isSetDate" [disabled]="userRole==4  || userRole==5" (change)="isChnageDate($event)">
+                        Account Expiry Date
+                      </mat-slide-toggle>
+                    </div>
+                    <div class="form-group col-md-4" *ngIf="userForm.get('isSetDate').value">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="todayDate" [matDatepicker]="picker" [min]="minDate" placeholder="Account Expiry" formControlName="date"
+                        [disabled]="userRole==4  || userRole==5"  readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker  readonly="false"></mat-datepicker>
+                      </mat-form-field>
+                      <div style="margin-top: 2px;"
+                      *ngIf="userForm.get('date').invalid && (userForm.get('date').dirty || userForm.get('date').touched )"
+                      class="reqired-field">
+                      <div *ngIf="userForm.get('date').errors.required"> Required Field</div>
+                    </div>
+                    </div>
+
+                    <!-- <div class="form-group col-md-4  mt-2">
+                      <mat-slide-toggle formControlName="is_dunning"
+                        (change)="changeDunning($event)">
+                        Dunning
+                      </mat-slide-toggle>
+                    </div> -->
+                
+
+                          
+                   
+
+                    <!-- <div class="form-group col-md-4  mt-2">
+                      <mat-slide-toggle formControlName="is_notification_email"
+                        (change)="changeNotificationEmail($event)" [disabled]="dunning">
+                        Notification Email
+                      </mat-slide-toggle>
+                    </div> -->
+                   
+             
+                  
+
+ <br>
+ <br>               
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-label class="chk-lbl">Select Product *</mat-label><br />
+                      <mat-checkbox class="example-margin pro-check" *ngFor='let product of selectedValue'
+                        [value]="product.id" name="product_name" (change)="getPackageByProduct($event)" required>{{
+                        product.name }}</mat-checkbox>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2" *ngIf="isPBXSelect && isCircle">
+                      <mat-slide-toggle formControlName="isCircle" (change)="isChnageCircle($event)" [(ngModel)]="circleToggle">
+                        Circle
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-4" *ngIf="userForm.get('isCircle').value && isPBXSelect">
+                      <ejs-dropdownlist id='ddltooltip' formControlName="circle"
+                        (filtering)="Circleremovedspace($event)" style="width: 63%;" [dataSource]='circleList'
+                        [fields]='fields' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                        (ngModelChange)="onCircleSelect()" [popupWidth]='popupWidth' [placeholder]='placeholder5'
+                        allowFiltering=true>
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field style="width: 70%; border-top: 0px !important;">
+                          <mat-label>Circle Name</mat-label>
+                          <mat-select formControlName="circle" (openedChange)="HandleDropdownFilter('filterCircle',CircleFilter)" (ngModelChange)="onCircleSelect()" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="circleList" [displayMember]="'name'" (filteredReturn)="filterCircle = $event"></mat-select-filter>
+                              <mat-option *ngFor='let c of filterCircle' [value]="c.id">
+                                  {{c?.name }}
+                                </mat-option>
+                          </mat-select>
+                      </mat-form-field> -->
+                      <div style="margin-top: 2px;"
+                        *ngIf="userForm.get('circle').invalid && (userForm.get('circle').dirty || userForm.get('circle').touched )"
+                        class="reqired-field">
+                        <div *ngIf="userForm.get('circle').errors.required"> Required Field</div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <ejs-dropdownlist *ngIf="isPBXSelect" id='ddltooltip' formControlName="pbx_package_name"
+                        (filtering)="Packageremovedspace($event)" [(ngModel)]="pbxSelectedValue"
+                        (change)="goNext($event)" style="width: 63%;" [dataSource]='pbxPackageList' [fields]='fields'
+                        [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                        [placeholder]='placeholder6' allowFiltering=true [disabled]="pbx == true">
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field class="example-full-width" *ngIf = "isPBXSelect">
+                        <mat-label>Select PBX Package</mat-label>
+                        <mat-select formControlName="pbx_package_name" (openedChange)="HandleDropdownFilter('filterPackage',PBXPackageFilter)" [(ngModel)]="pbxSelectedValue" (selectionChange)="goNext($event)" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="pbxPackageList" [displayMember]="'name'" (filteredReturn)="filterPackage = $event"></mat-select-filter>
+                          <mat-option value="">Select Package</mat-option>
+                          <mat-option *ngFor='let package of filterPackage | orderBy:"name"' [value]="package.id"> {{ package.name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <div style="margin-top: 2px;"
+                        *ngIf="pbx_package_name.invalid && (pbx_package_name.dirty || pbx_package_name.touched)"
+                        class="reqired-field">
+                        <div *ngIf="pbx_package_name.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                      <ejs-dropdownlist *ngIf="isOCSelect" id='ddltooltip' formControlName="oc_package_name"
+                        (filtering)="OCremovedspace($event)" [(ngModel)]="ocSelectedValue" (change)="goNext($event)"
+                        style="width: 63%;" [dataSource]='ocPackageList' [fields]='fields' [popupHeight]='popupHeight'
+                        [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder7'
+                        allowFiltering=true [disabled]="outbound == null">
+                      </ejs-dropdownlist>
+                      <!-- <mat-form-field class="example-full-width" *ngIf = "isOCSelect">
+                        <mat-label>Select OC Package</mat-label>
+                        <mat-select formControlName="oc_package_name" (openedChange)="HandleDropdownFilter('filterPackageTwo',OCPackageFilter)" [(ngModel)]="ocSelectedValue" (selectionChange)="goNext($event)" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="ocPackageList" [displayMember]="'name'" (filteredReturn)="filterPackageTwo = $event"></mat-select-filter>
+                          <mat-option *ngFor='let package of filterPackageTwo | orderBy:"name"' [value]="package.id"> 
+                            {{ package.name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <div style="margin-top: 2px;"
+                        *ngIf="oc_package_name.invalid && (oc_package_name.dirty || oc_package_name.touched)"
+                        class="reqired-field">
+                        <div *ngIf="oc_package_name.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                
+                    <div class="form-group col-md-4  mt-2" *ngIf="isPBXSelect">
+                      <mat-slide-toggle formControlName="plugin" [disabled]="userRole==4  || userRole==5">
+                        Plugin
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2" *ngIf="isPBXSelect">
+                      <mat-slide-toggle formControlName="intercom_calling" [disabled]="userRole==4  || userRole==5">
+                        Intercom Calling
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="form-group col-md-4  mt-2" *ngIf="isPBXSelect">
+                      <mat-slide-toggle formControlName="enterprise_directory" [disabled]="userRole==4  || userRole==5">
+                        Enterprise Directory
+                      </mat-slide-toggle>
+                    </div>
+                    
+
+                    <div class="col-md-4" *ngIf="isExternalUser">
+                      <mat-form-field class="example-full-width" *ngIf="isPBXSelect">
+                        <mat-label>Select Extension Length Limit</mat-label>
+                        <mat-select formControlName="extension_length_limit" required>
+                          <!-- <mat-option value="">Select Length</mat-option> -->
+                          <mat-option [value]="2">2</mat-option>
+                          <mat-option [value]="3">3</mat-option>
+                          <mat-option [value]="4">4</mat-option>
+                          <mat-option [value]="5">5</mat-option>
+                          <mat-option [value]="6">6</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div
+                        *ngIf="extension_length_limit.invalid && (extension_length_limit.dirty || extension_length_limit.touched)"
+                        class="reqired-field">
+                        <div *ngIf="extension_length_limit.errors.required">
+                          Required Field
+                        </div>
+                      </div>
+                    </div>
+
+                    
+<br />
+                    <div class="form-group col-md-8 " >
+                      <section class="example-section">
+                        Threshold Balance Notification : 
+                        <mat-checkbox class="col-md-4" formControlName="threshold_fifty" >50%</mat-checkbox>
+                        <mat-checkbox class="col-md-4"formControlName="threshold_seventyFive">75%</mat-checkbox>
+                        <mat-checkbox class="col-md-4"formControlName="threshold_ninety"  >90%</mat-checkbox>
+                      </section>
+                    </div>
+
+                    
+
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" awPreviousStep>Back</button>
+                    <button type="submit" [disabled]="!userForm.valid" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </aw-wizard-step>
+            </aw-wizard>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

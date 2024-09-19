@@ -1,0 +1,43 @@
+.checkboxes label {
+    display: inline-block;
+    padding-right: 10px;
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  .checkboxes input {
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+  }
+  .checkboxes label span {
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  .checkboxes{
+      margin-left: 0px;
+      margin-bottom: 10px;
+  }
+
+  .pro-check{
+    margin-right: 5px!important;
+  }
+
+  .chk-lbl{
+    font-size: 11px!important;
+  }
+
+  @media (max-width:320px) {
+    aw-wizard ::ng-deep .horizontal ul.steps-indicator li a .label{
+        font-size:6px;
+      }
+    }
+    @media (max-width:481px) {
+    aw-wizard ::ng-deep .horizontal ul.steps-indicator li a .label{
+        font-size:6px;
+      }
+    }
+    @media (max-width:641px) {
+    aw-wizard ::ng-deep .horizontal ul.steps-indicator li a .label{
+        font-size:8px;
+      }
+  }    

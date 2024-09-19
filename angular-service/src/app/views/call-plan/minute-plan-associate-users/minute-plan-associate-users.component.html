@@ -1,0 +1,53 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- <div class="card" style="background-color: #dbd9d9 !important;"> -->
+      <div class="card-header">
+        <strong>MINUTE PLAN ASSOCIATE USERS</strong>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row" *ngFor="let package of packageName">
+                  <div class="col-sm-5">
+                    <h5 class="card-title mb-0"><strong (click)="viewpackage(package)" style="cursor: pointer;">PACKAGE
+                        NAME -
+                        {{package.name}}</strong></h5>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="pbx_feature" class="row">
+                    <div class="form-group col-md-4 switch-div" *ngFor="let contact of userList">
+                      <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;">
+                        <i class="fa fa-building"
+                          aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{contact.company_name}}</strong><br />
+                        <i class="fa fa-envelope-o"
+                          aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{contact.email}}</strong><br />
+                        <i class="fa fa-mobile"
+                          aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{contact.mobile}}</strong><br />
+                        <!-- <i class="fa fa-files-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong
+                          (click)="viewpackage(package)">{{package.name}}</strong><br /> -->
+
+                      </div>
+                    </div>
+                  </div>
+                  <ng-template #templateNamePackage>
+                    <i>oops... This Circle is not associate with any package.</i>
+                    <div class="row">
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 example-button-row mb-4 ml-2">
+        <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

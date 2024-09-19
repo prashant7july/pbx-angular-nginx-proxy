@@ -1,0 +1,52 @@
+<h3 class="card-header-style">VOICEBOT</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="addVoicebotForm" class="row" novalidate>
+           <div class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Voicebot Name</mat-label> 
+                    <input matInput type="text" formControlName="name"  maxlength="50" minlength="0" placeholder="Voicebot Name" 
+                        required>
+                </mat-form-field>           
+            </div>
+
+            <div class="form-group col-md-3" style="margin-top: 2px;">
+                <mat-label>Media Type</mat-label> 
+                <ejs-dropdownlist id='multiselectelement'  [dataSource]='mediaTypeArr' [fields]='fields'
+                    placeholder='Media Type' formControlName="media_type" [popupHeight]='popupHeight' 
+                    [popupWidth]='popupWidth'>
+                </ejs-dropdownlist>
+            </div>
+
+            <div class="form-group col-md-3" style="margin-top: 2px;">
+                <mat-label>Sample Rate</mat-label> 
+                <ejs-dropdownlist id='multiselectelement'  [dataSource]='sampleRateArr' [fields]='fields'
+                    placeholder='Sample Rate' formControlName="sample_rate" [popupHeight]='popupHeight' 
+                    [popupWidth]='popupWidth'>
+                </ejs-dropdownlist>
+            </div>
+
+            <div class="form-group col-md-10" style="margin-top: -4px;">
+                <mat-form-field class="example-full-width" >
+                  <textarea matInput formControlName="websocket_url" placeholder="Websocket URL" 
+                    maxlength="500" style="resize:none;" autocomplete="off" required></textarea>
+                </mat-form-field>
+              </div>
+
+
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="playback" [(ngModel)]="playback">Playback</mat-slide-toggle>
+            </div>
+          
+
+            <div class="form-group col-md-12">
+                <button mat-raised-button color="primary" (click)="SubmitvoicebotDialog()" [disabled]="!addVoicebotForm.valid">Submit</button>
+                <button mat-raised-button color="warn" style="margin-left: 5px;" (click)="cancelForm()">Cancel</button>
+            </div>
+
+        </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<h3 class="card-header-style">Advance Excel Export</h3>
+<div mat-dialog-content>
+    <div id="scrollId" class="card-body">
+        <!-- <section class="example-section"> -->
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Date Range *</mat-label>
+                        <input matInput placeholder="Pick a Date Range" [(ngModel)]="selectedDate" bsDaterangepicker
+                            autocomplete="off" readonly
+                            [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                    </mat-form-field>
+                </div>
+                <div class="form-group col-md-1">
+                </div>
+                <div class="form-group col-md-8 mt-2">
+                    <ejs-multiselect id='multiselectelement' [dataSource]='columnList' [fields]='fields'
+                        [placeholder]='placeholder' [(ngModel)]="selectedColumn" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                        [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+                    </ejs-multiselect>
+                </div>
+            </div>
+      
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button  (click)="submitDialog()" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

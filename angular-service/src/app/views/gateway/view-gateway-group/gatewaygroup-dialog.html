@@ -1,0 +1,84 @@
+<h3 class="card-header-style">Gateway Group</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form
+      [formGroup]="gatewayGroupForm"
+      (ngSubmit)="submitGatewayGroupForm()"
+      class="row"
+    >
+      <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Name"
+            formControlName="name"
+            [(ngModel)]="gatewayGroupData.name"
+            (keypress)="commonService.charOnly($event)"
+            maxlength="20"
+            (change)="verifyName($event)"
+            required
+          />
+        </mat-form-field>
+        <div
+          *ngIf="name.invalid && (name.dirty || name.touched)"
+          class="reqired-field"
+        >
+          <div *ngIf="name.errors.required">Required Field</div>
+          <div *ngIf="name.errors.pattern">
+            Space not allowed at first position
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-8" style="width: 100%">
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Description"
+            [(ngModel)]="gatewayGroupData.description"
+            style="resize: none"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="hr-sect">Gateway Group</div>
+      <div class="form-group col-md-12">
+        <p-pickList
+          [source]="sourceGroup"
+          [target]="targetGroup"
+          sourceHeader="Gateways"
+          targetHeader="Allow Gateways"
+          [showSourceControls]="false"
+          [showTargetControls]="false"
+          [responsive]="true"
+          dragdrop="true"
+          [sourceStyle]="{'height':'135px'}"
+          [targetStyle]="{'height':'135px'}"
+        >
+          <ng-template let-group pTemplate="sourceGroup">
+            <div class="ui-helper-clearfix">
+              <div style="font-size: 14px; float: right">{{group.group}}</div>
+              <div style="font-size: 14px; float: right" hidden>
+                {{group.id}}
+              </div>
+            </div>
+          </ng-template>
+        </p-pickList>
+      </div>
+      <div class="col-lg-12 example-button-row">
+        <button
+          mat-raised-button
+          [disabled]="!gatewayGroupForm.valid"
+          color="primary"
+        >
+          Submit
+        </button>
+        <button mat-raised-button color="warn" (click)="onNoClick($event)">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>DASHBOARD CUSTOMIZE</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-md-8" style="margin-left: -1px;">
+                <button mat-raised-button (click)="selectAllFeatures()" color="primary">Select All</button>
+                &nbsp;
+                <button mat-raised-button color="warn" (click)="unselectAllFeatures()">Unselect All</button>
+            </div>
+            <div style="margin-left: 90%;margin-top:-4em;">
+              <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+            </div>
+        </div>
+        <div style="margin-top:2em;">
+          <form [formGroup]="CustmizeForm" class="row" style="margin-top: 28px;">
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="total_call" [(ngModel)]="totalCalls">
+                Total Calls
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="ans_call" [(ngModel)]="AnsCalls">
+                Answer Calls
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="missed_call" [(ngModel)]="MissedCalls">
+                Missed Calls
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="failed_calls" [(ngModel)]="FailedCalls">
+                Failed Calls
+              </mat-slide-toggle>
+            </div>  <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="busy_call" [(ngModel)]="BusyCalls">
+                Busy Calls
+              </mat-slide-toggle>   
+            </div>
+              <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Concurrent_call" [(ngModel)]="ConcurrentCalls">
+                Concurrent Calls Limit
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Advance_call" [(ngModel)]="AdvanceCalls">
+                Advance Payment
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Last_invoice_call" [(ngModel)]="LastinvoiceCalls">
+                Last Invoice Amount
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="total_call_diagram" [(ngModel)]="TotalcallsdiagramCustomizeCall">
+                Total Calls for diagram
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Storage_Size" [(ngModel)]="StorageSizeCustomizeCall">
+                Storage Size
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="calls_per_hours" [(ngModel)]="Callsperhours">
+                Calls Per Hours
+              </mat-slide-toggle>  
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="minutes_consumed" [(ngModel)]="MinuteConsume">
+                Minutes Consumed
+              </mat-slide-toggle>
+            </div>   
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Average_call_duration" [(ngModel)]="AvarageCallDuration">
+                Average Call Duration
+              </mat-slide-toggle>  
+            </div>    
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Answer_Seizure_ratio" [(ngModel)]="AnswerSeizureratio">
+                Answer-Seizure Ratio
+              </mat-slide-toggle>
+            </div>   
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Call_records" [(ngModel)]="CallRecords">
+                Call Records
+              </mat-slide-toggle>    
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Extension_information" [(ngModel)]="ExtensionInformation">
+                Extension Information
+              </mat-slide-toggle>
+            </div>    
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Account_Manager_Information" [(ngModel)]="AccountInformation">
+                Account Manager Information
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Features_Information" [(ngModel)]="FeaturesInformation">
+                Features Information
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Ticket_Information" [(ngModel)]="TicketInformation">
+                Ticket Information
+              </mat-slide-toggle>
+            </div> 
+            <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="Inv_details" [(ngModel)]="Invoice_Details">
+                Invoice Details
+              </mat-slide-toggle>
+            </div>    <div class="form-group col-md-4 switch-div">
+              <mat-slide-toggle formControlName="ext_details" [(ngModel)]="ExtensionDetails">
+                Extension Details
+              </mat-slide-toggle>
+            </div> 
+            <!-- *ngIf="isotherEmail" -->
+            <div class="col-lg-12 example-button-row">
+              <button mat-raised-button  color="primary" (click)="submitdata()">Submit</button>
+            </div>
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

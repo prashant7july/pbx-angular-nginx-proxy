@@ -1,0 +1,142 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>ALL INVOICE LIST</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <button (click)="downloadPDF()"  mat-raised-button color="primary"
+                style=" margin:11px;top:-10px;left:13px;background-color: #CD5C5C !important;">Download PDF</button>
+              <button (click)="exportToExcel()"  mat-raised-button color="warn"
+                style="margin:11px;margin-right: 0px; top:-10px; background-color: #01A89E !important;">Excel Export</button>
+            </div>
+          </div> 
+          <!--Admin invoice Filter Start-->
+          <div class="row">
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate >
+                <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='1' || userType =='3' || userType =='4' || userType =='2' || userType =='5'">
+                  <mat-form-field class="example-full-width">
+                      <mat-label>Date Range</mat-label>
+                      <input matInput placeholder="Pick a Date Range" formControlName="by_date" bsDaterangepicker
+                                            autocomplete="off" readonly
+                                            [bsConfig]="{showWeekNumbers:false, containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                                    </mat-form-field>
+              </div>
+              <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='3' || userType =='4' || userType =='2' || userType =='5'" style="margin-top: -15px;">
+                <!-- <mat-form-field>
+                  <mat-label>Company</mat-label>
+                  <mat-select formControlName="by_company">
+                    <mat-option value="" selected>Select </mat-option>
+                      <mat-option *ngFor='let company of companyData' [value]="company.company_name">
+                          {{company.company_name}}</mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+                <ejs-multiselect id='multiselectelement' [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" class="mt-2" style="width: 79%;" [dataSource]='companyList' [fields]='fields'
+                  [placeholder]='placeholder' formControlName="by_company" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+            </div>
+              <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='1' || userType =='3' || userType =='4' || userType =='2'|| userType =='5'">
+              <mat-form-field class="example-full-width">
+                  <mat-label>Invoice Number</mat-label>
+                   <input matInput (keypress)="commonService.numberOnly($event)" formControlName="reference_num"
+                     placeholder="Invoice Number" maxlength="10"
+                     autocomplete="off"
+                      appBlockCopyPaste>
+                  </mat-form-field>
+              </div>
+               <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='1' || userType =='3' || userType =='4' || userType =='2' || userType =='5'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Amount (Without GST)</mat-label>
+                     <input matInput (keypress)="commonService.decimalWIth2digits ($event)" formControlName="amount"
+                       placeholder="Invoice Amount" maxlength="10"
+                       autocomplete="off"
+                        appBlockCopyPaste>
+                    </mat-form-field>
+               </div>
+
+                
+                 
+              
+               <!-- <div class="form-group col-md-3" *ngIf="userType =='4'">
+                  <mat-form-field>
+                    <mat-label>Country</mat-label>
+                    <mat-select formControlName="by_country">
+                        <mat-option value="" selected>Select</mat-option>
+                        <mat-option *ngFor='let country of countryList' [value]="country.id">
+                            {{ country.name }}</mat-option>
+                    </mat-select>
+                  </mat-form-field> 
+              </div> -->
+              <!-- <div class="form-group col-md-3" *ngIf="userType =='7'">
+                <mat-form-field>
+                  <mat-label>Product</mat-label>
+                  <mat-select formControlName="by_product">
+                      <mat-option value="" selected>Select </mat-option>
+                      <mat-option *ngFor='let product of selectedValue' [value]="product.id">
+                        {{ product.name }}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+              <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='1' || userType =='3' || userType =='4' || userType =='2' || userType =='5'">
+                <mat-form-field>
+                    <mat-label>Invoice Status</mat-label>
+                    <mat-select formControlName="paid_status">
+                        <mat-option value="" selected>Select Value</mat-option>
+                        <mat-option value="1">Paid</mat-option>
+                        <mat-option value="2">Not paid</mat-option>
+                        <mat-option value="4">No need to pay</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+             <div class="form-group col-md-3" *ngIf="userType =='0' || userType =='3' || userType =='4' || userType =='2' || userType =='5'">
+                <mat-form-field>
+                    <mat-label>Customer Status</mat-label>
+                    <mat-select formControlName="customer_status">
+                        <mat-option value="" selected>Select Value</mat-option>
+                        <mat-option value="1">Active</mat-option>
+                        <mat-option value="2">Deleted</mat-option>
+                        <mat-option value="3">Expired</mat-option>
+                        <mat-option value="0">Inactive</mat-option>
+                        <mat-option value="5">Suspended for Litigation</mat-option>
+                        <mat-option value="4">Suspended for Underpayment</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+                <div class="form-group col-md-3">
+                  <button mat-raised-button (click)="filterData()" color="primary">Search</button>
+                  &nbsp;
+                  <button mat-raised-button color="warn" (click)="resetTable()">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+          <!--Admin invoice Filter End-->
+                    <div class="example-wrapper" style="margin-top:75px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                <mat-form-field class="float-right">
+                    <mat-label>Number of records</mat-label>
+                    <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                        <mat-option value="10" selected>10</mat-option>
+                        <mat-option value="50">50</mat-option>
+                        <mat-option value="100">100</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData"
+                [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+            </app-grid>
+        </div>
+          <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+            (actionClick)="manageAction($event)">
+          </app-grid>  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

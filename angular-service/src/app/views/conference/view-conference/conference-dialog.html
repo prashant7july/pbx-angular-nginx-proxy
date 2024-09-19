@@ -1,0 +1,218 @@
+<h3 class="card-header-style">Conference</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="conferenceForm" (ngSubmit)="submitConferenceForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" maxlength="20"
+                        [(ngModel)]="conferenceData.name"  (keypress)="commonService.charOnly($event)"  autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Conference Exten</mat-label>
+                    <!-- <span matPrefix>*</span> -->
+                    <input matInput placeholder="Conference Exten" formControlName="conf_ext"
+                        (keypress)="commonService.numberOnly($event)" maxlength="5" minlength="5"
+                        [(ngModel)]="conferenceData.conf_ext" autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="conf_ext.invalid && (conf_ext.dirty || conf_ext.touched)" class="reqired-field">
+                    <div *ngIf="conf_ext.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="conf_ext.errors.maxlength">
+                        Conference Exten should be 5 Number long.
+                    </div>
+                    <div *ngIf="conf_ext.errors.minlength">
+                        Conference Exten should be 5 Number long.
+                    </div>
+                    <div *ngIf="conf_ext.errors.min">
+                        Conference Exten can't start with 0.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Admin PIN</mat-label>
+                    <input matInput placeholder="Admin PIN" formControlName="admin_pin" maxlength="5" minlength="5"
+                        (keypress)="commonService.numberOnly($event)" [(ngModel)]="adminPIN" autocomplete="off"
+                        appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="admin_pin.invalid && (admin_pin.dirty || admin_pin.touched)" class="reqired-field">
+                    <div *ngIf="admin_pin.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="admin_pin.errors.maxlength">
+                        Admin PIN should be 5 characters long.
+                    </div>
+                    <div *ngIf="admin_pin.errors.minlength">
+                        Admin PIN should be 5 characters long.
+                    </div>
+                    <div *ngIf="admin_pin.errors.min">
+                        Admin PIN can't start with 0
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Participant PIN</mat-label>
+                    <input matInput placeholder="Participant PIN" formControlName="participant_pin" maxlength="5"
+                        minlength="5" (keypress)="commonService.numberOnly($event)" [(ngModel)]="participantPIN"
+                        autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="participant_pin.invalid && (participant_pin.dirty || participant_pin.touched)"
+                    class="reqired-field">
+                    <div *ngIf="participant_pin.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="participant_pin.errors.maxlength">
+                        Participant PIN should be 5 characters long.
+                    </div>
+                    <div *ngIf="participant_pin.errors.minlength">
+                        Participant PIN should be 5 characters long.
+                    </div>
+                    <div *ngIf="participant_pin.errors.min">
+                        Participant PIN can't start with 0
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="conferenceData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" [(ngModel)]="conferenceData.welcome_prompt" (filtering)="removedspace($event)"
+                style="width: 70%;margin-top: -7px;" [dataSource]='selectedConferenceValue' [fields]='fields' [disabled]="welcomePrompt!=1"
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Welcome Prompt</mat-label>
+                    <mat-select formControlName="welcome_prompt" (openedChange)="HandleDropdownFilter('filters',WelcomeFilter)" [(ngModel)]="conferenceData.welcome_prompt" *ngIf="conferenceData.id" [disabled]="welcomePrompt!=1" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="selectedConferenceValue" [displayMember]="'prompt_name'" (filteredReturn)="filters = $event"></mat-select-filter>
+                        <mat-option value='0'>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of filters' [value]="conference.id">
+                            {{ conference.prompt_name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-select formControlName="welcome_prompt" (openedChange)="HandleDropdownFilter('filters',WelcomeFilter)" *ngIf="!conferenceData.id" [disabled]="welcomePrompt!=1" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="selectedConferenceValue" [displayMember]="'prompt_name'" (filteredReturn)="filters = $event"></mat-select-filter>
+                        <mat-option value='0' selected>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of filters' [value]="conference.id">
+                            {{ conference.prompt_name }}
+                        </mat-option>
+                    </mat-select> (filtering)="mohremovedspace($event)"
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4" *ngIf="!conferenceData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" (filtering)="removedspace($event)"
+                style="width: 70%;margin-top: -7px;" [dataSource]='selectedConferenceValue' [fields]='fields' [disabled]="welcomePrompt!=1"
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+            </ejs-dropdownlist> 
+            </div>
+            <div class="form-group col-md-4" *ngIf="moh == 1">
+                <ejs-dropdownlist formControlName="moh" [(ngModel)]="conferenceData.moh" (filtering)="mohremovedspace($event)" 
+                style="width: 70%;margin-top: -7px;" [dataSource]='selectedMOHValue' [fields]='fields2'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>MOH</mat-label>
+                    <mat-select formControlName="moh" (openedChange)="HandleDropdownFilter('filter',MOHFilter)" [(ngModel)]="conferenceData.moh" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="selectedMOHValue" [displayMember]="'prompt_name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                        <mat-option [value]='0' selected>Default</mat-option> 
+                        <mat-option *ngFor='let moh of filter' [value]="moh.id">
+                            {{ moh.prompt_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4">
+                <label style="font-size:x-small;color:rgba(0,0,0,.54);">Start Date</label>
+                <div>
+                    <p-calendar formControlName="conf_join_start_date" [minDate]="minDate" [(ngModel)]="todayDate"
+                        (onSelect)="onSelect($event)" [showTime]="true" [showSeconds]="true" [readonlyInput]="true"
+                        dateFormat="dd/mm/yy" hourFormat="24" hideOnDateTimeSelect="true">
+                        <ng-template>
+                            <span
+                                style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;"></span>
+                        </ng-template>
+                    </p-calendar>
+                </div>
+                <!-- <input matInput type="text" class="form-control mb-3" placeholder="Joining Start Date & Time"
+                        bsDatepicker [minDate]="minDate" formControlName="conf_join_start_date"
+                        [(ngModel)]="conferenceData.conf_join_start_date"
+                        [bsConfig]="{containerClass:'theme-dark-blue', dateInputFormat: 'DD/MM/YYYY, HH:mm:ss'}" /> -->
+
+                <div *ngIf="conf_join_start_date.invalid && (conf_join_start_date.dirty || conf_join_start_date.touched)"
+                    class="reqired-field">
+                    <div *ngIf="conf_join_start_date.errors.required">
+                        Required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label style="font-size:x-small;color:rgba(0,0,0,.54);">End Date</label>
+                <div>
+                    <p-calendar formControlName="conf_join_end_date" [minDate]="minDate" [(ngModel)]="endDateValue"
+                        [showTime]="true" [showSeconds]="true" [readonlyInput]="true" dateFormat="dd/mm/yy"
+                        hourFormat="24" hideOnDateTimeSelect="true"></p-calendar>
+                    <!-- <input matInput type="text" class="form-control mb-3" placeholder="Joining End Date & Time"
+                        bsDatepicker [minDate]="minEndDate" formControlName="conf_join_end_date"
+                        [(ngModel)]="conferenceData.conf_join_end_date"
+                        [bsConfig]="{containerClass:'theme-dark-blue', dateInputFormat: 'DD/MM/YYYY, HH:mm:ss'}" /> -->
+                </div>
+                <div *ngIf="conf_join_end_date.invalid && (conf_join_end_date.dirty || conf_join_end_date.touched)"
+                    class="reqired-field">
+                    <div *ngIf="conf_join_end_date.errors.required">
+                        Required
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 mt-2" *ngIf="recording == 1">
+                <mat-slide-toggle [color]="accent" formControlName="recording" [(ngModel)]="conferenceData.recording">
+                    Recording
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 mt-2">
+                <mat-slide-toggle  formControlName="wait_moderator" [(ngModel)]="conferenceData.wait_moderator">
+                    Start After Admin
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 mt-2">
+                <mat-slide-toggle  formControlName="name_record" [(ngModel)]="conferenceData.name_record">
+                    Record Participant Name
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 mt-2">
+                <mat-slide-toggle  formControlName="end_conf" [(ngModel)]="conferenceData.end_conf">
+                    End After Administrator
+                </mat-slide-toggle>
+            </div>
+            <div class="hr-sect">Add Participants</div>
+            <div class="form-group col-md-4" style="margin-top:14px;">
+                <ejs-multiselect formControlName="participant" (change)="selectedOption()" (filtering)="Participantsremovedspace($event)" 
+                style="width: 70%;margin-top: -7px;" [dataSource]='contactlist' [fields]='fields3' [selectAllText]='selectAllText' [mode]='mode'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' showSelectAll=true  [(ngModel)]="selectedContactList">
+            </ejs-multiselect> 
+                <div style="margin-top:2px;" *ngIf="participant.invalid && (participant.dirty || participant.touched)" class="reqired-field">
+                    <div *ngIf="participant.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-8">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <textarea matInput placeholder="" formControlName="participantValue" [(ngModel)]="selectContact"
+                        readonly autocomplete="off" appBlockCopyPaste style="resize:none;">
+                    </textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!conferenceForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

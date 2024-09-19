@@ -1,0 +1,144 @@
+<h3 class="card-header-style">TC PACKAGE</h3>
+<div mat-dialog-content *ngIf="isEdit">
+    <div class="card-body">
+        <form [formGroup]="rateplanForm" (ngSubmit)="submitRatePlan()" class="row example-form">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Package Name</mat-label>
+                    <input matInput type="text" formControlName="name" maxlength="20" [(ngModel)]="planData.name"
+                        required autocomplete="off" appBlockCopyPaste
+                        (keypress)="commonService.alphabetWithSplChrOnly($event)">
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                    <div *ngIf="name.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Price</mat-label>
+                    <input [readonly]="checkEdit==true" matInput maxlength="10" formControlName="price" [(ngModel)]="planData.price"
+                        autocomplete="off" required (keypress)="commonService.decimalWIth2digits ($event)">
+                </mat-form-field>
+                <div *ngIf="price.invalid && (price.dirty || price.touched )" class="reqired-field">
+                    <div *ngIf="price.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <ejs-dropdownlist id='ddltooltip' (filtering)="Countryremovedspace($event)"
+                    [(ngModel)]="country_id" (select)="onCountryselect($event,'')" formControlName="country" style="width: 70%;margin-top:-7px;"
+                    [dataSource]='countryList' [fields]='fields' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                    [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true [readonly]="checkEdit">
+                </ejs-dropdownlist>
+            </div>
+           
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Total Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{total_minutes}}
+                </mat-form-field>                
+            </div>           
+
+            <div class="form-group col-md-4" style="margin-top: 16px;">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Minutes</mat-label>
+                    <input [readonly]="checkEdit" matInput maxlength="5" formControlName="minutes" (change)="onMinuteChange($event)" [(ngModel)]="planData.assign_minutes" autocomplete="off" required
+                        (keypress)="commonService.decimalWIth2digits ($event)" >
+                </mat-form-field>
+                <div *ngIf="price.invalid && (price.dirty || price.touched )" class="reqired-field">
+                    <div *ngIf="price.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Remaining Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{remaining_minutes}}
+                </mat-form-field>                
+            </div>
+            <!-- <div class="form-group col-md-4" style="margin-top:17px;">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Date Range</mat-label>
+                    <input matInput placeholder="Pick a Date Range" formControlName="by_date" [minDate]="minDate"
+                        bsDaterangepicker autocomplete="off" readonly [(ngModel)]="planData.dates"
+                        [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY'}" />
+                </mat-form-field>
+            </div> -->
+
+            <div class="form-group col-md-3" *ngIf="planData.id" style="margin-top: 17px;" >
+                <mat-form-field class="example-full-width">
+                    <mat-label>Start-Finish Date</mat-label>
+                    <input matInput type="text" formControlName="by_date"
+                        [value]="monthDayStartFinish"
+                        bsDaterangepicker autocomplete="off"
+                        [bsConfig]="{containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY'}"
+                        [minDate]="minDate" readonly style="background-color: transparent;"  />
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-3" *ngIf="!planData.id" style="margin-top: 17px; ">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Start-Finish Date</mat-label>
+                    <input matInput type="text" formControlName="by_date" bsDaterangepicker
+                        autocomplete="off" [(ngModel)]="bsRangeValue"                      
+                        [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY'}"
+                        [minDate]="minDate" readonly style="background-color: transparent;" />
+                </mat-form-field>
+            </div>
+
+            <!-- <div class="form-group col-md-4">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" [min]="minMonth" placeholder="Date" formControlName="by_date"
+                    readonly required>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker  readonly="false"></mat-datepicker>
+                </mat-form-field>                
+              </div> -->
+
+            <div class="form-group col-md-4">
+                <mat-form-field style="width: 100%;margin-left:5em;">                    
+                    <textarea rows="0" cols="50" placeholder="Description" matInput formControlName="description" [(ngModel)]="planData.description"
+                        autocomplete="off" appBlockCopyPaste> </textarea>
+                </mat-form-field>
+            </div>
+
+
+            <div class="form-group col-md-4" style="margin-top:11px;margin-left:5em;">
+                <mat-slide-toggle (change)="setEmailId($event)" value="1"
+                    formControlName="email_notification" [disabled]="checkEdit == true">
+                    Email Notification
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4 mt-2" >
+                <mat-slide-toggle value="1"
+                    formControlName="sms_notification" [disabled]="checkEdit==true">
+                    SMS Notification
+                </mat-slide-toggle>
+            </div>
+
+            <!-- <div class="form-group col-md-12">
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields2'
+                    [placeholder]='placeholder' formControlName="contact" [mode]='mode' [(ngModel)]="planData.contacts" [selectAllText]='selectAllText'
+                    showSelectAll=true [popupHeight]='popupHeight' [popupWidth]='popupWidth' (change)="LimitContact($event)">
+                </ejs-multiselect>
+                <br>
+            </div> -->
+            
+            <div class="form-group col-md-12" >
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields2'
+                    [placeholder]='placeholder' floatLabelType="Auto" [(ngModel)]="planData.contacts"  formControlName="contact"  
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth' (change)="LimitContact($event)" [readonly]="checkEdit">
+                </ejs-multiselect>
+                <br>
+            </div>
+
+            
+            <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button [disabled]="rateplanForm.invalid"
+                    color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

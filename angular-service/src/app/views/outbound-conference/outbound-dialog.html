@@ -1,0 +1,177 @@
+<h3 class="card-header-style">Outbound Conference</h3>
+<div mat-dialog-content style="    display: block;
+margin: 0 -24px;
+padding: 0 24px;
+max-height: 65vh;
+overflow: auto;
+overflow-x: hidden;">
+  <div class="card-body">
+    <form [formGroup]="OutboundForm" class="row">
+      <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Name" [(ngModel)]="NameBind" formControlName="name" maxlength="20"
+            autocomplete="off" required>
+        </mat-form-field>
+        <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+          <div *ngIf="name.errors.required">
+            Required Field
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4" *ngIf="is_custom_prompt && is_storage">
+        <ejs-dropdownlist formControlName="welcome_prompt" [floatLabelType]="'Auto'"
+          style="width: 80%; margin-top: -7px" [dataSource]="welcomepromptValue" [fields]="fields"
+          [popupHeight]="popupHeight" [popupWidth]="popupWidth" [floatLabelType]="'Auto'" [placeholder]="placeholder"
+          allowFiltering="true">
+        </ejs-dropdownlist>
+        <!-- <div style="margin-top: 1px;" *ngIf="welcome_prompt.invalid && (welcome_prompt.dirty || welcome_prompt.touched )" class="reqired-field">
+                    <div *ngIf="welcome_prompt.errors.required">
+                      Required Field
+                    </div>
+                  </div> -->
+      </div>
+      <div class="form-group col-md-4">
+        <ejs-dropdownlist formControlName="DID_caller_id" [(ngModel)]="IsEdit.DID_caller_id"
+          style="width: 80%;margin-top: -7px;" [dataSource]='didList' [fields]='fields2' [popupHeight]='popupHeight'
+          [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true>
+        </ejs-dropdownlist>
+        <div style="margin-top: 1px;" *ngIf="DID_caller_id.invalid && (DID_caller_id.dirty || DID_caller_id.touched )"
+          class="reqired-field">
+          <div *ngIf="DID_caller_id.errors.required">
+            Required Field
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4" style="margin-top:10px;" *ngIf="is_recording_in_package && is_storage">
+        <mat-slide-toggle formControlName="recording" [(ngModel)]="recordData"
+          style="margin-top: 13px;">Recording</mat-slide-toggle>
+      </div>
+      <div class="col-md-4" style="margin-top: 2em; margin-left: -8em;" *ngIf="!IsEdit.id">
+        <button class="sampleBasic"
+          (click)="imageSource = '../../assets/img/outboundone-import.png';  openPrediction1()">
+          <i class="fa fa-file-excel-o"></i>
+          Sample Basic
+        </button>
+      </div>
+      <div class="row" *ngIf="basic" style="margin-top:4px; ">
+        <!-- <label><strong>Basic File</strong></label> -->
+        <img [src]="imageSource" *ngIf="imageSource" style="width: 100%" />
+        {{ text }}
+        <button mat-raised-button color="accent" class="mt-2" (click)="downloadExcelSample()"><i
+            class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+      </div>
+      <!-- <div *ngIf="IsEdit.id"> -->
+
+      <!-- </div> -->
+      <div class="row" *ngIf="IsEdit.id">
+        <div class="hr-sect" style="margin-left: -8px;">Lead/Phone Number List</div>
+        <div class="row" style="margin-top: -4em; margin-left: 27em;">
+          <!-- <div class="header-btn"> -->
+          <button mat-raised-button color="primary" style=" margin:11px;top:63px;left:-325px;" (click)="deleteChecked()"
+            [disabled]="!afterdisable || destination_list.length === 0">Delete</button>
+          <button mat-raised-button color="primary" style=" margin:11px;top: 63px;left:-340px;"
+            (click)="selectAll()">Select All</button>
+          <button mat-raised-button color="primary" style=" margin:11px;top:63px;left:-355px;"
+            (click)="unselectAll()">Unselect All</button>
+
+          <!-- </div> -->
+          <!-- <div class="row"> -->
+          <!-- <div class="header-btn" style="margin-top: 2em;"> -->
+          <label style="    margin-right: 22px; margin-top: 25PX;"><b>Reset Leads:</b></label>
+          <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-15px;" (click)="resetAll()"
+            [disabled]="destination_list.length === 0"> All</button>
+          <button mat-raised-button color="primary" style=" margin:11px;top: 3px;left:-28px;"
+            (click)="resetAnswered()">Answered</button>
+          <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-40px;"
+            (click)="resetFailed()">Failed</button>
+          <!-- </div> -->
+          <!-- </div> -->
+        </div>
+        <div class="card-body" style="    margin-right: 100px;
+                  margin-left: 69px;
+                  width: 625px;">
+
+          <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2" [dataSource]="dataSource2"
+            [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+          </app-grid>
+        </div>
+
+        <div class="form-group col-md-4" style="margin-left: 5em;">
+          <mat-form-field class="example-full-width" style="width:80%">
+            <mat-label>Lead/Phone Number</mat-label>
+            <input matInput formControlName="add_contact" maxlength="15" minlength="8" autocomplete="off">
+            <!-- <span matPrefix >{{countryCode2}}</span> -->
+          </mat-form-field>
+          <div *ngIf="add_contact.invalid && (add_contact.dirty || add_contact.touched)" class="reqired-field">
+            <div *ngIf="add_contact.errors.required">
+              Required Field
+            </div>
+            <div *ngIf="add_contact.errors.pattern">
+              Invalid Number
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-4" *ngIf="IsEdit.id">
+          <button mat-raised-button color="primary" [disabled]="!add_contact.valid" (click)="addDestination()">Add
+            Lead/Phone Number</button>
+        </div>
+      </div>
+
+      <div class="form-group col-md-4" style="margin-top:15px;" *ngIf="!IsEdit.id">
+        <div class="form-group row">
+          <label class="blcaklist col-sm-6" for="prompt">Upload File<span class="reqired-field">*</span></label>
+          <div class="col-sm-6">
+            <input type="file" formControlName="upload" name="prompt" ng2FileSelect [uploader]="uploader"
+              style="margin-bottom: 20px;" />
+            <!-- <div *ngIf="prompt.invalid && (prompt.dirty || prompt.touched )" class="reqired-field">
+                      <div *ngIf="prompt.errors.required">
+                        Required Field
+                      </div>
+                    </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12 mt-2">
+        <mat-radio-group aria-label="Select an option" formControlName="is_scheduler_type"
+          [(ngModel)]="IsEdit.is_scheduler_type" (change)="schedularChange($event)">
+          <mat-radio-button value="0" checked>Manual Scheduler</mat-radio-button> &nbsp; &nbsp;
+          <mat-radio-button value="1">Systematically Scheduler</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-group col-md-4" *ngIf="isShowSchedular">
+        <!-- <label style="font-size:x-small;color:rgba(0,0,0,.54);">Start Time</label> -->
+        <div>
+
+          <p-calendar formControlName="conf_schedule_time" [minDate]="minDate" [showTime]="true" [inline]="true"
+            [showSeconds]="true" [readonlyInput]="true" dateFormat="yy/mm/dd" hourFormat="24"
+            hideOnDateTimeSelect="true" [(ngModel)]="todayDate">
+            <ng-template>
+              <span style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;"></span>
+            </ng-template>
+          </p-calendar>
+
+        </div>
+        <!-- <div *ngIf="schedular_start_date.invalid && (schedular_start_date.dirty || schedular_start_date.touched)"
+                    class="reqired-field">
+                    <div *ngIf="schedular_start_date.errors.required">
+                        Required
+                    </div>
+                </div> -->
+      </div>
+
+
+
+
+
+      <div class="col-lg-12 example-button-row">
+        <button mat-raised-button color="primary" *ngIf="!IsEdit.id" (click)="uploadExcel();"
+          [disabled]="!OutboundForm.valid">Submit</button>
+        <button mat-raised-button color="primary" *ngIf="IsEdit.id" (click)="submitOCForm()"
+          [disabled]="!OutboundForm.valid">Submit</button>
+        <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

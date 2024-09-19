@@ -1,0 +1,230 @@
+<div class="animated fadeIn">
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="card">
+              <div class="card-header">
+                  <strong>MINUTE PLAN CALL DETAILS</strong>
+              </div>
+              <div class="card-body">
+                  <div class="row">
+                      <div class="header-btn">
+                          <button (click)="downloadPDF()" mat-raised-button color="primary"
+                              style=" margin:11px;top:-10px;left:26px;background-color: #CD5C5C !important;">Download
+                              PDF</button>
+                          <button (click)="exportToExcel()" mat-raised-button color="warn"
+                              style=" margin:11px; top:-10px;left:13px; background-color: #01A89E !important;">Excel Export</button>
+                          <button (click)="advanceExportToExcel()" mat-raised-button color="warn"
+                              style=" margin:11px; top:-10px; background-color: #929005 !important;">Advance Excel Export</button>
+                          <div class="help-button">
+                              <button mat-raised-button (click)="showInfo()"
+                                  style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+                                  <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                                  HELP
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <app-accordian-filter style="width: 110%">
+                          <form [formGroup]="filterForm" class="row" novalidate>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Date Range</mat-label>
+                                      <input matInput placeholder="Pick a Date Range" formControlName="by_date" bsDaterangepicker
+                                          autocomplete="off" readonly
+                                          [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3 mt-2">
+                                  <!-- <mat-form-field>
+                                      <mat-label>Company</mat-label>
+                                      <mat-select formControlName="by_company">
+                                          <mat-option *ngFor='let company of companyData' [value]="company.company_name">
+                                              {{company.company_name}}</mat-option>
+                                      </mat-select>
+                                  </mat-form-field> -->
+                                  <!-- <ejs-dropdownlist id='ddlelement' formControlName="by_company" [dataSource]='companyList' [fields]='fields'
+                                  [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+                                </ejs-dropdownlist> -->
+                            
+                                  <ejs-multiselect id='multiselectelement' style="width: 80%;" [dataSource]='companyList' [fields]='fields' [placeholder]='placeholder'
+                                      formControlName="by_company" [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode'
+                                      [selectAllText]='selectAllText' showSelectAll=true>
+                                  </ejs-multiselect>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <!-- <mat-form-field>
+                                      <mat-label>Call Plan</mat-label>
+                                      <mat-select formControlName="by_callplan">
+                                          <mat-option value="" selected>Select Call Plan</mat-option>   
+                                          <mat-option *ngFor='let plan of selectedValue' [value]="plan.id">
+                                              {{ plan.name }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field> -->
+                                  <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 60%;" [dataSource]='selectedValue' [fields]='fields2'
+                                      [placeholder]='placeholder2' formControlName="by_callplan" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                      [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                  </ejs-multiselect>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Forward</mat-label>
+                                      <input matInput type="text" formControlName="by_forward"
+                                           placeholder="Forward">
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width" style="width: 60%;">
+                                  <mat-label>Plan Types</mat-label>
+                                  <!-- <mat-radio-group aria-label="Select an option" formControlName="by_plan_type" (change)="changeCallPlan($event.value)" > -->
+                                  <mat-select formControlName="by_plan_type" (selectionChange)="changeCallPlan($event.value)">
+                                      <mat-option value = "">Select</mat-option>
+                                      <mat-option value = "1">DID Bundle</mat-option>
+                                      <mat-option value = "2">Roaming</mat-option>
+                                      <!-- <mat-option value = "3">Booster</mat-option> -->
+                                      <mat-option value = "4">Tele Consultancy</mat-option>
+                                      <mat-option value = "5">Outgoing Bundle</mat-option>
+                                  </mat-select>
+                                  <!-- </mat-radio-group> -->
+                              </mat-form-field>
+                              </div>
+                              <!-- <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width" style="width: 100%;">
+                                    <mat-label>Call Plan</mat-label>
+                                    <mat-select formControlName="by_call_type">
+                                        <mat-option [value]="">Select</mat-option>
+                                        <mat-option *ngFor='let cp of callPlanList' [value]="cp.id">
+                                            {{ cp.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                              </div> -->
+                              <!-- <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Sell Cost</mat-label>
+                                      <input matInput type="text" formControlName="by_sellcost"
+                                          (keypress)="commonService.floatOnly($event)" maxlength="5" placeholder="Sell Cost">
+                                  </mat-form-field>
+                              </div> -->
+                              <div class="form-group col-md-3">
+                                  <!-- <mat-form-field>
+                                      <mat-label>Gateway</mat-label>
+                                      <mat-select formControlName="by_trunck">
+                                          <mat-option value="" selected>Select Gateway</mat-option>   
+                                          <mat-option *ngFor='let provider of providerList' [value]="provider.id">
+                                              {{ provider.provider }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field> -->
+                                  <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;" [dataSource]='providerList' [fields]='fields3'
+                                      [placeholder]='placeholder3' formControlName="by_trunck" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                      [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                  </ejs-multiselect>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Caller</mat-label>
+                                      <input matInput type="text" formControlName="by_src" (keypress)="commonService.numberOnly($event)"
+                                          maxlength="8" placeholder="Caller">
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Callee</mat-label>
+                                      <input matInput type="text" formControlName="by_dest"
+                                          (keypress)="commonService.numberWithAstrick($event)" maxlength="15" placeholder="Callee">
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3" style="width: 50%;">
+                                  <!-- <mat-form-field>
+                                      <mat-label>Country</mat-label>
+                                      <mat-select formControlName="by_destination">
+                                          <mat-option value="" selected>Select Country</mat-option>   
+                                          <mat-option *ngFor='let con of allCountryList' [value]="con.phonecode">
+                                              {{ con.name }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field> -->
+                                  <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 60%;" [dataSource]='allCountryList' [fields]='fields4'
+                                      [placeholder]='placeholder4' formControlName="by_destination" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                      [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                  </ejs-multiselect>
+                              </div>
+                              <div class="form-group col-md-3" style="width: 80%;">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Caller ID</mat-label>
+                                      <input matInput type="text" formControlName="by_callerid" maxlength="30" placeholder="Caller Id">
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field>
+                                      <mat-label>Terminate Cause</mat-label>
+                                      <mat-select formControlName="by_terminatecause">
+                                          <mat-option value="" selected>Select Terminate Cause</mat-option>   
+                                          <mat-option *ngFor='let term of terminatecause' [value]="term.digit">
+                                              {{ term.digit }} - {{term.description}}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                              <!-- <div class="form-group col-md-3"> -->
+                                  <!-- <mat-form-field class="example-full-width">
+                                      <mat-label>Circle</mat-label>
+                                      <mat-select formControlName="by_circle">
+                                          <mat-option value="" selected>Select Circle</mat-option>   
+                                          <mat-option *ngFor='let c of circleList | orderBy:"name"' [value]="c.id">
+                                              {{ c.name }}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field> -->
+                                  <!-- <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;" [dataSource]='circleList' [fields]='fields5'
+                                      [placeholder]='placeholder5' formControlName="by_circle" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                      [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                  </ejs-multiselect>
+                              </div>
+                              <div class="form-group col-md-3">
+                                  <mat-form-field class="example-full-width">
+                                      <mat-label>Select Call Type</mat-label>
+                                      <mat-select formControlName="by_call_type">
+                                          <mat-option value="" selected>Select Call Type</mat-option>   
+                                          <mat-option  value="inbound"> Inbound </mat-option>
+                                          <mat-option  value="outbound"> Outbound </mat-option> -->
+                                          <!-- <mat-option  value="intercom"> Intercom </mat-option> -->
+                                      <!-- </mat-select>
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group col-md-3 example-button-row">
+                                  <button (click)="filterData()" mat-raised-button color="primary">Search</button>
+                                  <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                              </div> -->
+                            <div class="form-group col-md-3 example-button-row">
+                                <button (click)="filterData()" mat-raised-button color="primary">Search</button>
+                                <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                            </div> 
+                          </form>
+                      </app-accordian-filter>
+                  </div>
+                  <div class="example-wrapper" style="margin-top:75px;">
+                      <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                          <mat-form-field class="float-right">
+                              <mat-label>Number of records</mat-label>
+                              <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                                  <mat-option value="10" selected>10</mat-option>
+                                  <mat-option value="50">50</mat-option>
+                                  <mat-option value="100">100</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="true"
+                          [pageSize]='defaultPageSize' >
+                      </app-grid>
+                  </div>
+                  <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'>
+                  </app-grid> -->
+              </div>
+          </div>
+      </div>
+      <!--/.col-->
+  </div>
+</div>

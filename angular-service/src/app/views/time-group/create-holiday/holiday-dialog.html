@@ -1,0 +1,68 @@
+<h3 class="card-header-style">Holiday</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form class="row" [formGroup]="holidayForm" (ngSubmit)="submitHoliday()">
+      <div class="form-group col-md-4">
+        <mat-form-field class="example-full-width">
+          <mat-label>Holiday</mat-label>
+          <input matInput type="text" formControlName="holiday" maxlength="20" [(ngModel)]="holidayName"
+            placeholder="Holiday"  autocomplete="off" appBlockCopyPaste required />
+        </mat-form-field>
+        <div *ngIf="holiday.invalid && (holiday.dirty || holiday.touched )" class="reqired-field">
+          <div *ngIf="holiday.errors.required"> Required Field</div>
+          <div *ngIf="holiday.errors.pattern">
+            Invalid name
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Date" formControlName="date"
+           [(ngModel)]="todayDate" readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker  readonly="false"></mat-datepicker>
+        </mat-form-field>
+        <div *ngIf="date.invalid && (date.dirty || date.touched)" class="reqired-field">
+          <div *ngIf="date.errors.required">
+            Required
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4 switch-div" style="margin-top: 15px;">
+        <mat-slide-toggle formControlName="fullDay" [(ngModel)]="holidayData.full_day" (change)="showFullDay($event)">
+          Full Day
+        </mat-slide-toggle>
+      </div>
+      <div class="form-group col-md-4" *ngIf="!showFullday">
+        <mat-form-field>
+          <mat-label>Start Time</mat-label>
+          <input matInput [ngxTimepicker]="picker" [format]="24" formControlName="start_time" [(ngModel)]="startTime"
+            readonly required>
+          <ngx-material-timepicker #picker (timeSet)="onTimeSelect($event)"></ngx-material-timepicker>
+        </mat-form-field>
+        <div *ngIf="start_time.invalid && (start_time.dirty || start_time.touched)" class="reqired-field">
+          <div *ngIf="start_time.errors.required">
+            Required
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-4" *ngIf="!showFullday">
+        <mat-form-field>
+          <mat-label>End Time</mat-label>
+          <input matInput [ngxTimepicker]="picker" [format]="24" formControlName="end_time"
+            [(ngModel)]="endTimeValue" readonly required>
+          <ngx-material-timepicker #picker></ngx-material-timepicker>
+        </mat-form-field>
+        <div *ngIf="end_time.invalid && (end_time.dirty || end_time.touched)" class="reqired-field">
+          <div *ngIf="end_time.errors.required">
+            Required
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12">
+        <button type="submit" [disabled]="!holidayForm.valid" mat-raised-button color="primary">Submit</button>&nbsp;
+        <button type="button" (click)="cancelHoliday()" mat-raised-button color="warn">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

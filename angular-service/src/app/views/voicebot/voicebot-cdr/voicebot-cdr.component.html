@@ -1,0 +1,129 @@
+<div class="animated fadeIn">
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="card">
+              <div class="card-header">
+                  <strong>VOICEBOT CDR</strong>
+              </div>
+              <div class="card-body">
+                  <div class="row" >
+                    <!-- <div class="header-btn">
+                          <div class="view-button">
+                            <button mat-raised-button color="primary" style=" margin:11px; top:-10px;" (click)="openDialog()"><i
+                                class="material-icons left">add_circle</i> ADD</button>
+                          </div>
+                    </div> -->
+                  </div>
+                  <div class="row">
+                    <app-accordian-filter style="width: 100%">
+                        <form [formGroup]="filterForm" class="row" novalidate>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Date Range</mat-label>
+                                    <input matInput placeholder="Pick a Date Range" formControlName="by_date" bsDaterangepicker
+                                        autocomplete="off" readonly
+                                        [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Buy Cost</mat-label>
+                                    <input matInput type="text" formControlName="by_sellcost"
+                                        (keypress)="commonService.floatOnly($event)" maxlength="5" placeholder="Buy Cost">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Caller</mat-label>
+                                    <input matInput type="text" formControlName="by_src" (keypress)="commonService.numberOnly($event)"
+                                        maxlength="8" placeholder="Caller">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Callee</mat-label>
+                                    <input matInput type="text" formControlName="by_dest"
+                                        (keypress)="commonService.numberWithAstrick($event)" maxlength="15" placeholder="Callee">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3" style="margin-top:-15px;">
+                                <!-- <mat-form-field>
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="by_destination">
+                                        <mat-option value="" selected>Select Country</mat-option>  
+                                        <mat-option *ngFor='let con of allCountryList' [value]="con.phonecode">
+                                            {{ con.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <ejs-multiselect id='multiselectelement' (filtering)="Accountremovedspace($event)" [floatLabelType]="'Auto'" class="mt-2" style="width: 80%;" [dataSource]='allCountryList' [fields]='fields'
+                                    [placeholder]='placeholder' formControlName="by_destination" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                    [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                </ejs-multiselect>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Caller ID</mat-label>
+                                    <input matInput type="text" formControlName="by_callerid" maxlength="30" placeholder="Caller ID">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3" style="margin-top:-15px;">
+                                <!-- <mat-form-field>
+                                    <mat-label>Terminate Cause</mat-label>
+                                    <mat-select formControlName="by_terminatecause">
+                                        <mat-option value="" selected>Select Terminate Cause</mat-option>  
+                                        <mat-option *ngFor='let term of terminatecause' [value]="term.digit">
+                                            {{ term.digit }} - {{term.description}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <ejs-multiselect id='multiselectelement' (filtering)="removedspace($event)" [floatLabelType]="'Auto'" class="mt-2" style="width: 80%;" [dataSource]='terminatecause'
+                                [fields]='fields2' [placeholder]='placeholder2' formControlName="by_terminatecause" [popupHeight]='popupHeight'
+                                [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                            </ejs-multiselect>
+                          </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Call Type</mat-label>
+                                    <mat-select formControlName="by_call_type">
+                                        <mat-option value="" selected>Select Call Type</mat-option>
+                                        <mat-option  value="inbound"> Inbound </mat-option>
+                                        <mat-option  value="outbound"> Outbound </mat-option>
+                                        <mat-option  value="intercom"> Intercom </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        <div class="col-md-3 example-button-row">
+                          <button (click)="filterData()" mat-raised-button color="primary">Search</button>
+                          <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                        </div>
+                      </form>
+                    </app-accordian-filter>
+                  </div>
+              </div>
+              <div class="example-wrapper" style="margin-top:75px;">
+                <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                    <mat-form-field class="float-right">
+                        <mat-label>Number of records</mat-label>
+                        <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                            <mat-option value="10" selected>10</mat-option>
+                            <mat-option value="50">50</mat-option>
+                            <mat-option value="100">100</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="true"
+                    [pageSize]='defaultPageSize'  >
+                </app-grid>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+

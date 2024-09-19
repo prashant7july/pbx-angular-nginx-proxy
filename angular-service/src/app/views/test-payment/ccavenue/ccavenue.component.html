@@ -1,0 +1,46 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Ccavenue Payment Gateway</strong>
+        </div>
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <h1>Proceed to Pay</h1>
+              <button mat-raised-button [disabled]="!ccavenueForm.valid" color="primary" (click)="pay()">Pay here</button>
+            </div>
+          </div>
+          
+          
+          <form #form ngNoForm 
+                id="nonseamless" 
+                method="post"
+                name="redirect" 
+                action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+            <input type="hidden" id="encRequest" name="encRequest" [ngModel]="encRequest">
+            <input type="hidden" name="access_code" id="access_code" [ngModel]="accessCode">
+          </form>
+          <!-- <form [formGroup]="ccavenueForm" (ngSubmit)="submitForm()" class="row" >
+             <div class="form-group col-md-4 switch-div">
+              <mat-form-field class="example-full-width">
+                <mat-label>Details</mat-label>
+                <input matInput type="text" id="details" formControlName="details" placeholder="Details"
+                   autocomplete="new-email" appBlockCopyPaste required>
+              </mat-form-field>
+              <div *ngIf="details.invalid && (details.dirty || details.touched)" class="reqired-field">
+                <div *ngIf="details.errors.required">
+                  Required Field
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 example-button-row">
+              <button mat-raised-button [disabled]="!ccavenueForm.valid" color="primary">Pay from here</button>
+            </div>
+          </form> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

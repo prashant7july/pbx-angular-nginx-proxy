@@ -1,0 +1,173 @@
+<h3 class="card-header-style">ADD DIALOUT RULE</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="dialoutForm" (ngSubmit)="Submit()" class="row" novalidate>
+            <div class="form-group col-md-6" style="margin-top:-7px;" *ngIf="!editdata">
+                <ejs-dropdownlist formControlName="dialout_group_id" [floatLabelType]="'Auto'" (filtering)="Dialoutremovedspace($event)" style="width: 90%;" [dataSource]='dialoutGroupList' [fields]='fields'
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [placeholder]='placeholder' allowFiltering=true>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Dialout Group</mat-label>
+                    <mat-select formControlName="dialout_group_id" (openedChange)="HandleDropdownFilter('filterDial',DialFilter)" [disabled]="this.data" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter  *ngIf="select1.focused" [array]="dialoutGroupList" [displayMember]="'name'" (filteredReturn)="filterDial = $event"></mat-select-filter>
+                        <mat-option [value]="">Select</mat-option>
+                        <mat-option *ngFor='let cp of filterDial' [value]="cp.id">
+                            {{ cp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="dialout_group_id.invalid && (dialout_group_id.dirty || dialout_group_id.touched)"
+                    class="reqired-field">
+                    <div *ngIf="dialout_group_id.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="editdata">
+                  <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Dialout Group</mat-label>
+                    <mat-select formControlName="dialout_group_id" (openedChange)="HandleDropdownFilter('filterDial',DialFilter)" [disabled]="this.data" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter  *ngIf="select1.focused" [array]="dialoutGroupList" [displayMember]="'name'" (filteredReturn)="filterDial = $event"></mat-select-filter>
+                        <mat-option [value]="">Select</mat-option>
+                        <mat-option *ngFor='let cp of filterDial' [value]="cp.id">
+                            {{ cp.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Rule Pattern </mat-label>
+                    <input matInput type="text" formControlName="rule_pattern" (keypress)="dialoutRules($event, rule_pattern.value)" maxlength="15" minlength="0" placeholder="Rule Pattern"
+                        required>
+                </mat-form-field>
+                <div>
+                    <span style="display: flex;font-size: 12px; top: -16px;position: relative;"><p style="color: blue;" class="mb-0">Note:</p><p style="color: black;" class="mb-0">After insert X and *, unable to enter numberic value</p></span>
+                </div>
+                <div *ngIf="rule_pattern.invalid && (rule_pattern.dirty || rule_pattern.touched)"
+                    class="reqired-field">
+                    <div *ngIf="rule_pattern.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="rule_pattern.errors.minlength">
+                        Length should be between 2 to 15 digit long.
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4 switch-div">
+                <mat-slide-toggle formControlName="is_sign">
+                    Is Sign
+                </mat-slide-toggle>
+            </div> -->
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Strip Digit from Dial Number</mat-label>
+                    <input matInput type="text" formControlName="strip_digit" (keypress)="stripDigit($event, strip_digit.value)" maxlength="6" placeholder="Strip Digit"
+                        >
+                </mat-form-field>
+                <div *ngIf="strip_digit.invalid && (strip_digit.dirty || strip_digit.touched)"
+                    class="reqired-field">
+                    <div *ngIf="strip_digit.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Prepand Digit from Dial Number</mat-label>
+                    <input matInput type="text" formControlName="prepend_digit" (keypress)="prepandDigit($event, prepend_digit.value)"  maxlength="6" placeholder="Prepand Digit"
+                        >
+                </mat-form-field>
+                <div *ngIf="prepend_digit.invalid && (prepend_digit.dirty || prepend_digit.touched)"
+                    class="reqired-field">
+                    <div *ngIf="prepend_digit.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" style="margin-top: 12px;">
+                <label>
+                  <mat-checkbox formControlName="is_random" value="1"  (change)="checkRandom($event.checked)" [(ngModel)]="clr_id_as_random">
+                    Caller id as Random
+                  </mat-checkbox>
+                </label>
+            </div>
+
+            
+            <div class="form-group col-md-6">                
+                <ejs-dropdownlist formControlName="caller_id_pstn"
+                style="width: 80%;margin-top: -7px;" [dataSource]='didList' (filtering)="groupremovedspace($event)" [fields]='fields2' [(ngModel)]="promise"
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true [readonly]="hideRandom">
+            </ejs-dropdownlist>
+            
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Black List No. Matching</mat-label>
+                    <mat-select formControlName="blacklist_manipulation" required>
+                        <mat-option [value]="1">Original Dial Number</mat-option>
+                        <mat-option [value]="2">After Strip Dial Number</mat-option>
+                        <mat-option [value]="3">After Prepend Dial Number</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="blacklist_manipulation.invalid && (blacklist_manipulation.dirty || blacklist_manipulation.touched)"
+                    class="reqired-field">
+                    <div *ngIf="blacklist_manipulation.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Dial-out As</mat-label>
+                    <mat-select formControlName="dialout_manipulation" required>
+                        <mat-option [value]="1">Original Dial Number</mat-option>
+                        <mat-option [value]="2">After Strip Dial Number</mat-option>
+                        <mat-option [value]="3">After Prepend  Dial Number</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- <div *ngIf="dialout_as.invalid && (dialout_as.dirty || dialout_as.touched)"
+                    class="reqired-field">
+                    <div *ngIf="dialout_as.errors.required">
+                        Required Field
+                    </div>
+                </div> -->
+            </div>
+            <div class="form-group col-md-12" >
+                    <mat-form-field class="example-chip-list" style="width: 100%;">
+                        <mat-label>Exceptional Rule for Dial Pattern</mat-label>
+                        <mat-chip-list #chipList aria-label="Rule">
+                          <mat-chip *ngFor="let rule of rules" (removed)="remove(rule)" [disabled]="!dialOutRuleMenu.add_permission && !admin">
+                            {{rule}}
+                            <button matChipRemove style="border:none; background: gainsboro; margin-bottom: 6px; margin-right: 8px;">
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip>
+                          <input placeholder="New rule..."
+                                 formControlName="exceptional_rule"
+                                 (keypress)="commonService.numberOnly($event)"
+                                 maxlength="15"
+                                 [matChipInputFor]="chipList"
+                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                 (matChipInputTokenEnd)="add($event)"
+                                 [disabled]="!dialOutRuleMenu.add_permission && !admin"
+                                 >
+                        </mat-chip-list>
+                      </mat-form-field>
+                      <div>
+                        <span style="display: flex;font-size: 12px; top: -16px;position: relative;"><p style="color: blue;">Note:</p><p style="color: black;">After insert value, Please press Enter button</p></span>
+                    </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <button type="submit" mat-raised-button [disabled]="!dialoutForm.valid" color="primary">Submit</button>
+                &nbsp;
+                <button mat-raised-button color="warn" (click)="cancelForm()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

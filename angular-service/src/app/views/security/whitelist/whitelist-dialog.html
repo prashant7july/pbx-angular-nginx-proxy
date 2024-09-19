@@ -1,0 +1,95 @@
+<h3 class="card-header-style">Whitelist Contact</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form class="row" [formGroup]="whiteListForm" (ngSubmit)="submitWhiteListForm()">
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="numberFormat" [(ngModel)]="blackListContactData.numberFormat"
+                    (change)="numberFormat($event)" [disabled]="!isCheckEditable()">
+                    Phone number in <br />E-164 format
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" formControlName="name" id="name" maxlength="20" placeholder="Name"
+                        [(ngModel)]="blackListContactData.name" [readonly]="!isCheckEditable()" autocomplete="off">
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.pattern">
+                        Invalid name
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="numberFormat164">
+                <ejs-dropdownlist formControlName="country" (filtering)="countryremovedspace($event)" [(ngModel)]="blackListContactData.country_id ? blackListContactData.country_id : countryID.id" (change)="getCountryCode($event)"
+                style="width: 100%;margin-top: -7px;" [dataSource]='countryList' [fields]='fields' [disabled]="!isCheckEditable()" [floatLabelType]="'Auto'"
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder' allowFiltering=true required>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Select Country</mat-label>
+                    <mat-select formControlName="country" (openedChange)="HandleDropdownFilter('filter',CountryFilter)" (selectionChange)="getCountryCode($event)"
+                        [(ngModel)]="blackListContactData.country_id ? blackListContactData.country_id : countryID.id"
+                        [disabled]="!isCheckEditable()" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                        <mat-option value="" selected disabled>Select Country</mat-option>
+                        <mat-option *ngFor='let country of filter' [value]="country.id">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                    <div *ngIf="country.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="numberFormat164">
+                <mat-form-field class="example-full-width" style="width:72.4% !important">
+                    <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode" />
+                    <input matInput formControlName="phone" (keypress)="commonService.numberOnly($event)"
+                        [(ngModel)]="blackListContactData.phoneNumberDisplay" maxlength="10" autocomplete="off"
+                        [readonly]="!isCheckEditable()" required>
+                    <span matPrefix *ngIf="numberFormat164">{{countryCode}}</span>
+                </mat-form-field>
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="reqired-field">
+                    <div *ngIf="phone.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="phone.errors.pattern"> Number can not start with 0 and not less than 10 digits.</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="!numberFormat164">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput formControlName="phone2" maxlength="15"
+                        [(ngModel)]="blackListContactData.phoneNumberDisplay" autocomplete="off"
+                        [readonly]="!isCheckEditable()" required>
+                </mat-form-field>
+                <div *ngIf="phone2.invalid && (phone2.dirty || phone2.touched)" class="reqired-field">
+                    <div *ngIf="phone2.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="phone2.errors.maxlength">
+                        Number can not start with 0 and not less less than 15 digits.
+                    </div>
+                    <div *ngIf="phone2.errors.min">Number can not start with 0</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="blackListContactData.id" style="margin-left: 22px;">
+                <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" [(ngModel)]="blackListContactData.status"
+                        [disabled]="!isCheckEditable()">
+                        <mat-option value="Active">Active</mat-option>
+                        <mat-option value="Inactive">Inactive</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <!-- <button mat-raised-button color="primary" [disabled]="!isCheckEditable()">Submit</button> -->
+                <button mat-raised-button color="primary" *ngIf="isCheckEditable()">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

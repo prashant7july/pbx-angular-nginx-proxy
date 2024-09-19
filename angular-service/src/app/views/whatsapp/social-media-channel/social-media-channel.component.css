@@ -1,0 +1,19 @@
+.btn-messagebird {
+    color: #30487b;
+    background-color: #fff;
+    border-color: #30487b;
+}
+
+.btn {
+    transition: all 0.3s ease 0s !important;
+    font-size: 12px;
+}
+
+.btn-social {
+    position: relative;
+    padding-left: 44px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

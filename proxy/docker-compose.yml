@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8088:80"
+    networks:
+      - pbxswitch-net
+
+networks:
+  pbxswitch-net:
+    external: true
+    name: pbxswitch-net

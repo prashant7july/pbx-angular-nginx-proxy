@@ -1,0 +1,26 @@
+<h3 class="card-header-style">Preview Template Information</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div >
+                   <div style="border-collapse: collapse ; font-family:open sans , arial , sans-serif ; font-size: 12px ; line-height: 15px ; color: #0d1121" valign="top" align="center"> <img src='{{ "assets/uploads/" + image }}' alt="brand logo" style="height: 100px; width:150px;"> 
+                    </div>
+                    <br><br>
+                    <!-- <div>{{encoded}}</div> -->
+                    <!-- <div style="text-align: left; ;margin-left: -35em;    margin-top: 8em;"> -->
+                    <section style="min-height: 20em;">
+                        <div [innerHtml]="encoded"></div>
+                      </section>
+      <div style="border-collapse: collapse ; 
+       font-family: arial , sans-serif ; font-size: 11px ; line-height: 18px ; color: #999999" valign="top" align="center"><a href="" style="border-collapse: collapse ; color: #999999 ; text-decoration: underline" target="_other" rel="nofollow">PRIVACY STATEMENT</a> | <a href="" style="border-collapse: collapse ; color: #999999 ; text-decoration: underline" target="_other" rel="nofollow">TERMS OF SERVICE</a> | <a href="" style="border-collapse: collapse ; color: #999999 ; text-decoration: underline" target="_other" rel="nofollow">RETURNS</a><br> © 2019 Enhanced Communications and Technologies. All Rights Reserved.<br> If you do not wish to receive any further emails from us, please <a href="" style="border-collapse: collapse ; text-decoration: none ; color: #999999" target="_other" rel="nofollow">unsubscribe</a> </div>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

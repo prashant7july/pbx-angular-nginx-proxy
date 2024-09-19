@@ -1,0 +1,76 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>SMS PLAN DETAIL</strong>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="smsForm" class="row">
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Name</mat-label>
+                  <input matInput type="text" id="name" formControlName="name" [(ngModel)]="serverData.name"
+                    placeholder="Name" autocomplete="off" required>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-8">
+                <mat-radio-group aria-label="Select an option" formControlName="validity"
+                  [(ngModel)]="serverData.validity">
+                  <mat-radio-button value="1" checked>Monthly</mat-radio-button> &nbsp; &nbsp;
+                  <mat-radio-button value="2">Yearly</mat-radio-button> &nbsp; &nbsp;
+                  <mat-radio-button value="3">Pay Per Use</mat-radio-button>
+                </mat-radio-group>
+              </div>
+  
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Charge</mat-label>
+                  <input matInput type="text"  formControlName="charge"
+                    id="charge" [(ngModel)]="serverData.charge" placeholder="charge" required>
+                </mat-form-field>
+              </div>
+  
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>SMS Limit</mat-label>
+                  <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="no_of_sms"
+                    id="no_of_sms" [(ngModel)]="serverData.number_of_sms" placeholder="" required>
+                    <button type="button" title="Reset the SMS Limit" mat-icon-button matSuffix (click)="resetSMSPackage()" >
+                      <mat-icon>autorenew</mat-icon>
+                     </button>
+                </mat-form-field>
+              </div>
+  
+              <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Provider</mat-label>
+                    <mat-select formControlName="provider" [(ngModel)]="serverData.provider" required>
+                        <mat-option *ngFor='let provider of providerList' [value]="provider.id">
+                            {{ provider.provider }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+              <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Remaining SMS</mat-label>
+                  <input matInput type="text" formControlName="remaining_sms"
+                    id="remaining"  placeholder="Remaining SMS" required>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-md-12  text-center">
+                <small style="color: blue; font-weight:600">*Note</small><small> After Reset the SMS Limit, charge </small><small>( {{serverData.charge}} )may apply Monthly/Yearly .</small>
+              </div>
+  
+              <div class="col-lg-12 example-button-row">
+                <!-- <button mat-raised-button color="primary" (click)="resetSMSPackage($event)" >Reset</button> -->
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

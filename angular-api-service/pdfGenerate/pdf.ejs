@@ -1,0 +1,253 @@
+<style>
+    .padding {
+        padding: 2rem !important
+    }
+
+    .card {
+        margin-bottom: 30px;
+        border: none;
+        -webkit-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+        -moz-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+        box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22)
+    }
+
+    .main-div {
+        margin: auto;
+        width: 100%;
+        padding: 10px;
+        margin-left: 2;
+        margin-right: 213px;
+    }
+
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e6e6f2
+    }
+
+    h3 {
+        font-size: 20px
+    }
+
+    td {
+        border: 1px solid #c8ced3;
+    }
+
+    h5 {
+        font-size: 15px;
+        line-height: 26px;
+        color: #3d405c;
+        margin: 0px 0px 15px 0px;
+        font-family: 'Circular Std Medium'
+    }
+
+    .text-dark {
+        color: #3d405c !important
+    }
+
+    .table-border {
+        border: 1px solid #c1c1c1;
+        background-color: #eaeaea;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div>
+            <div>
+                <div>
+                    <div class="offset-xl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+                        <div class="card invoice_pdf p-2" id="invoice_pdf">
+                            <div class="row" style="text-align: center;">
+                                <!-- <div class="col-12"><a class="pt-2 d-inline-block mt-4" href="/dashboard" data-abc="true"><img src="{{product_logo}}" alt="ECTL_logo_new.name" style="width: 200px;"></a></div> -->
+                                <!-- <div class="col-12"><h3 class="text-dark mt-1 mb-1"><b style="color: deepskyblue;">{{organization_name}}</b></h3></div> -->
+                                <div>
+                                    <h3 class="text-dark mb-1">E-145, Okhla Industrial Estate, Phase III, New Delhi -
+                                        110020, India</h3>
+                                </div>
+                                <div>
+                                    <h5 class="text-dark mb-1"><b>GSTIN - <%= InvoiceDetail.gst %></b></h5>
+                                </div>
+                            </div>
+                            <table style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"
+                                            style="border: 1px solid deepskyblue; text-align: left;">
+                                            <div>
+                                                <h3 class="text-dark mb-1" style="margin-left: 10px;"><%= InvoiceDetail.userName%></h3>                                                
+                                            </div>
+                                            <div style="margin-left: 10px; font-weight: normal;"><b>Email:</b> <%= InvoiceDetail.email%> 
+                                            </div>
+                                            <div style="margin-left: 10px; font-weight: normal;"><b>Phone:</b> <%= InvoiceDetail.phone%> 
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.address%>
+                                            </div>                                           
+                                        </th>
+                                        <th scope="col"
+                                            style="border: 1px solid deepskyblue; text-align: left;">
+                                            <div style="margin-left: 10px;">Date</div>
+                                            <div style="margin-left: 10px;">Invoice #</div>
+                                            <div style="margin-left: 10px;">Total Due Amount </div>
+                                            <div style="margin-left: 10px;">Invoice Period</div>
+                                            <div style="margin-left: 10px;">Due Date </div>
+                                            <div style="margin-left: 10px;">Remaining Advance Balance</div>
+                                        </th>
+                                        <th scope="col"
+                                            style="border: 1px solid deepskyblue; text-align: left;">
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.date%>
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.invoice%>
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.total_due_amount%>
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.invoice_period%>
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.due_date%>
+                                            </div>
+                                            <div style="margin-left: 10px;">
+                                                <%= InvoiceDetail.remaining_advance_balance%>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <br>
+                            <table style="width:100%;  border-collapse: collapse;">
+                                <th style="border: 1px solid deepskyblue; padding: 4px;">
+                                    <div style="border: 1px solid deepskyblue;text-align: center;">
+                                        <div>Previous Balance</div>
+                                        <div>
+                                            <%= InvoiceDetail.previous_balance%>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="border: 1px solid deepskyblue; padding: 4px;">
+                                    <div style="border: 1px solid deepskyblue;text-align: center;">
+                                        <div>Current Month Charges</div>
+                                        <div>
+                                            <%= InvoiceDetail.this_month_charge%>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="border: 1px solid deepskyblue; padding: 4px;">
+                                    <div style="border: 1px solid deepskyblue;text-align: center;">
+                                        <div>Adjustment</div>
+                                        <div>
+                                            <%= InvoiceDetail.adjustment%>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th style="border: 1px solid deepskyblue; padding: 4px;">
+                                    <div style="border: 1px solid deepskyblue;text-align: center;">
+                                        <div>Final Payments</div>
+                                        <div>
+                                            <%= InvoiceDetail.final_payment%>
+                                        </div>
+                                    </div>
+                                </th>
+                            </table>
+                            <br>
+                            <table class="main-div">
+                                <tr style="background: deepskyblue;">
+                                    <th scope="col" style="color: white;">Description</th>
+                                    <th scope="col" style="color: white;">Quantity</th>
+                                    <th scope="col" style="color: white;">Amount</th>
+                                </tr>
+                                <% InvoiceDetail.obj.forEach(item=> { %>
+                                    <tr>
+                                        <% if(item.item_type==4 || item.item_type==1 || item.item_type==5||
+                                            item.item_type==6 || item.item_type==7 || item.item_type==3){ %>
+                                            <td>
+                                                <%= (item.description).split('-')[0]%>
+                                            </td>
+                                            <% } else { %>
+                                                <td>
+                                                    <%= item.description %>
+                                                </td>
+                                                <% } %>
+
+                                                    <% if(item.item_type==1 || item.item_type==5 || item.item_type==6 ||
+                                                        item.item_type==7 || item.item_type==3){ %>
+                                                        <td>
+                                                            <%= (item.description).split('-')[1] %>
+                                                        </td>
+                                                        <% } else if(item.item_type==4) { %>
+                                                            <td>
+                                                                <%= (item.description).split('-')[1] %>
+                                                            </td>
+                                                            <% } else{ %>
+                                                                <td>
+                                                                    <%= 1 %>
+                                                                </td>
+                                                                <% } %>
+                                                                    <td>
+                                                                        <%= item.amount %>
+                                                                    </td>
+                                    </tr>
+                                    <% }) %>
+                                        <tr>
+                                            <td style="background: deepskyblue;">Note</td>
+                                            <td><b>Subtotal</b></td>
+                                            <td>
+                                                <%= InvoiceDetail.sub_total%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="4">
+                                                <div> 1.Total payment due in <b>
+                                                        <%= InvoiceDetail.payment_day %>
+                                                    </b> Days</div>
+                                                <div> 2.Please include the invoice number on your cheque </div>
+                                                <div> 3.BANK NAME: <b>
+                                                        <%= InvoiceDetail.payment_detail %>
+                                                    </b> </div>
+                                            </td>
+                                            <td>IGST (9%)</td>
+                                            <td>
+                                                <%= InvoiceDetail.igst%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CGST (9%)</td>
+                                            <td>
+                                                <%= InvoiceDetail.cgst%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>TOTAL</b></td>
+                                            <td><b>
+                                                    <%= InvoiceDetail.total%>
+                                                </b></td>
+                                        </tr>
+                                        <tr>                                    
+                                            <td><b>Final Payment After Adjustment</b></td>
+                                            <td><b><%= InvoiceDetail.final_payment %></b></td>
+                                           </tr>
+
+                                        <tr>
+                                            <td colspan="3">
+                                                <div style="text-align: center;">
+                                                    <p style="margin-top: 5px;"><b>If you have any questions about this invoice, please contact </b> <br>
+                                                        [Email-<%= InvoiceDetail.a_email%>, Phone #+91-
+                                                            <%=InvoiceDetail.mobile %>, Ext-
+                                                                <%= InvoiceDetail.extension %>]
+                                                    </p>                                                    
+                                                    <b> Thank You for Your Business! </b>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

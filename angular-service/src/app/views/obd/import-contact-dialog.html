@@ -1,0 +1,73 @@
+<h3 class="card-header-style">ADD LEADS</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="importContactForm" class="row">   
+             <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;">
+                <!-- <div class="row">
+                    <div class="header-btn">
+                       <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-325px;" (click)="deleteChecked()" [disabled]="isDelete || participantList.length === 0"  >Delete</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-340px;" (click)="selectAll()"  >Select All</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-355px;" (click)="unselectAll()"  >Unselect All</button>
+                    </div>
+                </div> -->
+                <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2"  [dataSource]="dataSource2"
+                [pageSize]='defaultPageSize'  (actionClick)="manageAction($event)" >
+                </app-grid> 
+                <!-- <div class="hr-sect" style="margin-left: -8px;">Reset Leads</div>
+                <div class="row">
+                    <div class="header-btn">
+                       <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-325px;" (click)="resetAll()" [disabled]="participantList.length === 0"  > All</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-340px;" (click)="resetAnswered()"  >Answered</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-355px;" (click)="resetFailed()"  >Failed</button>
+                    </div>
+                </div> -->
+            </div>
+            <div class="form-group col-md-6" style="margin-top:15px;">
+                <div class="form-group row">
+                  <label class="blcaklist col-sm-4" for="prompt">Upload File</label>
+                  <div class="col-sm-4">
+                    <input type="file" formControlName="prompt" name="prompt" ng2FileSelect
+                      [uploader]="uploader" style="margin-bottom: 20px;"/>
+                  </div>
+                </div>
+              </div>
+            <div class="col-lg-12 example-button-row">
+                <button (click)="submit();" mat-raised-button color="primary" >Submit</button>
+                <!-- <button *ngIf="!checkFile" (click)="submitNoFile();" mat-raised-button color="primary" >Submit</button> -->
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

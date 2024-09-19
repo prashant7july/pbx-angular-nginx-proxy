@@ -1,0 +1,45 @@
+.card-header{
+    background-color: #2f353a;
+    color: #FFFFFF;
+}
+.pb-0, .py-0 {
+    padding-bottom: 20px !important;
+}
+table tr.highlight {
+    background-color: #16709e  !important;
+    color: #ffffff;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+
+/* for ticket table */
+::ng-deep 
+p {
+    margin-top: 0;
+    margin-bottom: 0rem !important;
+}
+
+::ng-deep 
+.ngx-datatable .datatable-body-cell, .ngx-datatable .datatable-header-cell {
+    overflow-x: initial !important;
+}
+
+.f-8{
+    font-size: 14px;
+}
+@media only screen and (min-width: 992px) and  (max-width: 1300px){
+    .large-left-block{
+        max-width: 70%;
+        flex: 0 0 70%;
+    }
+    .large-right-block{
+        max-width: 30%;
+        flex: 0 0 30%;
+    }
+}

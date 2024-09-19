@@ -1,0 +1,40 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Call Rate Group</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"><strong>{{groupName | titlecase}}</strong></h5>
+          <div id="pbx_feature" class="row" *ngIf="contactList.length>=1; else templateName">
+            <div class="form-group col-md-4 switch-div" *ngFor="let contact of contactList">
+              <div style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer;">
+                <i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Call Plan </strong> : &nbsp;&nbsp;<strong>{{contact.call_plan_name}}</strong><br />
+                <i class="fa fa-flag" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Country </strong> : &nbsp;&nbsp;<strong>{{contact.country_name}}</strong><br />
+                <!-- <i class="fa fa-clock-o "
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>Minutes </strong> :&nbsp;&nbsp;<strong>{{contact.talktime_minutes}}</strong><br /> -->
+                <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Buying Rate</strong> :&nbsp;&nbsp;<strong>{{contact.buying_rate}}</strong><br />
+                <i class="fa fa-inr" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Selling Rate</strong> :&nbsp;&nbsp;<strong>{{contact.selling_rate}}</strong>
+
+              </div>
+            </div>
+            <div class="col-md-12 example-button-row">
+              <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+            </div>
+          </div>
+          <ng-template #templateName>
+            <i>oops... This Call Rate Group is not associate with any call plan.</i>
+            <div class="row">
+              <div class="col-md-12 example-button-row mt-3">
+                <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Pbx Features end -->
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

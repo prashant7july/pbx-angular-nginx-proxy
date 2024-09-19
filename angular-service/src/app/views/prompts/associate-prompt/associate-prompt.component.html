@@ -1,0 +1,341 @@
+<!-- <div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>MAPPED PROMPT</strong>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12 mt-4">
+            <h5 class="card-title"><strong>{{ivrName | titlecase}}</strong></h5>
+            <button backButton mat-raised-button color="primary" style="float: right;margin-top: -3em;margin-right: -1em;"><i class="fa fa-reply fa-fw"></i>Back</button>
+
+          </div> -->
+          <!-- <h5 class="card-title">
+            <strong>{{ ivrName | titlecase }}</strong>
+          </h5>
+          <div class="col-md-12 example-button-row mt-3" style="margin-left: 90%;">
+            <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+          </div> -->
+          <!-- <div
+            id="pbx_feature"
+            class="row"
+            *ngIf="destinationList.length >= 1; else templateName"
+          >
+            <div
+              class="form-group col-md-4 switch-div"
+              *ngFor="let contact of destinationList"
+            >
+              <div
+                style="border: 1px solid #b5b5b5; padding: 8px; cursor: pointer"
+              >
+              &nbsp;&nbsp;<strong>{{contact.id}}</strong
+                ><br />
+                <i class="fa fa-user-o" aria-hidden="true"></i
+                >&nbsp;&nbsp;<strong>{{ contact.name }}</strong
+                ><br />
+              </div>
+            </div> -->
+            <!-- <div class="col-md-12 example-button-row">
+              <button backButton mat-raised-button color="primary">
+                <i class="fa fa-reply fa-fw"></i>Back
+              </button>
+            </div> -->
+          <!-- </div>
+          <ng-template #templateName>
+            <i>oops... This Prompt has no mapped IVR !.</i>
+            <div class="row">
+              <div class="col-md-12 example-button-row mt-3">
+                <button backButton mat-raised-button color="primary">
+                  <i class="fa fa-reply fa-fw"></i>Back
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>MAPPED PROMPT</strong>
+        </div>
+        <div class="card-body">
+          <!-- <h5 class="card-title"> -->
+            <div class="col-md-12 mt-4">
+              <h5 class="card-title"><strong>{{ivrName | titlecase}}</strong></h5>
+              <button backButton mat-raised-button color="primary" style="float: right;margin-top: -4em;margin-right: -1em;"><i class="fa fa-reply fa-fw"></i>Back</button>
+  
+            </div>
+            <!-- <strong>{{ ivrName | titlecase }}</strong> -->
+          <!-- </h5> -->
+          <div
+            id="pbx_feature"
+            class="row"
+            *ngIf="destinationList.length >= 1; else templateName"
+          >
+          <div *ngIf="is_TC">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-bars" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Tele Consultation
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of TCList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_queue">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Call Queue
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of destinationListt"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="is_conference">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Conference
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of conferenceList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_ivr">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  IVR
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of IVRList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_TG">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Time Group
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of TimeList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_broadcast">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-podcast" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Broadcast
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of broadcastList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="broad == 11">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-podcast" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Broadcast
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of destinationList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest.name}}</strong>
+              </div>
+            </div>
+          </div> -->
+          <div *ngIf="is_callgroup">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Call Group
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of CallGroupList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_obd">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  OBD
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of obdList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_outbound">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Outbound Conf
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of outboundList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="is_appointment">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                  Appointment
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of appointmentList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest}}</strong>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="general == 17">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-podcast" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                General
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of destinationList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest.name}}</strong>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="moh == 1">
+            <h5 class="card-title"
+              style="border: solid 1px;width: 260px;text-align: center;margin-left: 36px;background-color: #16709e !important;color: white;/* border-radius: 4px; */height: 33px;">
+              <strong>
+                <div style="margin-top: 6px;display: flex; align-items:center; margin-left: 35px;">
+                  <i class="fa fa-podcast" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                MOH
+                </div>
+              </strong></h5>
+            <div
+              style="border: 1px solid #b5b5b5;padding: 6px;cursor: pointer;width: 258px;height: 100px;overflow: auto;font-size: 16px;margin-left: 37px;border-color: #16709e !important;margin-top: -13px; margin-bottom: 35px;">
+              <div *ngFor="let dest of destinationList"
+                style="background-color: aliceblue;align-items: center;border: 0.5px solid #16709e !important; margin-bottom: 5px;">
+                &nbsp;&nbsp;<i class="fa fa-circle" style="font-size: 10px;"
+                  aria-hidden="true"></i>&nbsp;&nbsp;<strong>{{dest.name}}</strong>
+              </div>
+            </div>
+          </div> -->
+
+            <!-- <div class="col-md-12 example-button-row">
+              <button backButton mat-raised-button color="primary">
+                <i class="fa fa-reply fa-fw"></i>Back
+              </button>
+            </div> -->
+          </div>
+          <ng-template #templateName>
+            <i>oops... This IVR has no mapped IVR !.</i>
+            <div class="row">
+              <div class="col-md-12 example-button-row mt-3">
+                <button backButton mat-raised-button color="primary">
+                  <i class="fa fa-reply fa-fw"></i>Back
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

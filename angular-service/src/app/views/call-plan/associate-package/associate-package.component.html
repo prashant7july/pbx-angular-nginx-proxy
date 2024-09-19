@@ -1,0 +1,64 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Mapped Package</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <strong>{{ planName }}</strong>
+          </h5>                    
+          <div
+            id="pbx_feature"
+            class="row"
+            *ngIf="packageDetail.length >= 1; else templateName"
+          >
+            <div
+              class="form-group col-md-4 switch-div"
+              *ngFor="let package of packageDetail"
+            >
+              <div
+                style="border: 1px solid #B5B5B5; padding: 8px; cursor: pointer"
+              >
+                <i class="fa fa-user-o" aria-hidden="true"></i
+                >
+                &nbsp;&nbsp;<strong>{{ package.name }}</strong
+                >
+                <br />
+                <br />
+                <i class="fa fa-envelope" aria-hidden="true"></i
+                  >
+                  &nbsp;&nbsp;<strong>{{ package.email }}</strong
+                  >
+                  <br />
+                  <br />
+                  <i class="fa fa-phone" aria-hidden="true"></i
+                    >
+                    &nbsp;&nbsp;<strong>{{ package.mobile }}</strong
+                    >
+                    <br />
+                    <br />
+              </div>
+            </div>
+            <div class="col-md-12 example-button-row">
+              <button backButton mat-raised-button color="primary">
+                <i class="fa fa-reply fa-fw"></i>Back
+              </button>
+            </div>
+          </div>
+          <ng-template #templateName>
+            <i>oops... This Call Plan has no mapped Package!.</i>
+            <div class="row">
+              <div class="col-md-12 example-button-row mt-3">
+                <button backButton mat-raised-button color="primary">
+                  <i class="fa fa-reply fa-fw"></i>Back
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

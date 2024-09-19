@@ -1,0 +1,75 @@
+.switch-primary {
+    vertical-align: middle;
+    margin-left: 20px;
+    float: right;
+}
+
+.switch-div {
+    margin-top: 30px;
+}
+
+.text-div {
+    float: right;
+}
+
+.switch-primary .switch-input:checked+.switch-slider {
+    background-color: #20a8d8 !important;
+    border-color: #1985ac !important;
+}
+
+.switch-slider {
+    background-color: #4e4e4e !important;
+    border: 1px solid #000 !important;
+}
+
+::ng-deep .card-body {
+    padding: 25px !important;
+}
+
+::ng-deep body .ui-picklist .ui-picklist-caption {
+    background-color: #316f9e !important;
+    border: 1px solid #316f9e !important;
+}
+
+::ng-deep body .ui-picklist .ui-picklist-list {
+    border: 1px solid #316e9e !important;
+    background-color: #ffffff;
+    color: #316e9e !important;
+}
+
+::ng-deep .ui-picklist .ui-button {
+    display: block;
+    margin-bottom: .25em;
+    background-color: #316e9e !important;
+}
+
+.checkboxes label {
+    display: inline-block;
+    padding-right: 10px;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.checkboxes input {
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+}
+
+.checkboxes label span {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.checkboxes {
+    margin-left: 0px;
+    margin-bottom: 10px;
+}
+
+.pro-check {
+    margin-right: 5px !important;
+}
+
+.chk-lbl {
+    font-size: 11px !important;
+}

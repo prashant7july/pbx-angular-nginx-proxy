@@ -1,0 +1,242 @@
+<h3 class="card-header-style">CALL RATES</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="callPlanRatesForm" (ngSubmit)="submitcallPlanRate()" class="row" disabled="true">
+            <div class="form-group col-md-2">                
+                <mat-label><b>Plan Type -</b></mat-label>                
+            </div>
+
+            <div class="form-group col-md-12">
+                <mat-radio-group aria-label="Select an option" formControlName="plan_type"
+                    (change)="isChnageMinutePlanType($event);changeCallPlan($event.value) "
+                    [(ngModel)]="callPlanRateData.plan_type" [disabled]="disableType">
+                    <mat-radio-button value="0">Standard</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="1">DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="5">Outgoing Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Roaming</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="3">Booster</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="4">TeleConsultancy</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="form-group col-md-4" style="margin-top: -15px;">
+                <ejs-dropdownlist formControlName="call_plan" (filtering)="CallRateremovedspace($event)"
+                    [readonly]="userRole === UserTypeAccountManager" style="width: 66%;margin-top: 9px;"
+                    [dataSource]='selectedValue' [fields]='fields' [(ngModel)]="callplanbind"
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder3' allowFiltering=true>
+                </ejs-dropdownlist>
+                <div style="margin-top: 2px;" *ngIf="call_plan.invalid && (call_plan.dirty || call_plan.touched)"
+                    class="reqired-field">
+                    <div *ngIf="call_plan.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -15px;">
+                <ejs-dropdownlist formControlName="phonecode" (filtering)="countryremovedspace($event)"
+                    [readonly]="userRole === UserTypeAccountManager" style="width: 66%;margin-top: 9px;"
+                    [dataSource]='countryList' [fields]='fields' [(ngModel)]="phoneCode" [popupHeight]='popupHeight'
+                    [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder8'
+                    allowFiltering=true>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                    <mat-label>Select Dial Prefix</mat-label>
+                    <mat-select formControlName="phonecode" (openedChange)="HandleDropdownFilter('filterCountry',SelectDialFilter)" [(ngModel)]="phoneCode" [disabled]="userRole === UserTypeAccountManager" required #select5> 
+                      <mat-select-filter *ngIf="select5.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterCountry= $event" allowFiltering=true></mat-select-filter>
+                        <mat-option *ngFor='let plan of filterCountry' [value]="plan.id">
+                            {{plan.name}}  +{{plan.phonecode }} 
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div *ngIf="dial_prefix.invalid && (dial_prefix.dirty || dial_prefix.touched)" class="reqired-field">
+                    <div *ngIf="dial_prefix.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="callPlanRateData.plan_type == '0'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Area Code</mat-label>
+                    <input matInput type="text" formControlName="area_code"
+                        (keypress)="commonService.numberOnly($event)" placeholder="Area Code" maxlength="5"
+                        [(ngModel)]="areaCode" autocomplete="off" [readonly]="userRole === UserTypeAccountManager"
+                        appBlockCopyPaste>
+                </mat-form-field>
+                <div *ngIf="area_code.invalid && (area_code.dirty || area_code.touched)" class="reqired-field">
+                    <!-- <div *ngIf="area_code.errors.required">
+                      Required Field
+                    </div> -->
+                    <div *ngIf="area_code.errors.pattern"> Number can not start with 0.
+                    </div>
+                </div>
+                <!-- <div *ngIf="area_code.invalid && (area_code.dirty || area_code.touched)" class="reqired-field">
+                    <div *ngIf="area_code.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="dial_prefix.errors.maxlength">Dial Prefix max length is 5 character long.</div>
+                    <div *ngIf="dial_prefix.errors.minlength">Dial Prefix min length is 1 character.</div>
+                    <div *ngIf="dial_prefix.errors.min">Dial Prefix can't be less than 1</div>
+                </div> -->
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Buying Rate</mat-label>
+                    <input matInput type="text" formControlName="buying_rate" placeholder="Buying Rate"
+                        (keypress)="commonService.floatOnly($event)" (input)="compareToBuying($event.target.value)"
+                        maxlength="5" [(ngModel)]="callPlanRateData.buying_rate" autocomplete="off"
+                        [readonly]="userRole === UserTypeAccountManager" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="buying_rate.invalid && (buying_rate.dirty || buying_rate.touched)" class="reqired-field">
+                    <div *ngIf="buying_rate.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="buying_rate.errors.maxlength">Buying Rate max length is 5 character long.</div>
+                    <div *ngIf="buying_rate.errors.minlength">Buying Rate min length is 1 character.</div>
+                    <!-- <div *ngIf="buying_rate.errors.min">Buying Rate can't be less than 1</div> -->
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Selling Rate</mat-label>
+                    <input matInput type="text" formControlName="selling_rate" placeholder="Selling Rate"
+                        (keypress)="commonService.floatOnly($event)" maxlength="5"
+                        [(ngModel)]="callPlanRateData.selling_rate" autocomplete="off"
+                        [readonly]="userRole === UserTypeAccountManager" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="selling_rate.invalid && (selling_rate.dirty || selling_rate.touched)" class="reqired-field">
+                    <div *ngIf="selling_rate.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="selling_rate.errors.maxlength">Selling Rate max length is 5 character long.</div>
+                    <div *ngIf="selling_rate.errors.minlength">Selling Rate min length is 1 character.</div>
+                    <div *ngIf="sellingRateError">Selling rate should be greater than Buying</div>
+                    <!-- <div *ngIf="selling_rate.errors.min">Selling Rate can't be less than 1</div> -->
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="callPlanRateData.plan_type == '0'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Selling Billing Block</mat-label>
+                    <input matInput type="text" formControlName="selling_billing_block"
+                        placeholder="Selling Billing Block" maxlength="3" (keypress)="commonService.numberOnly($event)"
+                        [(ngModel)]="defaultSellingBillingBlock" autocomplete="off"
+                        [readonly]="userRole === UserTypeAccountManager" appBlockCopyPaste>
+                </mat-form-field>
+                <div *ngIf="selling_billing_block.invalid && (selling_billing_block.dirty || selling_billing_block.touched)"
+                    class="reqired-field">
+                    <div *ngIf="selling_billing_block.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="selling_billing_block.errors.maxlength">Selling Billing Block max length is 3 character
+                        long.</div>
+                    <div *ngIf="selling_billing_block.errors.minlength">Selling Billing Block min length is 1 character.
+                    </div>
+                    <div *ngIf="selling_billing_block.errors.min">Selling Billing Block can't be less than 1</div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4" *ngIf="callPlanRateData.plan_type == '0'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Selling Min Duration</mat-label>
+                    <input matInput type="text" formControlName="selling_min_duration" maxlength="2" 
+                        placeholder="Selling Min Duration(max. 60)" (keypress)="commonService.numberOnly($event)"  (input)="checkBillingBlockValue($event.target.value)"
+                        [(ngModel)]="sellingMinDuration" autocomplete="off" [readonly]="userRole === UserTypeAccountManager">
+                </mat-form-field>
+                <div *ngIf="selling_min_duration.invalid && (selling_billing_block.dirty || selling_billing_block.touched)"
+                    class="reqired-field">
+                    <div *ngIf="selling_min_duration.errors.max">Selling Min Duration exceeds</div>
+                    <div *ngIf="selling_min_duration.errors.maxlength">Selling Min Duration max length is 2 character
+                        long.
+                    </div>
+                </div>
+            </div> -->
+            <div class="form-group col-md-4" style="margin-top: -15px;">
+                <ejs-dropdownlist formControlName="gateway" (filtering)="Gatewayremovedspace($event)"
+                    [readonly]="userRole === UserTypeAccountManager" style="width: 66%;margin-top: 9px;"
+                    [dataSource]='allGateway' [fields]='fields1' [(ngModel)]="callPlanRateData.gateway_id"
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder1' allowFiltering=true>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field class="example-full-width">
+                    <mat-label>Gateway</mat-label>
+                    <mat-select formControlName="gateway" (openedChange)="HandleDropdownFilter('filterGateway',GatewayFilter)" placeholder="Gateway" [(ngModel)]="callPlanRateData.gateway_id"  [disabled]="userRole === UserTypeAccountManager" required #select6>
+                      <mat-select-filter *ngIf="select6.focused" [array]="allGateway" [displayMember]="'provider'" (filteredReturn)="filterGateway= $event" allowFiltering=true></mat-select-filter>
+                        <mat-option *ngFor='let gateway of filterGateway' [value]="gateway.id">
+                            {{ gateway.provider }}-{{ gateway.ip || gateway.domain }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="gateway.invalid && (gateway.dirty || gateway.touched)"
+                    class="reqired-field">
+                    <div *ngIf="gateway.errors.required">Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 mt-2"
+                *ngIf="callPlanRateData.plan_type == '1' || callPlanRateData.plan_type == '2' || callPlanRateData.plan_type == '4' || callPlanRateData.plan_type == '5'">
+                <mat-slide-toggle formControlName="isGroup" [(ngModel)]="callPlanRateData.is_group"
+                    [disabled]="userRole === UserTypeAccountManager || !edit" (change)="isChnageGroup($event)">
+                    Group
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -15px;"
+                *ngIf="isGroup.value && (callPlanRateData.plan_type == '1' || callPlanRateData.plan_type == '2' || callPlanRateData.plan_type == '4' || callPlanRateData.plan_type == '5')">
+                <ejs-dropdownlist formControlName="group_id" (filtering)="Groupremovedspace($event)"
+                    [readonly]="userRole === UserTypeAccountManager" style="width: 66%;margin-top: 9px;"
+                    [dataSource]='callRategroupList' [fields]='fields' [(ngModel)]="callPlanRateData.group_id"
+                    (change)="onGroupSelect($event.value)" [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                    [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+                </ejs-dropdownlist>
+                <!-- <mat-form-field class="example-full-width">
+                    <mat-label>Group Name</mat-label>
+                    <mat-select formControlName="group_id" (openedChange)="HandleDropdownFilter('filterGroup',GroupFilter)"  [(ngModel)]="callPlanRateData.group_id" [disabled]="userRole === UserTypeAccountManager" (selectionChange)="onGroupSelect($event.value)" #select7>
+                        <mat-select-filter *ngIf="select7.focused" [array]="callRategroupList" [displayMember]="'name'" (filteredReturn)="filterGroup= $event" allowFiltering=true></mat-select-filter>
+                        <mat-option *ngFor='let g of filterGroup' [value]="g.id">
+                            {{g?.name }}
+                          </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="group_id.invalid && (group_id.dirty || group_id.touched )"
+                    class="reqired-field">
+                    <div *ngIf="group_id.errors.required"> Required Field</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="callPlanRateData.plan_type != '0'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Talktime Minutes</mat-label>
+                    <input matInput type="text" formControlName="talktime_minutes" maxlength="5"
+                        [readonly]="userRole === UserTypeAccountManager || !edit || !groupMinutes" placeholder="Minutes"
+                        (keypress)="commonService.numberOnly($event)" [(ngModel)]="callPlanRateData.talktime_minutes"
+                        autocomplete="off">
+                </mat-form-field>
+                <div *ngIf="talktime_minutes.invalid && (talktime_minutes.dirty || talktime_minutes.touched )"
+                    class="reqired-field">
+                    <div *ngIf="talktime_minutes.errors.pattern"> Number can not start with 0.
+                    </div>
+                    <div *ngIf="talktime_minutes.errors.required"> Required Field</div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4" *ngIf="plan_type.value == '3'">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Booster For </mat-label>
+                    <mat-select formControlName="booster_for" [(ngModel)]="callPlanRateData.booster_for" [disabled]="userRole === UserTypeAccountManager" required>
+                        <mat-option value = "1">DID Bundle</mat-option>
+                        <mat-option value = "5">Outgoing Bundle</mat-option>
+                        <mat-option value = "2">Roaming</mat-option>
+                        <mat-option value = "4">Tele Consultancy</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="booster_for.invalid && (booster_for.dirty || booster_for.touched)" class="reqired-field">
+                    <div *ngIf="booster_for.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-lg-12 example-button-row">
+                <button *ngIf="userRole != UserTypeAccountManager" mat-raised-button
+                    [disabled]="!callPlanRatesForm.valid || notValid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

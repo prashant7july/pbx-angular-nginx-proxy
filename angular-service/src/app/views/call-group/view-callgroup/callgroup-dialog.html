@@ -1,0 +1,171 @@
+<h3 class="card-header-style">Call Group</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="callGroupForm" class="row" (ngSubmit)='submitCallGroupForm()'>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Group Name</mat-label>
+                    <input matInput formControlName="groupName" [(ngModel)]="callgroupData.name"
+                     maxlength="20" autocomplete="off" (keypress)="commonService.charOnly($event)"  required>
+                </mat-form-field>
+                <div *ngIf="groupName.invalid && (groupName.dirty || groupName.touched)" class="reqired-field">
+                    <div *ngIf="groupName.errors.required"> Required Field </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isPrompt">
+                <ejs-dropdownlist formControlName="prompt" (filtering)="WelcomePromptremovedspace($event)"
+                style="width: 80%;margin-top: -7px;" [dataSource]='callGroupPromptList' [fields]='fields' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder' [(ngModel)]="callgroupData.prompt" allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Welcome Prompt</mat-label>
+                    <mat-select formControlName="prompt" (openedChange)="HandleDropdownFilter('filterPrompt',WelcomeFilter)" [(ngModel)]="callgroupData.prompt" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                      <mat-select-filter *ngIf="select1.focused" [array]="callGroupPromptList" [displayMember]="'prompt_name'" (filteredReturn)="filterPrompt = $event" allowFiltering=true></mat-select-filter>
+                        <mat-option value='0'>Select Prompt</mat-option>
+                        <mat-option *ngFor='let cglist of filterPrompt' [value]="cglist.id">
+                            {{ cglist.prompt_name }} 
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Group Type</mat-label>
+                    <mat-select formControlName="groupType" [(ngModel)]="callgroupData.group_type">  
+                        <mat-option *ngFor='let groupTypeValue of selectedGTValue'
+                        [value]="groupTypeValue.id">
+                            {{ groupTypeValue.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="groupType.invalid && (groupType.dirty || groupType.touched)" class="reqired-field">
+                    <div *ngIf="groupType.errors.required">Required Field </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Group Exten" formControlName="extNo"
+                        (keypress)="commonService.numberOnly($event)" maxlength="5" minlength="5"
+                        [(ngModel)]="callgroupData.group_ext" 
+                        autocomplete="off"  required>
+                </mat-form-field>
+                <div *ngIf="extNo.invalid && (extNo.dirty || extNo.touched)" class="reqired-field">
+                    <div *ngIf="extNo.errors.required"> Required Field </div>
+                    <div *ngIf="extNo.errors.maxlength"> Group Exten should be 5 Number long. </div>
+                    <div *ngIf="extNo.errors.minlength"> Group Exten should be 5 Number long. </div>
+                    <div *ngIf="extNo.errors.min"> Group Exten can't start with 0. </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Ring Timeout" formControlName="ringTimeout" maxlength="2" minlength="1"
+                        [(ngModel)]="callgroupData.ringtimeout" (keypress)="commonService.numberOnly($event)"
+                        autocomplete="off"  required>
+                </mat-form-field>
+                <div *ngIf="ringTimeout.invalid && (ringTimeout.dirty || ringTimeout.touched)" class="reqired-field">
+                    <div *ngIf="ringTimeout.errors.required"> Required Field </div>
+                    <div *ngIf="ringTimeout.errors.pattern"> Ring Timeout should be between 1 to 60. </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="recording == 1">
+                <mat-slide-toggle [color]="accent" formControlName="recording" [(ngModel)]=callgroupData.recording>
+                    Recording
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="stickyAgent == 1">
+                <mat-slide-toggle [color]="accent" formControlName="sticky_agent" [(ngModel)]=callgroupData.sticky_agent   (change)="showPlayPosition($event)">
+                    Sticky Agent
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isPlayPosition" >
+                <ejs-dropdownlist formControlName="sticky_expire" (filtering)="Expiryremovedspace($event)"
+                style="width: 80%;margin-top: -15px;" [dataSource]='stickyExpire' [fields]='fields3' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth1' [placeholder]='placeholder5' [(ngModel)]="stickyData" allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Expiry Date</mat-label>
+                    <mat-select  formControlName="sticky_expire" 
+                      [(ngModel)]="stickyData" required>
+                        <mat-option *ngFor="let product of stickyExpire" [value]="product.id">
+                            {{ product.date }}</mat-option>
+                      </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="unauthorized_fail" [(ngModel)]="callgroupData.unauthorized_fail">
+                    Unauthorized Fail Over
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="unauthorized_fail.value">
+                <ejs-dropdownlist formControlName="active_feature" (filtering)="Featureremovedspace($event)" (change)="getValueOfActiveFeature($event)"
+                style="width: 80%;margin-top: -15px;" [dataSource]='activeFeature' [fields]='fields2' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder2' [(ngModel)]="active_feat" allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Feature</mat-label>
+                    <mat-select formControlName="active_feature" (openedChange)="HandleDropdownFilter('filterFeature',FeatureFilter)" [(ngModel)]="callgroupData.active_feature"
+                        (selectionChange)="getValueOfActiveFeature($event)" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="activeFeature" [displayMember]="'feature'" (filteredReturn)="filterFeature = $event"></mat-select-filter>                   
+                        <mat-option *ngFor='let feature of filterFeature' [value]="feature.id">
+                            {{ feature.feature }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            
+            <div class="form-group col-md-4" *ngIf="unauthorized_fail.value && active_feature.value">
+                <ejs-dropdownlist formControlName="active_feature_value" (filtering)="Valueremovedspace($event)"
+                style="width: 80%;margin-top: -15px;" [dataSource]='activeFeatureValue' [fields]='fields4' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' [(ngModel)]="activeFeature_value" allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Value</mat-label>
+                    <mat-select formControlName="active_feature_value" (openedChange)="HandleDropdownFilter('filter',FilterValue)" [(ngModel)]="activeFeature_value " [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                        <mat-select-filter *ngIf="select1.focused" [array]="activeFeatureValue" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>                   
+                        <mat-option *ngFor='let d1 of filter' [value]="d1.id">
+                            {{ d1.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="active_feature_value.invalid && (active_feature_value.dirty || active_feature_value.touched)"
+                    class="reqired-field">
+                    <div *ngIf="active_feature_value.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+        
+
+            <div class="form-group col-md-12">
+                   <p-pickList [source]="sourceAddSIPExt" [target]="targetAddSIPExt" sourceHeader="SIP Ext"
+                    targetHeader="Group SIP Ext" [showSourceControls]="false" [showTargetControls]="true"
+                    [responsive]="true" dragdrop="true" [sourceStyle]="{'height':'145px'}"
+                    [targetStyle]="{'height':'145px'}" filterBy="codec" sourceFilterPlaceholder="SIP" targetFilterPlaceholder="SIP" onMoveToTarget="resetSourceFilter()" onTargetSelect="clearFilter($event)" >
+                    
+                    <ng-template let-codec pTemplate="item">  
+                        <div class="p-picklist-filter">
+                            <span *ngIf="sourceFilterValue" class="p-picklist-filter-icon pi pi-times"  (click)="options.reset(); sourceFilterValue = ''"></span>
+                        </div>
+
+                        <div class="p-picklist-filter">
+                            <span *ngIf="targetFilterValue" class="p-picklist-filter-icon pi pi-times"  (click)="myResetFunction(options)"></span>
+                        </div>
+                        <div class="ui-helper-clearfix">
+                          
+                      
+                            <div style="font-size:14px;float:right;">{{codec.codec}}</div>
+                    
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!callGroupForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

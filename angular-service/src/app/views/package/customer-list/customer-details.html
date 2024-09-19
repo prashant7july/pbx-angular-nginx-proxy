@@ -1,0 +1,214 @@
+<h3 class="card-header-style">Customer Profile</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form [formGroup]="userForm" novalidate>
+      <input type="hidden" [(ngModel)]="userData.id" formControlName="id" />
+      <div class="row">
+        <div class="form-group col-md-4">
+
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="f_name" placeholder="First Name"
+              [(ngModel)]="userData.first_name" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.last_name" formControlName="l_name" id="laname"
+              placeholder="Last Name" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="email" [(ngModel)]="emailId" formControlName="email" id="email" placeholder="Email"
+              readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.username" formControlName="username"
+              placeholder="Username" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" [(ngModel)]="userData.country_id" [disabled]=true>
+              <mat-option *ngFor='let country of countryList' [value]="country.id">
+                {{ country.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input type="hidden" formControlName="country_code" [(ngModel)]="countryCode" />
+            <input matInput type="text" [(ngModel)]="userData.mobile" formControlName="mobile"
+              placeholder="Mobile Number" readonly>
+            <span matPrefix>{{countryCode}}</span>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.company_name" formControlName="company" id="company"
+              placeholder="Company Name" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.phone" formControlName="company_phone"
+              placeholder="Company phone number" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.domain" formControlName="domain" placeholder="Domain Name"
+              readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <textarea matInput [(ngModel)]="userData.company_address" formControlName="company_address"
+              placeholder="Enter your company address" readonly style="resize:none;"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" [(ngModel)]="userData.status" [disabled]=true>
+              <mat-option value="0">Inactive</mat-option>
+              <mat-option value="1">Active</mat-option>
+              <mat-option value="2">Deleted</mat-option>
+              <mat-option value="3">Expired</mat-option>
+              <mat-option value="4">Suspended for Underpayment</mat-option>
+              <mat-option value="5">Suspended for Litigation</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field>
+            <mat-label>Account Manager</mat-label>
+            <mat-select formControlName="account_manager" [disabled]=true [(ngModel)]='userData.account_manager_id'>
+              <mat-option *ngFor='let manager of internalUser' [value]="manager.id">{{manager.first_name}}
+                {{manager.last_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="userRole!=4 && userRole!=5">
+          <mat-form-field>
+            <mat-label>Time Zone</mat-label>
+            <mat-select formControlName="time_zone" [disabled]=true [(ngModel)]="userData.time_zone_id">
+              <mat-option *ngFor='let zone of timeZone' [value]="zone.id">{{zone.gmtzone}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="userRole!=4  && userRole!=5">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="gst_number" placeholder="Company GST number"
+              [(ngModel)]="userData.company_gst_number" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="userRole!=4  && userRole!=5">
+          <mat-form-field>
+            <mat-label>Billing Type</mat-label>
+            <mat-select formControlName="billing_type" [(ngModel)]="userData.billing_type"
+            [disabled]=true>
+              <mat-option value="1">Prepaid</mat-option>
+              <mat-option value="2">Postpaid</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="userRole!=4  && userRole!=5">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.balance" formControlName="balance" 
+            placeholder="Balance" readonly
+              >
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="userRole!=4  && userRole!=5">
+          <div class="form-group" *ngIf="isCredtiLimit">
+            <mat-form-field class="example-full-width">
+              <input matInput type="text" [(ngModel)]="userData.credit_limit" formControlName="credit_limit"
+                 placeholder="Credit Limit" readonly>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row checkboxes">
+        Select Product
+        <div class="col-md-12" *ngFor='let product of products; let i = index'>
+          <span *ngFor='let productCheck of str_array;'>
+            <label *ngIf="product.id==productCheck; else notChecked">
+              <mat-checkbox [checked]="true" (change)="chooseProduct($event)" value="{{product.id}}" disabled>
+                {{product.name}}
+              </mat-checkbox>
+            </label>
+            <ng-template #notChecked></ng-template>
+          </span>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="showPbx && (userRole==0 || userRole==2)">
+          <mat-form-field>
+            <mat-label>Select PBX Package</mat-label>
+            <mat-select formControlName="pbxPackage" [disabled]=true [(ngModel)]='userData.package_id'>
+              <mat-option *ngFor='let package of billingType' [value]='package.id'>{{ package.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="showPbx && (userRole==4 || userRole==5)">
+          <mat-form-field>
+            <mat-label>Select PBX Package</mat-label>
+            <mat-select formControlName="pbxPackage" [disabled]=true [(ngModel)]='userData.package_id' disabled>
+              <mat-option *ngFor='let package of billingType' [value]="package.id">
+                {{ package.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="showOc && (userRole==0 || userRole==2)">
+          <mat-form-field>
+            <mat-label>Select OC Package</mat-label>
+            <mat-select formControlName="ocPackage" [disabled]=true [(ngModel)]='userData.package_id'>
+              <mat-option *ngFor='let ocPackage of ocPackage' [value]="ocPackage.id">
+                {{ ocPackage.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="showOc && (userRole==4 || userRole==5)">
+          <mat-form-field>
+            <mat-label>Select OC Package</mat-label>
+            <mat-select formControlName="ocPackage" [disabled]=true [(ngModel)]='userData.package_id'>
+              <mat-option *ngFor='let ocPackage of ocPackage' [value]="ocPackage.id">
+                {{ ocPackage.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="btn-group col-lg-12 example-button-row">
+        <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

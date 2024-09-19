@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>ALL CHARGE DETAILS</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="header-btn">
+                            <button (click)="downloadPDF()" mat-raised-button color="primary"
+                                style=" margin:11px;top:-10px;left:13px;background-color: #CD5C5C !important;">Download
+                                PDF</button>
+                            <button (click)="exportToExcel()" mat-raised-button color="warn"
+                                style=" margin:11px; top:-10px; background-color: #01A89E !important;">Excel Export</button>
+                            <div class="help-button">
+                                <button mat-raised-button (click)="showInfo()"
+                                    style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+                                    <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                                    HELP
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <div class="row">
+                        <app-accordian-filter style="width: 100%">
+                            <form [formGroup]="filterForm" class="row" novalidate>
+                                <div class="form-group col-md-3">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Date Range</mat-label>
+                                        <input matInput placeholder="Pick a Date Range" formControlName="by_date" bsDaterangepicker
+                                            autocomplete="off" readonly
+                                            [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <!-- <mat-form-field>
+                                        <mat-label>Company</mat-label>
+                                        <mat-select formControlName="by_company">
+                                            <mat-option value="" selected>Select Company</mat-option> 
+                                            <mat-option *ngFor='let company of companyData' [value]="company.company_name">
+                                                {{company.company_name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;" (filtering)="Providerremovedspace($event)" [dataSource]='companyData' [fields]='fields'
+                                        [placeholder]='placeholder' formControlName="by_company" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                        [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                    </ejs-multiselect>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput type="text" formControlName="by_number" maxlength="20" (keypress)="commonService.numberOnly($event)" placeholder="By Number">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <!-- <mat-form-field>
+                                        <mat-label>Country</mat-label>
+                                        <mat-select formControlName="by_country">
+                                            <mat-option value="" selected>Select Country</mat-option>
+                                            <mat-option *ngFor='let country of countryList' [value]="country.id">
+                                                {{ country.name }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;" [dataSource]='countryList' [fields]='fields2'
+                                        [placeholder]='placeholder2' formControlName="by_country" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                        [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                    </ejs-multiselect>
+                                </div>
+                                <div class="form-group col-md-3 example-button-row">
+                                    <button (click)="filterData()" mat-raised-button color="primary">Search</button>
+                                    <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                                </div>
+                            </form>
+                        </app-accordian-filter>
+                    </div>
+                    <div class="example-wrapper" style="margin-top:75px;">
+                        <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                            <mat-form-field class="float-right">
+                                <mat-label>Number of records</mat-label>
+                                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                                    <mat-option value="10" selected>10</mat-option>
+                                    <mat-option value="50">50</mat-option>
+                                    <mat-option value="100">100</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData"
+                            [pageSize]='defaultPageSize'>
+                        </app-grid>
+                    </div>
+                    <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'>
+                    </app-grid> -->
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+</div>

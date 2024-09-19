@@ -1,0 +1,111 @@
+.btn-block1 {
+    display: block;
+    width: 50%;
+}
+
+/* ::ng-deep 
+.card {
+    background-color: #ffffff !important;
+    border:none !important;
+} */
+
+/* ::ng-deep  */
+.card-body1 {
+    flex: 1 1 auto;
+    padding: 0;
+}
+
+::ng-deep .input-group-text {
+    color: #ffffff;
+    background-color: #3f93ba;
+    border: none !important;
+}
+
+::ng-deep .btn-primary {
+    color: #FFFFFF;
+    background-color: #3f93ba !important;
+    border-color: rgb(232, 240, 254) !important;
+    margin: auto;
+    display: block;
+    border: none !important;
+}
+
+::ng-deep .btn-primary:hover {
+    color: #FFFFFF !important;
+}
+
+.btn-link1 {
+    font-weight: 200;
+    color: #025982 !important;
+    text-decoration: none;
+    margin: auto;
+    display: block;
+    border: none !important;
+}
+
+::ng-deep .mr-auto,
+.mx-auto {
+    /* margin-right: 0px!important; */
+}
+
+/* ::ng-deep 
+.ml-auto, .mx-auto {
+    margin-left: 765px !important;
+} */
+
+::ng-deep .swal2-input {
+    color: #FFFFFF !important;
+}
+
+@media only screen and (max-width : 1381px) {
+    .loginLogo {
+        left: 50px;
+    }
+}
+
+@media only screen and (max-width : 1025px) {
+    .loginLogo {
+        left: 50px;
+    }
+}
+
+@media only screen and (max-width : 960px) {
+    .loginLogo {
+        left: 50px;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    .loginLogo {
+        left: 50px;
+        /* -32 */
+    }
+}
+
+@media only screen and (max-width : 480px) {
+    .loginLogo {
+        left: -32px;
+        /* -45px; */
+    }
+}
+
+
+.app {
+    /* background: rgb(2,0,36); */
+    background: radial-gradient(circle, #FFFFFF, #FBFAFD, #F7F5FB, #F4EFF8, #F2EAF5, #EEE8F8, #E9E7FC, #E1E7FF, #CAEEFF, #AEF6FF, #A0FDF5, #AEFFD5);
+    background-size: 200% 100%;
+    /* Adjust the background size */
+    background-repeat: no-repeat;
+}
+
+.card-group {
+    width: 82%;
+}
+
+
+@media only screen and (max-width: 100%) {
+    .app {
+        background-size: 100% 100%;
+        /* Adjust the background size */
+    }
+}

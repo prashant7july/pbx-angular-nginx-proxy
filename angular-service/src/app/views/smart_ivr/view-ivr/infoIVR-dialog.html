@@ -1,0 +1,31 @@
+<h3 class="card-header-style">IVR Information</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    IVR means Interactive voice response is used to make a selection for voice process. It allows the user to obtain information.
+                    We have DTMF selection in IVR-<br/>
+                    ● <strong>Digits -</strong> 0 to 9 , * , # <br/>
+                    ● <strong>Features -</strong><br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;1. Call Group - IVR go through any selected call group<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;2. Conference - IVR go through any selected conference<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;3. Contact Exten -  IVR go through selected contact<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;4. Custom Exten - IVR go through any particular number which you have given in the value <br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;5. Hangup - IVR calls will be disconnected<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;6. Queue - IVR go through any selected queue <br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;7. Repeat - IVR will repeat the calls<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;8. SIP - IVR go through any selected SIP<br/>
+                        &nbsp;&nbsp; &nbsp;&nbsp;9. Voicemail - IVR go through the voicemail <br/>
+                </mat-card-content>
+                <img src="assets/img/ivr.png" style="width:100%;">
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

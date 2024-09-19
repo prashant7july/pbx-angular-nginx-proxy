@@ -1,0 +1,144 @@
+<h3 class="card-header-style">Contact List</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="contactListForm" (ngSubmit)="submitContactListForm()" class="row">
+             <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Name" formControlName="name" [(ngModel)]="contactData.name"
+                            maxlength="20" autocomplete="off"  required>
+                    </mat-form-field>
+                    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                        <div *ngIf="name.errors.required">
+                            Required Field
+                        </div>
+                        <div *ngIf="name.errors.pattern">
+                            Invalid name
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" formControlName="email" id="email" [(ngModel)]="contactData.email"
+                            placeholder="Email" maxlength="40" autocomplete="new-email"  required>
+                    </mat-form-field>
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="reqired-field">
+                        <div *ngIf="email.errors.required">
+                            Required Field
+                        </div>
+                        <div *ngIf="email.errors.pattern">Email must be a valid</div>
+                    </div>
+                </div>  
+                <div class="form-group col-md-4" style="margin-top:9px;">
+                    <!-- <mat-form-field>
+                        <mat-label>Select Country</mat-label>
+                        <mat-select formControlName="country" (openedChange)="HandleDropdownFilter('filter',CountryFilter)" (selectionChange)="getCountryCode($event)"
+                            [(ngModel)]="contactData.id ? contactData.country_id : countryID.id" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                            <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filter = $event"></mat-select-filter>
+                            <mat-option *ngFor='let country of filter' [value]="country.id">
+                                {{ country.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>  -->
+
+
+                           <ejs-dropdownlist  
+                            [(ngModel)]="contactData.id ? contactData.country_id : countryID.id" formControlName="country" (filtering)="Countryremovedspace($event)"
+                            style="width: 90%; margin-top: -16px;" [dataSource]='countryList' [fields]='fields' (change)="getCountryCode($event)" [floatLabelType]="'Auto'"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+                        </ejs-dropdownlist> 
+                </div>
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width" style="width:80.4% !important">
+                        <mat-label>Primary Number</mat-label>
+                        <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode" />
+                        <input matInput (keypress)="commonService.numberOnly($event)" formControlName="phone1"
+                            id="phone1" placeholder="Primary Number" maxlength="10" minlength="10"
+                            [(ngModel)]="contactData.phoneNumber1Display" autocomplete="off"  
+                            required>
+                        <span matPrefix>{{countryCode}}</span>
+                    </mat-form-field>
+                    <div *ngIf="phone1.invalid && (phone1.dirty || phone1.touched)" class="reqired-field">
+                        <div *ngIf="phone1.errors.required">
+                            Required Field
+                        </div>                       
+                        <div *ngIf="phone1.errors.pattern"> 
+                            Number can not start with 0 and not less than 10 digits.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width" style="width:80.4% !important">
+                        <mat-label>Secondary Number</mat-label>
+                        <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode" />
+                        <input matInput (keypress)="commonService.numberOnly($event)" formControlName="phone2"
+                            id="phone2" placeholder="Secondary Number" maxlength="10"
+                            [(ngModel)]="contactData.phoneNumber2Display" minlength="10" autocomplete="off"
+                            >
+                        <span matPrefix>{{countryCode}}</span>
+                    </mat-form-field>
+                    <div *ngIf="phone2.invalid && (phone2.dirty || phone2.touched)" class="reqired-field">
+                        <div *ngIf="phone2.errors.pattern"> Number can not start with 0 and not less than 10 digits.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Organization</mat-label>
+                        <input matInput type="text" formControlName="organization" id="organization" maxlength="20"
+                            placeholder="Organization" [(ngModel)]="contactData.organization" autocomplete="off"
+                             >
+                    </mat-form-field>                   
+                </div>
+                <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Designation</mat-label>
+                        <input matInput type="text" formControlName="designation" id="designation" maxlength="20"
+                            placeholder="Designation" [(ngModel)]="contactData.designation" autocomplete="off"
+                            >
+                    </mat-form-field>
+                    <div *ngIf="designation.invalid && (designation.dirty || designation.touched)"
+                        class="reqired-field">
+                        <div *ngIf="designation.errors.pattern">
+                            Invalid designation
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 example-button-row">
+                    <button mat-raised-button color="primary" [disabled]="!contactListForm.valid" [disabled]="isloading">Submit
+                        <img *ngIf="isloading" src="1amw.gif">
+                    </button>
+                    <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                </div>
+           <!--  </div>
+            <div *ngIf="showNotInsertedValue">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number1</th>
+                            <th>Phone Number2</th>
+                            <th>Organization</th>
+                            <th>Designation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of excelValue">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.phone_number1}}</td>
+                            <td>{{ item.phone_number2}}</td>
+                            <td>{{ item.orgnization }}</td>
+                            <td>{{ item.designation}}</td>
+                            <td>
+                                <button mat-raised-button color="warn" (click)="onNoClick($event)">Close</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+        </form>
+    </div>
+</div>

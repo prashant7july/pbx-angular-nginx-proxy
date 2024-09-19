@@ -1,0 +1,70 @@
+<h3 class="card-header-style">FEATURE RATE PLAN</h3>
+<div mat-dialog-content *ngIf="isEdit">
+    <div class="card-body">
+        <form [formGroup]="rateplanForm" (ngSubmit)="submitRatePlan()" class="row">
+                <div class="form-group col-md-12">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Plan Name</mat-label>
+                        <input matInput type="text" formControlName="name" maxlength="30" [(ngModel)]="planData.name" required
+                            autocomplete="off" appBlockCopyPaste (keypress)="commonService.alphabetOnly($event)"
+                            >
+                    </mat-form-field>
+                    <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                        <div *ngIf="name.errors.required"> Required Field</div>
+                    </div>
+                </div>
+                <div  class="form-group col-md-12" formArrayName="featureRateForm" *ngFor="let d of rateplanForm.get('featureRateForm').controls; let i=index">
+                    <!-- Use the index for each formGroup inside the formArray -->
+                    <div [formGroupName]="i">
+                        <!-- <label>Amount: </label>
+                                      <input formControlName="amount" />
+                                    </div> -->
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Feature Name</mat-label>
+                                    <input matInput type="text" formControlName="feature_name" maxlength="20"
+                                         required autocomplete="off" readonly 
+                                        (keypress)="commonService.alphabetOnly($event)" style="text-transform: capitalize">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Feature Limit</mat-label>
+                                    <input matInput formControlName="feature_limit" maxlength="6" minlength="0" required
+                                         autocomplete="off"  required
+                                        (keypress)="commonService.onlyPositiveNumber($event)">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3" style="margin-top: 19px;">
+                                <mat-radio-group aria-label="Select an option" formControlName="unit_Type">
+                                    <mat-radio-button value="1">Per Unit</mat-radio-button> &nbsp; &nbsp;
+                                    <mat-radio-button value="2">Fix Price</mat-radio-button> &nbsp; &nbsp;
+                                </mat-radio-group>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <mat-form-field class="example-full-width">
+                                    <mat-label>Feature Rate</mat-label>
+                                    <input matInput  maxlength="10" formControlName="feature_rate"
+                                        autocomplete="off"  required (keypress)="commonService.decimalWIth2digits ($event)">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="form-group col-md-12">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Description</mat-label>
+                            <textarea  matInput formControlName="description"
+                            [(ngModel)]="planData.description" maxlength="250"
+                            autocomplete="off" appBlockCopyPaste> </textarea>
+                       </mat-form-field>
+                    </div> 
+                 <div class="col-lg-12 example-button-row">
+                    <button type="submit" mat-raised-button [disabled]="rateplanForm.invalid"  color="primary">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                </div>   
+        </form>
+    </div>
+</div> 

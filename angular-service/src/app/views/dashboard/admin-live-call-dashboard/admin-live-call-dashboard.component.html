@@ -1,0 +1,75 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" style="background-color: #dbd9d9 !important;">
+        <div class="card-header">
+          <strong>REALTIME CALLS</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <!-- <div class="row">
+                    <div class="col-sm-5">
+                      <h5 class="card-title mb-0"><strong>Live Call Status</strong></h5>
+                    </div>
+                  </div> --> 
+                  <!-- <div class="card-body"> -->
+                    <!-- <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <td class="table-info" colspan="7">Live Calls ( <b>{{liveCallList.length}}</b>)</td>
+                        </tr>
+                        <tr>
+                          <th scope="col">Caller</th>
+                          <th scope="col">Callee</th>
+                          <th scope="col">Forward</th>
+                          <th scope="col">Start Time</th>
+                          <th scope="col">Call Duration</th>
+                          <th scope="col">Caller Codecs</th>
+                          <th scope="col">Callee Codecs</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of liveCallList">
+                          <td>{{item.src}}</td>
+                          <td>{{item.dst}}</td>
+                          <td>{{item.forward}}</td>
+                          <td>{{item.start_time | date:'medium'}}</td>
+                          <td>{{item.bridge_time}}</td>
+                          <td>{{item.codec}}</td>
+                          <td>{{item.codec}}</td>
+                        </tr>
+                      </tbody>
+                    </table> -->
+                    <!-- <div class="card-body"> -->
+                      <div class="example-wrapper" style="margin-top:75px;">
+                        <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                            <mat-form-field class="float-right">
+                                <mat-label>Number of records</mat-label>
+                                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                                    <mat-option value="10" selected>10</mat-option>
+                                    <mat-option value="50">50</mat-option>
+                                    <mat-option value="100">100</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData"
+                            [pageSize]='defaultPageSize'>
+                        </app-grid>
+                    </div>
+                      <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'>
+                      </app-grid> -->
+                    <!-- </div> -->
+                  <!-- </div> -->
+                </div>
+              </div><!-- card -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

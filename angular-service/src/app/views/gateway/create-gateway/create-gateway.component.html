@@ -1,0 +1,629 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>CREATE GATEWAY</strong>
+        </div>
+        <div class="card-body">
+          <form
+            [formGroup]="gatewayForm"
+            (ngSubmit)="submitGatewayForm()"
+            novalidate
+          >
+            <div class="centered-content">
+              <div class="row">
+                <div class="form-group col-md-4" style="margin-top: -7px">
+                  <ejs-dropdownlist
+                    formControlName="provider"
+                    [floatLabelType]="'Auto'"
+                    (filtering)="Providerremovedspace($event)"
+                    style="width: 60%"
+                    [dataSource]="providerList"
+                    [fields]="fields"
+                    [popupHeight]="popupHeight"
+                    [popupWidth]="popupWidth"
+                    [placeholder]="placeholder"
+                    allowFiltering="true"
+                  >
+                  </ejs-dropdownlist>
+                  <div
+                    *ngIf="
+                      provider.invalid && (provider.dirty || provider.touched)
+                    "
+                    class="reqired-field"
+                  >
+                    <div *ngIf="provider.errors.required">Required Field</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field>
+                    <mat-label>Select IP/Domain</mat-label>
+                    <mat-select
+                      formControlName="subnet"
+                      [value]="1"
+                      (selectionChange)="selectSubnet($event)"
+                    >
+                      <mat-option selected value="1">IP</mat-option>
+                      <mat-option value="2">Domain</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4" *ngIf="selectedIp">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>IP</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="ip"
+                      id="ip"
+                      (change)="checkIP($event)"
+                      placeholder="IP"
+                      (keydown.space)="$event.preventDefault()"
+                      maxlength="40"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="ip.invalid && (ip.dirty || ip.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="ip.errors.required">Required Field</div>
+                    <div *ngIf="ip.errors.pattern">IP Must be valid</div>
+                    <div *ngIf="ip.errors.maxLength">
+                      IP max length is 40 character long.
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="selectedDomain">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Domain</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="domain"
+                      placeholder="Domain"
+                      maxlength="30"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="domain.invalid && (domain.dirty || domain.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="domain.errors.required">Required Field</div>
+                  </div>
+                </div>
+                <div
+                  class="form-group col-md-4"
+                  *ngIf="
+                    (domain.value || ip.value) && (domain.valid || ip.valid)
+                  "
+                >
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Port</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="port"
+                      id="port"
+                      maxlength="5"
+                      minlength="2"
+                      (keypress)="commonService.numberOnly($event)"
+                      placeholder="Port"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="port.invalid && (port.dirty || port.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="port.errors.required">Required Field</div>
+                    <div *ngIf="port.errors.maxlength">
+                      Port max length is 6 character long.
+                    </div>
+                    <div *ngIf="port.errors.minlength">
+                      Port min length is 2 character.
+                    </div>
+                    <div *ngIf="port.errors.max">Port exceeds</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Caller ID</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="callerid"
+                      id="callerid"
+                      maxlength="15"
+                      placeholder="Caller ID"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="
+                      callerid.invalid && (callerid.dirty || callerid.touched)
+                    "
+                    class="reqired-field"
+                  >
+                    <div *ngIf="callerid.errors.pattern">Invalid</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Contact Params</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="calling_profile"
+                      id="calling_profile"
+                      maxlength="20"
+                      placeholder="Contact Params"
+                      (keydown.space)="$event.preventDefault()"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field>
+                    <mat-label>Transport Type</mat-label>
+                    <mat-select formControlName="transport_type" [value]="2">
+                      <mat-option value="0">UDP</mat-option>
+                      <mat-option value="1">TCP</mat-option>
+                      <mat-option value="2">TLS</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>From user</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="from_user"
+                      id="username"
+                      maxlength="50"
+                      placeholder="from user"
+                      (keydown.space)="$event.preventDefault()"
+                      value=""
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field>
+                    <mat-label>DTMF Type</mat-label>
+                    <mat-select formControlName="dtmf_type" [value]="0">
+                      <mat-option value="0">RFC2833</mat-option>
+                      <mat-option value="1">SIP Info</mat-option>
+                      <mat-option value="2">In Band</mat-option>
+                      <mat-option value="3">Auto</mat-option>
+                      <mat-option value="4">None</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4 mt-2">
+                  <mat-slide-toggle
+                    formControlName="is_register_proxy"
+                    (change)="changeRegisterProxy($event)"
+                  >
+                    Register Proxy as IP/Domain
+                  </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Register Proxy as IP/Domain</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="register_proxy"
+                      maxlength="50"
+                      placeholder="Register Proxy as IP/Domain"
+                      autocomplete="off"
+                      disabled="gatewayData.is_register_proxy"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-lg-4">
+                  <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option value="0">Inactive</mat-option>
+                      <mat-option value="1">Active</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4 mt-2">
+                  <mat-slide-toggle
+                    formControlName="is_outbound_proxy"
+                    (change)="changeOutboundProxy($event)"
+                  >
+                    From Domain as IP/Domain
+                  </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>From Domain as IP/Domain</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="outbound_proxy"
+                      maxlength="50"
+                      placeholder="From Domain as IP/Domain"
+                      autocomplete="off"
+                      disabled="gatewayData.is_outbound_proxy"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-lg-4">
+                  <!-- <mat-form-field>
+                    <mat-label>Profile</mat-label>
+                    <mat-select formControlName="sofia_profile">
+                      <mat-option value="0">Internal</mat-option>
+                      <mat-option value="1">External</mat-option>
+                      <mat-option value="2">Both</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+
+                    <ejs-dropdownlist
+                      formControlName="sofia_profile"
+                      [floatLabelType]="'Auto'"
+                      (filtering)="Profileremovedspace($event)"
+                      style="width: 57%"
+                      [dataSource]="ProfileList"
+                      [fields]="fields1"
+                      [popupHeight]="popupHeight"
+                      [popupWidth]="popupWidth"
+                      [placeholder]="placeholder1"
+                      allowFiltering="true"
+                    >
+                    </ejs-dropdownlist>
+                    <!-- <div
+                      *ngIf="
+                        provider.invalid && (provider.dirty || provider.touched)
+                      "
+                      class="reqired-field"
+                    >
+                      <div *ngIf="provider.errors.required">Required Field</div>
+                    </div> -->
+
+
+                </div>
+                <div class="form-group col-md-4 mt-2">
+                  <mat-slide-toggle
+                    formControlName="is_realm"
+                    (change)="changeRealm($event)"
+                  >
+                    Realm as IP/Domain
+                  </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4 mt-2">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Realm as IP/Domain</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="realm"
+                      id="realm"
+                      maxlength="50"
+                      placeholder="Realm as IP/Domain"
+                      autocomplete="off"
+                      disabled="!gatewayData.is_realm"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Max simultaneous Call</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="simultaneous_call"
+                      (keypress)="commonService.numberOnly($event)"
+                      id="simultaneous_call"
+                      maxlength="3"
+                      placeholder="Max simultaneous Call"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4 mt-2 switch-div">
+                  <mat-slide-toggle
+                    formControlName="register"
+                    (change)="gatewayRegister($event)"
+                  >
+                    Register
+                  </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-checkbox
+                    [checked]="!theCheckbox"
+                    (change)="toggleVisibility($event)"
+                  >
+                    Callerid Header value different from Callerid</mat-checkbox
+                  >
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Prepend Digit In Caller ID</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="prependDigit_callerid"
+                      id="prependDigit_callerid"
+                      maxlength="6"
+                      (keypress)="
+                        prepandDigit($event, prependDigit_callerid.value)
+                      "
+                      placeholder="Prepend Digit In Caller ID"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Striped Digit in Caller ID</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="stripedDigit_callerid"
+                      id="stripedDigit_callerid"
+                      maxlength="6"
+                      (keypress)="
+                        stripDigit($event, stripedDigit_callerid.value)
+                      "
+                      placeholder="Striped Digit in Caller ID"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4" *ngIf="!theCheckbox">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Caller ID Header Value</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="callerID_headervalue"
+                      (keypress)="commonService.numberOnly($event)"
+                      maxlength="15"
+                      placeholder="Caller ID Header Value"
+                      [readonly]="theCheckbox"
+                      autocomplete="off"
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="
+                      callerID_headervalue.invalid &&
+                      (callerID_headervalue.dirty ||
+                        callerID_headervalue.touched)
+                    "
+                    class="reqired-field"
+                  >
+                    <div *ngIf="callerID_headervalue.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="!theCheckbox">
+                  <mat-form-field>
+                    <mat-label>Caller ID Header Type</mat-label>
+                    <mat-select
+                      formControlName="callerID_headertype"
+                      [value]="2"
+                    >
+                      <mat-option value="0">Remote-Party-ID</mat-option>
+                      <mat-option value="1">P-Asserted-Identity</mat-option>
+                      <mat-option value="2">None</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="registered">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Auth Username</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="auth_username"
+                      id="auth_username"
+                      maxlength="50"
+                      placeholder="Auth Username"
+                      (keydown.space)="$event.preventDefault()"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="
+                      auth_username.invalid &&
+                      (auth_username.dirty || auth_username.touched)
+                    "
+                    class="reqired-field"
+                  >
+                    <div *ngIf="auth_username.errors.required">Required</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="registered">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Password</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="password"
+                      id="password"
+                      maxlength="50"
+                      placeholder="Password"
+                      (keydown.space)="$event.preventDefault()"
+                      value=""
+                      autocomplete="new-password"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="
+                      password.invalid && (password.dirty || password.touched)
+                    "
+                    class="reqired-field"
+                  >
+                    <div *ngIf="password.errors.required">Required</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="registered">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Expiry</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="expiry"
+                      id="expiry"
+                      (keypress)="commonService.numberOnly($event)"
+                      placeholder="Expiry (eg.3600)"
+                      maxlength="4"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="expiry.invalid && (expiry.dirty || expiry.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="expiry.errors.required">Required</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="registered">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Ping</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="ping"
+                      id="ping"
+                      (keypress)="commonService.numberOnly($event)"
+                      placeholder="Ping(Sec)"
+                      maxlength="2"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="ping.invalid && (ping.dirty || ping.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="ping.errors.required">Required Field</div>
+                    <div *ngIf="ping.errors.min">Ping can't be 0</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="registered">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Retry</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="retry"
+                      id="retry"
+                      (keypress)="commonService.numberOnly($event)"
+                      placeholder="Retry(Sec) max(60)"
+                      maxlength="2"
+                      autocomplete="off"
+                      required
+                    />
+                  </mat-form-field>
+                  <div
+                    *ngIf="retry.invalid && (retry.dirty || retry.touched)"
+                    class="reqired-field"
+                  >
+                    <div *ngIf="retry.errors.required">Required Field</div>
+                    <div *ngIf="retry.errors.min">Retry can't be 0</div>
+                    <div *ngIf="retry.errors.max">
+                      Retry maximum limit is 60
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-checkbox
+                    [checked]="!timeCheckBox"
+                    (change)="timeToggleVisibility($event)"
+                  >
+                    Time Base Routing</mat-checkbox
+                  >
+                </div>
+                <div class="form-group col-md-3" *ngIf="!timeCheckBox">
+                  <mat-form-field>
+                      <mat-label>Start Time</mat-label>
+                      <input matInput [ngxTimepicker]="picker" [format]="24" formControlName="time_start"
+                           readonly>
+                      <ngx-material-timepicker #picker (timeSet)="onTimeSelect($event)"></ngx-material-timepicker>
+                  </mat-form-field>
+                  <!-- <div *ngIf="time_start.invalid && (time_start.dirty || time_start.touched)"
+                      class="reqired-field">
+                      <div *ngIf="time_start.errors.required">
+                          Required Field
+                      </div>
+                  </div> -->
+              </div>
+              <div class="form-group col-md-3" *ngIf="!timeCheckBox">
+                  <mat-form-field>
+                      <mat-label>Finish Time</mat-label>
+                      <input matInput [ngxTimepicker]="picker1" [format]="24" formControlName="time_finish"
+                           readonly>
+                      <ngx-material-timepicker #picker1></ngx-material-timepicker>
+                  </mat-form-field>
+                  <!-- <div *ngIf="time_finish.invalid && (time_finish.dirty || time_finish.touched)"
+                      class="reqired-field">
+                      <div *ngIf="time_finish.errors.required">
+                          Required Field
+                      </div>
+                  </div> -->
+              </div>
+              </div>
+              <div class="hr-sect">Add Codec</div>
+              <div class="row">
+                <div class="form-group col-md-8">
+                  <p-pickList
+                    [source]="sourceCodec"
+                    [target]="targetCodec"
+                    sourceHeader="Codec"
+                    targetHeader="Allow Codec"
+                    [showSourceControls]="false"
+                    [showTargetControls]="false"
+                    [responsive]="true"
+                    dragdrop="true"
+                    [sourceStyle]="{ height: '135px' }"
+                    [targetStyle]="{ height: '135px' }"
+                    filterBy="codec"
+                  >
+                    <ng-template let-codec pTemplate="sourceCodec">
+                      <div class="ui-helper-clearfix">
+                        <div style="font-size: 14px; float: right">
+                          {{ codec.codec }}
+                        </div>
+                      </div>
+                    </ng-template>
+                  </p-pickList>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 example-button-row">
+                  <button
+                    mat-raised-button
+                    [disabled]="!gatewayForm.valid"
+                    color="primary"
+                  >
+                    Submit
+                  </button>
+                  <button mat-raised-button color="warn" (click)="cancelForm()">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

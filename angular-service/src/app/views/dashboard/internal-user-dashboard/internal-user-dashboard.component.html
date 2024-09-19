@@ -1,0 +1,70 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card"  style="background-color: #dbd9d9;">
+        <div class="card-header">
+          <strong>DASHBOARD</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5 class="card-title mb-0"><strong>Customer Information</strong></h5>
+                </div>
+              </div>
+              <div class="card-body">
+                <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                  (actionClick)="manageUserAction($event)">
+                </app-grid>
+              </div>
+            </div>
+            <!-- end of customer detail -->
+            <!-- start of did detail -->
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5 class="card-title mb-0"><strong>DID Information</strong></h5>
+                </div>
+                <!--/.col-->
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <app-grid [columnDefs]="didColumnDefs" [dataSource]="didDataSource" [rowData]="didRowData"
+                    [pageSize]='10' (actionClick)="manageDidAction($event)">
+                  </app-grid>
+                </div>
+              </div>
+            </div>
+            <!-- end of did detail -->
+            <!-- start of did assignment detail -->
+             <!-- start of cdr-->
+             <div class="col-lg-12">
+              <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+              <div class="card-body">
+                  <app-grid [columnDefs]="callColumnDefs" [dataSource]="callDataSource"
+                      [rowData]="callRowData" [pageSize]='10' (actionClick)="manageCallAction($event)">
+                  </app-grid>
+              </div>
+          </div>
+          <!-- end of cdr -->
+            <!-- start of ticket detail -->
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5 class="card-title mb-0"><strong>Ticket Information</strong></h5>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <app-grid [columnDefs]="ticketColumnDefs" [dataSource]="ticketDataSource" [rowData]="ticketRowData"
+                    [pageSize]='10' (actionClick)="manageAction($event)">
+                  </app-grid>
+                </div>
+              </div>
+            </div>
+            <!-- end of ticket detail -->
+
+          </div>
+
+        </div>

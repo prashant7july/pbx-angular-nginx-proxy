@@ -1,0 +1,20 @@
+<h3 class="card-header-style">Black List Information</h3>
+<div mat-dialog-content>
+    <div id="scrollId" class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    Calls Blacklist is used to block unwanted calls. We may add a number in Blacklist with or without E-164 format.<br />
+                    (E-164 Format is used to add a contact with his selected country code).
+                </mat-card-content>
+                <img src="assets/img/blacklist.png" style="width:50%;margin-left:auto;margin-right:auto;display:block;">
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

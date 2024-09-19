@@ -1,0 +1,159 @@
+<h3 class="card-header-style">Excel Import</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="importRates" class="row">
+            <div class="row">
+                <div class="form-group col-md-2">
+                    <mat-label>Plan Type</mat-label>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <mat-radio-group aria-label="Select an option" formControlName="plan_type" (change)="isChnageMinutePlanType($event); ">
+                        <mat-radio-button value="0">Standard</mat-radio-button> &nbsp; &nbsp;
+                        <mat-radio-button value="1">DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                        <mat-radio-button value="5">Outgoing Bundle</mat-radio-button> &nbsp; &nbsp;
+                        <mat-radio-button value="2">Roaming</mat-radio-button> &nbsp; &nbsp;
+                        <mat-radio-button value="3">Booster</mat-radio-button>&nbsp; &nbsp;
+                        <mat-radio-button value="4">TeleConsultancy</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="form-group col-md-4" style="margin-top: -15px;">
+                    <ejs-dropdownlist (filtering)="CallRateremovedspace($event)" formControlName="call_plan" style="width: 66%;margin-top: 9px;"
+                        [dataSource]='selectedValue' [fields]='fields' [popupHeight]='popupHeight' (change)="selectPlan($event)"
+                        [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3'
+                        allowFiltering=true>
+                    </ejs-dropdownlist>
+                    <!-- <div style="margin-top: 2px;" *ngIf="call_plan.invalid && (call_plan.dirty || call_plan.touched)" class="reqired-field">
+                    <div *ngIf="call_plan.errors.required">
+                        Required Field
+                    </div>
+                </div> -->
+                </div>
+                <div class="form-group col-md-4" style="margin-top: -15px;">
+                    <ejs-dropdownlist formControlName="gateway" (filtering)="Gatewayremovedspace($event)"
+                        style="width: 66%;margin-top: 9px;" [dataSource]='allGateway' [fields]='fields1'
+                        [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                        [placeholder]='placeholder1' allowFiltering=true>
+                    </ejs-dropdownlist>
+                    <!-- <div style="margin-top:2px;" *ngIf="gateway.invalid && (gateway.dirty || gateway.touched)"
+                    class="reqired-field">
+                    <div *ngIf="gateway.errors.required">Required Field</div>
+                </div> -->
+                </div>
+
+                <div class="form-group col-md-4 mt-2" *ngIf="planType == '1' || planType == '2' || planType == '4' || planType == '5'">
+                    <mat-slide-toggle formControlName="isGroup" (change)="isChnageGroup($event)">
+                     Group
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4" style="margin-top: -15px;" *ngIf="isGroups">
+                    <ejs-dropdownlist formControlName="group_id" (filtering)="Groupremovedspace($event)"
+                    style="width: 66%;margin-top: 9px;" [dataSource]='callRategroupList' [fields]='fields'
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+                </ejs-dropdownlist>                   
+                    <!-- <div style="margin-top:2px;" *ngIf="group_id.invalid && (group_id.dirty || group_id.touched )" class="reqired-field">
+                        <div *ngIf="group_id.errors.required"> Required Field</div>
+                    </div> -->
+                    <div style="margin-top:2px;" *ngIf="group_id.invalid && (group_id.dirty || group_id.touched )" class="reqired-field">
+                        <div *ngIf="group_id.errors.required"> Required Field</div>
+                    </div>
+                </div>
+
+                <!-- <div class="form-group col-md-4" *ngIf="planType == '3'">
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Booster For </mat-label>
+                        <mat-select formControlName="booster_for" required>
+                            <mat-option value = "1">DID Bundle</mat-option>
+                            <mat-option value = "5">Outgoing Bundle</mat-option>
+                            <mat-option value = "2">Roaming</mat-option>
+                            <mat-option value = "4">Tele Consultancy</mat-option>
+                        </mat-select>
+                    </mat-form-field>                   
+                </div> -->
+
+                <div class="col-md-4">
+                    <form id="uploadForm" enctype="multipart/form-data" action="upload" method="post"
+                        style="margin-top:16px;">
+                        <input type="file" name="importCsv" ng2FileSelect [uploader]="uploader"
+                            style="cursor:pointer;" />
+                    </form>                   
+                </div>
+                <div>
+                    <button 
+                    (click)="imageSource1 = planType == '0' ? '../../assets/img/call_plan_rate.png' : '../../assets/img/call_plan_rate_bundle.png';  openPrediction1()"
+                    style="background: none!important;border: none;padding: 0!important;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;float:right;font-size:12px; margin-top: 20px;">
+                    <i class="fa fa-file-excel-o form-group col-md-4"></i>
+                    Sample Basic
+                </button>
+
+                    <!-- <button (click)="imageSource1 = '../../assets/img/call_plan_rate_minute_import.png';  openPrediction2()"
+                style="background: none!important;border: none;padding: 0!important;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;float:right;font-size:12px;">
+                <i class="fa fa-file-excel-o"></i>
+                     Sample Advanced
+                </button> -->
+                </div>
+            </div>
+
+            <div class="row" *ngIf="basic" style="margin-top:4px;">
+                <label><strong>Basic File</strong></label>
+                <img [src]="imageSource1" *ngIf="imageSource1" style="width: 100%" />
+                {{ text }}
+                <button mat-raised-button color="accent"  class="mt-2"  (click)="downloadExcelSample()"><i class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+            </div>
+
+            <!-- <div class="row" style="margin-top:4px; width:80%"> -->
+            <!-- <div class="col-md-8" style="float:right;margin-left:11px;"> -->
+            <!-- <button
+                    (click)="imageSource1 = '../../assets/img/advanceCallPlanRateImport.png';  openPrediction2()"
+                    style="background: none!important;border: none;padding: 0!important;font-family: arial, sans-serif;color: #069;text-decoration: underline;cursor: pointer;float:right;font-size:12px;">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample Advance
+                </button> -->
+            <!-- </div> -->
+            <!-- <div class="row" *ngIf="advance" style="margin-top:4px;">
+                <label><strong>Advance File</strong></label>
+                <img [src]="imageSource1" *ngIf="imageSource1" style="width: 100%" />
+                {{ text }}
+            </div> -->
+
+
+
+            <!-- <div class="row" *ngIf="showNotInsertedValue" style="margin-top:4px; width:80%">
+                <table class="table-responsive-sm table-bordered table-striped table-sm" style="margin:30px;">
+                    <thead>
+                        <tr>
+                            <th>Call Plan</th>
+                            <th>Dial Prefix</th>
+                            <th>Gateway</th>
+                            <th>Buying Rate</th>
+                            <th>Selling Rate</th>
+                            <th>Selling Min Duration</th>
+                            <th>Selling Billing Block</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of excelValue">
+                            <td>{{ item.call_plan }}</td>
+                            <td>{{ item.dial_prefix }}</td>
+                            <td>{{ item.gateway}}</td>
+                            <td>{{ item.buying_rate}}</td>
+                            <td>{{ item.selling_rate }}</td>
+                            <td>{{ item.selling_min_duration}}</td>
+                            <td>{{ item.selling_billing_block}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+            <!-- </div> -->
+            <div class="row" style="margin-top:4px;">
+                <div class="col-md-12 example-button-row" style="text-align: left;">
+                    <button mat-raised-button class="mr-2" color="warn" (click)="cancleDialog()">Close</button>
+                    <!-- <button  (click)="advanceFile2(); uploader.uploadAll()" mat-raised-button
+                        color="primary">Submit</button> -->
+                    <button (click)="onupload()" mat-raised-button
+                        color="primary" [disabled]="!importRates.valid">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

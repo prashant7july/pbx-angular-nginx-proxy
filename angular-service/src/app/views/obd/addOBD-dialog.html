@@ -1,0 +1,309 @@
+<h3 class="card-header-style">OBD</h3>
+<div mat-dialog-content>
+    <!-- <div class="header-btn">
+        <button (click)="importFile()" mat-raised-button color="warn"
+            style=" margin:11px; top:-10px; background-color: #E8692D !important;"><i
+                class="fa fa-save fa-fw"></i>Excel Import</button>
+    </div> -->
+    <div class="card-body">
+        <form [formGroup]="OBDForm" class="row">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" maxlength="20"
+                        (keypress)="commonService.charOnly($event)" autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <ejs-dropdownlist formControlName="welcome_prompt" style="width: 80%;margin-top: -7px;"
+                    [dataSource]='selectedTeleConsultationValue' [fields]='fields11' [popupHeight]='popupHeight'
+                    [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3'
+                    allowFiltering=true>
+                </ejs-dropdownlist>
+                <div style="margin-top: 1px;"
+                    *ngIf="welcome_prompt.invalid && (welcome_prompt.dirty || welcome_prompt.touched)"
+                    class="reqired-field">
+                    <div *ngIf="welcome_prompt.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-6" *ngIf="!callqueueData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" [disabled]="welcomePrompt!=1" (filtering)="categoryremovedspace($event)"
+                style="width: 80%;margin-top: -7px;" [dataSource]='selectedTeleConsultationValue' [fields]='fields11'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true>
+            </ejs-dropdownlist>
+            </div> -->
+
+            <div class="form-group col-md-3 switch-div" style="top: 20px;">
+                <mat-slide-toggle value="1" formControlName="random_did" (change)="randomDID($event)">
+                    DID as a Random
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="!is_random_did">
+                <ejs-dropdownlist formControlName="caller_id_pstn" style="width: 80%;margin-top: -7px;" [(ngModel)]="did_caller_id"
+                    [dataSource]='didList' [fields]='fields2' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                    [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true>
+                </ejs-dropdownlist>
+           
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="is_random_did">
+                <ejs-multiselect id='multiselectelement' formControlName="caller_id_pstn" style="width: 80%;margin-top: -7px;" [(ngModel)]="did_caller_id"
+                    [dataSource]='didList' [fields]='fields2' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                    [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                </ejs-multiselect>
+
+            </div>
+            <!-- <div class="form-group col-md-12" *ngIf="edit">
+                <ejs-multiselect id='multiselectelement' (filtering)="groupremovedspace($event)" [dataSource]='contactList' [fields]='fields3' placeholder='Contacts'
+                    formControlName="contacts" [(ngModel)]="callqueueData.group" (select)="selectGroup($event,true)" (removed)="selectGroup($event,false)" [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="contacts.invalid && (contacts.dirty || contacts.touched)" class="reqired-field mt-1">
+                    <div *ngIf="contacts.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <br><br> -->
+            <div class="hr-sect" style="background: #ffffff;"></div>
+            <div class="form-group col-md-3 switch-div" *ngIf="is_sms_in_package" style="top: 20px;">
+                <mat-slide-toggle value="1" formControlName="sms" [(ngModel)]="sms" (change)="SMSTemplate($event)">
+                    SMS
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-3" style=" margin-top: -5px; margin-left: -98px;" *ngIf="isSMS">
+                <ejs-dropdownlist style="width: 80%; margin-bottom: -28px;" formControlName="sms_temp"
+                    (filtering)="countryremovedspace($event)" [dataSource]="SMSList"
+                    [fields]="fields1" [popupHeight]="popupHeight" [floatLabelType]="'Auto'" placeholder="SMS Category List"
+                    allowFiltering="true" required>
+                </ejs-dropdownlist>
+                <div style="margin-top: 10px;"
+                    *ngIf="sms_temp.invalid && (sms_temp.dirty || sms_temp.touched)"
+                    class="reqired-field mt-1">
+                    <div *ngIf="sms_temp.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3 switch-div" *ngIf="is_recording_in_package" style="top: 20px;">
+                <mat-slide-toggle value="1" formControlName="recording" [(ngModel)]="recording">
+                    Recording
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-3 " *ngIf="is_whatsapp" style="top: 20px;">
+                <mat-slide-toggle value="1" formControlName="whatsapp" (change)="whatsappSelectionn($event)"
+                    [(ngModel)]="whatsapp">
+                    Whatsapp
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-3" style=" margin-top: 5px; margin-left: 3px;" *ngIf="iswhatsapp">
+                <ejs-dropdownlist style="width: 80%; margin-bottom: -28px;" formControlName="whatsapp_temp"
+                    (filtering)="countryremovedspace($event)" [(ngModel)]="whatsapp_template" [dataSource]="tempList"
+                    [fields]="fields4" [popupHeight]="popupHeight" [floatLabelType]="'Auto'" placeholder="Templates"
+                    allowFiltering="true" required>
+                </ejs-dropdownlist>
+                <div style="margin-top: 10px;"
+                    *ngIf="whatsapp_temp.invalid && (whatsapp_temp.dirty || whatsapp_temp.touched)"
+                    class="reqired-field mt-1">
+                    <div *ngIf="whatsapp_temp.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3" style="top: 20px;">
+                <mat-slide-toggle value="1" formControlName="dtmf" (change)="DtmfSelectionn($event)" [(ngModel)]="dtmf">
+                    DTMF
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-5" style="top: 24px" *ngIf="isDTMF">
+                <mat-radio-group aria-label="Select an option" formControlName="dtmfSelection"
+                    (change)="getIvrList($event)">
+                    <mat-radio-button value="1" checked>Save DTMF</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button *ngIf="is_ivr" value="2">Select IVR</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="form-group col-md-4" style="margin-left: 3px; top: 5px;" *ngIf="isIVR && is_ivr ">
+                <ejs-dropdownlist style="width: 80%; margin-bottom: -33px;" formControlName="ivr_value"
+                    (filtering)="Countryremovedspace($event)" [dataSource]="ivrList" [fields]="fields4"
+                    [popupHeight]="popupHeight" [floatLabelType]="'Auto'" placeholder="IVR List" allowFiltering="true"
+                    required>
+                </ejs-dropdownlist>
+            </div>
+
+
+            <div class="form-group col-md-3" style="top: 24px;">
+                <mat-radio-group aria-label="Select an option" formControlName="provider"
+                    (change)="chooseApiOrGateway($event)">
+                    <mat-radio-button value="1" checked>Gateway</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">API</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="form-group col-md-2" *ngIf="isApi">
+                <ejs-dropdownlist style="width: 150%;" formControlName="api_integration"
+                    (filtering)="Countryremovedspace($event)" [dataSource]="apiIntegrationList" [fields]="fields4"
+                    [popupHeight]="popupHeight" [floatLabelType]="'Auto'" placeholder="API Integration List"
+                    allowFiltering="true" required>
+                </ejs-dropdownlist>
+            </div>
+
+
+            <div class="hr-sect" *ngIf="!edit" style="margin-top: 20px;"></div>
+            <div class="col-md-6" style="margin-top:4px;" *ngIf="!edit">
+                <button class="sampleBasic" style="margin-right: 308px;"
+                    (click)="imageSource = '../../../assets/img/obdSample.png'; openPrediction1()">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample OBD
+                </button>
+            </div>
+            <div class="excelSheet" *ngIf="excel">
+                <label style="margin-top: 21px; margin-left: -50%;"><strong>OBD Sample</strong></label>
+                <div class="excelSheetTitle">
+                    <img [src]="imageSource" *ngIf="imageSource" style="width: 120%; margin-left: -52%;"
+                        class="imageTag" />
+                    {{ text }}
+                </div>
+                <button mat-raised-button color="accent" class="myExcelButton"
+                    style="margin-top: 10px; margin-left: -52%;" (click)="downloadExcelSample()"><i
+                        class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+            </div>
+            <div class="form-group col-md-6" style="margin-top:15px;" *ngIf="!edit">
+                <div class="form-group row">
+                    <label class="blcaklist col-sm-4" for="prompt">Upload File<span
+                            class="reqired-field">*</span></label>
+                    <div class="col-sm-4">
+                        <input type="file" formControlName="prompt" name="prompt" ng2FileSelect [uploader]="uploader"
+                            style="margin-bottom: 20px;" required />
+                        <!-- <div *ngIf="prompt.invalid && (prompt.dirty || prompt.touched )" class="reqired-field">
+                      <div *ngIf="prompt.errors.required">
+                        Required Field
+                      </div>
+                    </div> -->
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <div class="row">
+                <div class="hr-sect" style="margin-left: -8px;" *ngIf="edit">Contact List</div>
+
+
+                <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;" *ngIf="edit">
+
+                    <div class="row">
+                        <div class="header-btn">
+                            <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-325px;"
+                                (click)="deleteChecked()"
+                                [disabled]="isDelete || participantList.length === 0">Delete</button>
+                            <button mat-raised-button color="primary" style=" margin:11px;top: 3px;left:-340px;"
+                                (click)="selectAll()">Select All</button>
+                            <button mat-raised-button color="primary"
+                                style=" margin:11px;top:3px;left:-355px; margin-right: -200px;"
+                                (click)="unselectAll()">Unselect All</button>
+                            <div class="row">
+                                <div class="header-btn">
+                                    <label style="    margin-right: 22px; margin-top: 25PX;"><b>Reset Leads:</b></label>
+                                    <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-15px;"
+                                        (click)="resetAll()" [disabled]="participantList?.length === 0"> All</button>
+                                    <button mat-raised-button color="primary" style=" margin:11px;top: 3px;left:-28px;"
+                                        (click)="resetAnswered()">Answered</button>
+                                    <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-40px;"
+                                        (click)="resetFailed()">Failed</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2" [dataSource]="dataSource2"
+                        [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+                    </app-grid>
+
+                </div>
+                <div class="form-group col-md-4" *ngIf="edit">
+                    <mat-form-field class="example-full-width"
+                        style="width: 70%; margin-left: 102px; margin-right: -40px;">
+                        <mat-label>Contact</mat-label>
+                        <input matInput placeholder="Contact" formControlName="add_contact" maxlength="13" minlength="8"
+                            autocomplete="off">
+                    </mat-form-field>
+                    <div *ngIf="add_contact.invalid && (add_contact.dirty || add_contact.touched)"
+                        class="reqired-field">
+                        <div style=" margin-left: 102px; margin-right: -40px;" *ngIf="add_contact.errors.pattern">
+                            invalid number
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-2" *ngIf="edit">
+                    <button mat-raised-button color="primary" style="margin-left: 50px; margin-top: 4px;"
+                        [disabled]="!add_contact.valid" (click)="addContact()">Add Lead</button>
+                </div>
+                <div class="form-group col-md-2" *ngIf="edit">
+                    <button mat-raised-button color="warn"
+                        style="margin-left: -45px; margin-top: 4px; background-color: #01A89E !important;"
+                        (click)="exportToExcel()">Export Excel</button>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-group col-md-12 mt-2">
+                <mat-radio-group aria-label="Select an option" formControlName="scheduler"
+                    (change)="schedularChange($event)" [(ngModel)]="schedularType">
+                    <mat-radio-button value="0" checked>Call Now</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="1">Schedule Call</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+
+            <div class="form-group col-md-4" *ngIf="isShowSchedular">
+
+                <div>
+
+                    <p-calendar formControlName="schedular_start_date" [minDate]="minDate" [showTime]="true"
+                        [inline]="true" [showSeconds]="true" [readonlyInput]="true" dateFormat="yy/mm/dd"
+                        hourFormat="24" hideOnDateTimeSelect="true" [inline]="true" [(ngModel)]="todayDate">
+                        <ng-template>
+                            <span
+                                style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;"></span>
+                        </ng-template>
+                    </p-calendar>
+                </div>
+            </div>
+            <div *ngIf="schedular_start_date.invalid && (schedular_start_date.dirty || schedular_start_date.touched)"
+                class="reqired-field">
+                <div *ngIf="schedular_start_date.errors.required">
+                    Required
+                </div>
+            </div>
+
+            <!-- <div class="col-lg-12 example-button-row">                
+                <button [disabled]="!OBDForm.valid" (click)="basicFile();  uploader.uploadAll()" mat-raised-button color="primary">
+                    Submit</button>
+                <button mat-raised-button color="warn" type="button" (click)="onNoClick($event)">Cancel</button>
+            </div> -->
+            <div class="col-lg-12 example-button-row">
+                <button *ngIf="edit" (click)="submitOBDForm();" mat-raised-button color="primary"
+                    [disabled]="!OBDForm.valid">Submit</button>
+                <button *ngIf="!edit" (click)="submit();" mat-raised-button color="primary"
+                    [disabled]="!OBDForm.valid">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

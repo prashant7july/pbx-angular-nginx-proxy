@@ -1,0 +1,18 @@
+.btn1-info {     
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    float:right;
+}
+
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+
+::ng-deep 
+.e-rte-content{
+    height:500px !important;
+}

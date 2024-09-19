@@ -1,0 +1,128 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>ALL DID'S</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="header-btn">
+                            <div class="help-button" style="margin-bottom: 12px;">
+                                <button mat-raised-button (click)="showInfo()"
+                                    style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+                                    <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                                    HELP
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <app-accordian-filter style="width: 100%">
+                            <form [formGroup]="filterForm" class="row" novalidate>
+                                <div class="form-group col-md-3">
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>DID Number</mat-label>
+                                        <input matInput type="text" formControlName="by_did" (keypress)="commonService.numberOnly($event)"
+                                            maxlength="20" placeholder="DID Number">
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3" style="margin-top: -15px;">
+                                    <!-- <mat-form-field>
+                                        <mat-label>Country</mat-label>
+                                        <mat-select formControlName="by_country">
+                                            <mat-option value="" selected>Select Country</mat-option>
+                                            <mat-option *ngFor='let country of countryList' [value]="country.id">
+                                                {{ country.name }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <ejs-multiselect id='multiselectelement' [floatLabelType]="'Auto'" (filtering)="Countryremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='countryList' [fields]='fields2' [placeholder]='placeholder2'
+                                    formControlName="by_country" [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode'
+                                    [selectAllText]='selectAllText' showSelectAll=true>
+                                </ejs-multiselect>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Status</mat-label>
+                                        <mat-select formControlName="by_status">
+                                            <mat-option value="" selected>Select Status</mat-option>
+                                            <mat-option value="1">Active</mat-option>
+                                            <mat-option value="0">Inactive</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3" style="margin-top: -15px;">
+                                    <!-- <mat-form-field>
+                                        <mat-label>Company</mat-label>
+                                        <mat-select formControlName="by_company" (change)="selectCompanyDiv($event)">
+                                            <mat-option value="" selected>Select Company</mat-option>
+                                            <mat-option *ngFor='let company of selectedValue' [value]="company.company_name">
+                                                {{company.company_name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <ejs-multiselect id='multiselectelement' [floatLabelType]="'Auto'" (filtering)="Companyremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='selectedValue' [fields]='fields'
+                                        [placeholder]='placeholder' formControlName="by_company" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                        [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                    </ejs-multiselect>
+                                </div>
+                                <div class="form-group col-md-3" style="margin-top: -15px;">
+                                    <!-- <mat-form-field>
+                                        <mat-label>Provider</mat-label>
+                                        <mat-select formControlName="by_provider" (change)="selectCompanyDiv($event)">
+                                            <mat-option value="" selected>Select Provider</mat-option>
+                                            <mat-option *ngFor='let provider of providerList' [value]="provider.id">
+                                                {{provider.provider }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <ejs-multiselect id='multiselectelement' [floatLabelType]="'Auto'" (filtering)="Providerremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='providerList' [fields]='fields3'
+                                        [placeholder]='placeholder3' formControlName="by_provider" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                                        [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                                    </ejs-multiselect>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>DID Group</mat-label>
+                                        <mat-select formControlName="by_group">
+                                            <mat-option value="" selected>Select Group</mat-option>
+                                            <mat-option value="0">General</mat-option>
+                                            <mat-option value="1">Premium</mat-option>
+                                            <mat-option value="2">Private</mat-option>
+                                            <mat-option value="3">VMN</mat-option>
+                                            <mat-option value="4">Parked</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <button mat-raised-button (click)="filterData()" color="primary">Search</button>
+                                    &nbsp;
+                                    <button mat-raised-button color="warn" (click)="resetTable()">Reset</button>
+                                </div>
+                            </form>
+                        </app-accordian-filter>
+                    </div>
+                    <div class="example-wrapper" style="margin-top:75px;">
+                        <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                            <mat-form-field class="float-right">
+                                <mat-label>Number of records</mat-label>
+                                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                                    <mat-option value="10" selected>10</mat-option>
+                                    <mat-option value="50">50</mat-option>
+                                    <mat-option value="100">100</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData"
+                            [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+                        </app-grid>
+                    </div>
+                    <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                        (actionClick)="manageAction($event)">
+                    </app-grid> -->
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+</div>

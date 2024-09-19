@@ -1,0 +1,93 @@
+<h3 class="card-header-style">Server Detail</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="serverForm" (ngSubmit)="submitServerForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>IP</mat-label>
+                    <input matInput type="text" id="ip" formControlName="ip" (keydown.space)="$event.preventDefault();"
+                        [(ngModel)]="serverData.ip" placeholder="IP" (change)="checkValidIP($event)" maxlength="40"
+                        autocomplete="off"  required>
+                </mat-form-field>
+                <div *ngIf="ip.invalid && (ip.dirty || ip.touched)" class="reqired-field">
+                    <div *ngIf="ip.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="ip.errors.pattern">IP Must be valid</div>
+                    <div *ngIf="ip.errors.maxlength">IP max length is 40 character long.</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Port</mat-label>
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="port"
+                        id="port" maxlength="5" [(ngModel)]="serverData.port" placeholder="Port"
+                        autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="port.invalid && (port.dirty || port.touched)" class="reqired-field">
+                    <div *ngIf="port.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="port.errors.maxlength">Port max length is 5 character long.</div>
+                    <!-- <div *ngIf="port.errors.minlength">Port min length is 2 character.</div> -->
+                    <div *ngIf="port.errors.max">Port exceeds</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Service</mat-label>
+                    <mat-select formControlName="service" (selectionChange)="selectService($event)"
+                        [(ngModel)]="serverData.serviceId">
+                        <mat-option *ngFor='let service of selectedValue' [value]="service.id">
+                            {{ service.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="service.invalid && (service.dirty || service.touched)" class="reqired-field">
+                    <div *ngIf="service.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="user_pswd_Div">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" id="user" formControlName="user" [(ngModel)]="serverData.username"
+                        placeholder="Username" maxlength="20" (keydown.space)="$event.preventDefault();"
+                        autocomplete="off" appBlockCopyPaste required>
+                    </mat-form-field>
+                    <div style="margin-top: -10px;" *ngIf="user.invalid && (user.dirty || user.touched)" class="reqired-field">
+                        <div *ngIf="user.errors.required">
+                            Required Field
+                        </div>
+                    </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="user_pswd_Div">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="text" formControlName="pswd" maxlength="8" placeholder="Password"
+                        (keydown.space)="$event.preventDefault();" [(ngModel)]="serverData.password"
+                        autocomplete="new-password" appBlockCopyPaste required>
+                    </mat-form-field>
+                    <div style="margin-top: -10px;" *ngIf="pswd.invalid && (pswd.dirty || pswd.touched)" class="reqired-field">
+                        <div *ngIf="pswd.errors.required">
+                            Required Field
+                        </div>
+                    </div>
+            </div>
+            <div class="form-group col-lg-4" *ngIf="serverData.id">
+                <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" [(ngModel)]="serverData.statusDisplay">
+                        <mat-option value="0">Inactive</mat-option>
+                        <mat-option value="1">Active</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!serverForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

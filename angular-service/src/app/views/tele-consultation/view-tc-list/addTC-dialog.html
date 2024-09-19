@@ -1,0 +1,335 @@
+<h3 class="card-header-style">Tele-Consultation</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="TCForm" (ngSubmit)="submitTCForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" [(ngModel)]="callqueueData.name"
+                        maxlength="20" (keypress)="commonService.charOnly($event)" autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Max Waiting Call (in sec)</mat-label>
+                    <input matInput formControlName="max_waiting_call" id="max_waiting_call"
+                        [(ngModel)]="maxWaitingcall" maxlength="4" placeholder="Max Waiting Call"
+                        (keypress)="commonService.numberOnly($event)" autocomplete="off" required >
+                </mat-form-field>
+                <div *ngIf="max_waiting_call.invalid && (max_waiting_call.dirty || max_waiting_call.touched)" class="reqired-field">
+                    <div *ngIf="max_waiting_call.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div> -->
+            <div class="form-group col-md-4" *ngIf="!callqueueData.id" >                
+                <ejs-dropdownlist formControlName="welcome_prompt" (filtering)="Promptremovedspace($event)"  
+               style="width: 63%; margin-top: -7px" [(ngModel)]="callqueueData.welcome_prompt" [disabled]="welcomePrompt!=1"
+                [dataSource]="selectedTeleConsultationValue" [fields]="fields10" [popupHeight]="popupHeight" [floatLabelType]="'Auto'"
+                [placeholder]="placeholder10" allowFiltering="true" required>
+              </ejs-dropdownlist>   
+              <div style="margin-top: 1px;" *ngIf="welcome_prompt.invalid && (welcome_prompt.dirty || welcome_prompt.touched)" class="reqired-field">
+                <div *ngIf="welcome_prompt.errors.required">
+                    Required Field
+                </div>
+            </div>                 
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="callqueueData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" (filtering)="Promptremovedspace($event)"
+                style="width: 63%; margin-top: -7px" [(ngModel)]="callqueueData.welcome_prompt" [disabled]="welcomePrompt!=1"
+                 [dataSource]="selectedTeleConsultationValue" [fields]="fields10" [popupHeight]="popupHeight" [floatLabelType]="'Auto'"
+                 [placeholder]="placeholder10" allowFiltering="true" required>
+               </ejs-dropdownlist>
+               <div style="margin-top: 1px;" *ngIf="welcome_prompt.invalid && (welcome_prompt.dirty || welcome_prompt.touched)" class="reqired-field">
+                <div *ngIf="welcome_prompt.errors.required">
+                    Required Field
+                </div>
+            </div>  
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="moh == 1">
+                <ejs-dropdownlist formControlName="moh" (filtering)="Promptremovedspace($event)"
+                style="width: 63%; margin-top: -7px" [(ngModel)]="callqueueData.moh" 
+                 [dataSource]="selectedMOHValue" [fields]="fields11" [popupHeight]="popupHeight" [floatLabelType]="'Auto'"
+                 [placeholder]="placeholder11" allowFiltering="true" required>
+               </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                    <mat-label>MOH</mat-label>
+                    <mat-select formControlName="moh" [(ngModel)]="callqueueData.moh" #select1>
+                        <mat-select-filter *ngIf="select1.focused" [array]="selectedTeleConsultationValue"
+                            [displayMember]="'prompt_name'" (filteredReturn)="filterMOH = $event"></mat-select-filter>
+                        <mat-option [value]='0' selected>Default</mat-option>
+                        <mat-option *ngFor='let moh of filterMOH' [value]="moh.id">
+                            {{ moh.prompt_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Ring Strategy</mat-label>
+                    <mat-select formControlName="ring_strategy" *ngIf="callqueueData.id"
+                        [(ngModel)]="callqueueData.ringStrategyDisplay">
+                        <mat-option value="0">Ring All</mat-option>
+                        <mat-option value="1">Round Robin</mat-option>
+                        <mat-option value="2">Random</mat-option>
+                    </mat-select>
+                    <mat-select formControlName="ring_strategy" *ngIf="!callqueueData.id">
+                        <mat-option value="0" selected>Ring All</mat-option>
+                        <mat-option value="1">Round Robin</mat-option>
+                        <mat-option value="2">Random</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4" *ngIf="recording == 1">
+                <mat-slide-toggle formControlName="recording" [(ngModel)]="callqueueData.recording">
+                    Recording
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="unauthorized_fail" [(ngModel)]="callqueueData.unauthorized_fail">
+                    Unauthorized Fail Over
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="unauthorized_fail.value">
+                <mat-form-field>
+                    <mat-label>Feature</mat-label>
+                    <mat-select formControlName="active_feature" [(ngModel)]="callqueueData.active_feature"
+                        (selectionChange)="getValueOfActiveFeature($event)" #select2>
+                        <mat-select-filter *ngIf="select2.focused" [array]="activeFeature" [displayMember]="'feature'"
+                            (filteredReturn)="filterFeature = $event"></mat-select-filter>
+                        <mat-option *ngFor='let feature of filterFeature' [value]="feature.id">
+                            {{ feature.feature }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="active_feature.value && unauthorized_fail.value">
+                <mat-form-field>
+                    <mat-label>Value</mat-label>
+                    <mat-select formControlName="active_feature_value" [(ngModel)]="callqueueData.active_feature_value"
+                        #select3>
+                        <mat-select-filter *ngIf="select3.focused" [array]="activeFeatureValue" [displayMember]="'name'"
+                            (filteredReturn)="filterFeatureValue = $event"></mat-select-filter>
+                        <mat-option *ngFor='let d1 of filterFeatureValue' [value]="d1.id">
+                            {{ d1.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="active_feature_value.invalid && (active_feature_value.dirty || active_feature_value.touched)"
+                    class="reqired-field">
+                    <div *ngIf="active_feature_value.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="checkedBundleMinute">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Free Minutes</mat-label>
+                    <input matInput placeholder="Free Time" formControlName="free_time"
+                        [(ngModel)]="callqueueData.free_minutes" maxlength="1"
+                        (keypress)="commonService.numberOnly($event)" autocomplete="off" min="0" max="5">
+                </mat-form-field>
+                <div *ngIf="free_time.invalid && (free_time.dirty || free_time.touched)" class="reqired-field">
+                    <div *ngIf="free_time.errors.pattern">
+                        number should be between 0 - 5
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Exhaust Minute Announcement</mat-label>
+                    <input matInput placeholder="Exhaust Announcement" formControlName="exhaust_announcement"
+                        [(ngModel)]="callqueueData.exhausted_announcement_time" maxlength="1"
+                        (keypress)="commonService.numberOnly($event)" autocomplete="off">
+                </mat-form-field>
+                <div *ngIf="exhaust_announcement.invalid && (exhaust_announcement.dirty || exhaust_announcement.touched)"
+                    class="reqired-field">
+                    <div *ngIf="exhaust_announcement.errors.pattern">
+                        number should be between 0 - 5
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="tc_caller_id" [(ngModel)]="callqueueData.callerid_as_DID">
+                    Hide Callerid
+                </mat-slide-toggle>
+                <div >
+                    <small style="color: blue; font-weight:600;">*Note</small><small style="font-weight: bold;"> Agent/Consultant</small> <small> will not see Phone Number of Caller</small>
+                </div>
+            </div>
+
+            <!-- hr -->
+            <div class="hr-sect">Periodic Announcement</div>
+            <!-- hr -->
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="periodic_announcement"
+                    [(ngModel)]="callqueueData.periodic_announcement" (change)="showPeriodicAnnouncement($event)">
+                    Periodic Announcement
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isPeriodicAnnouncementTime">
+                <mat-form-field>
+                    <mat-label style="font-size:15px;">Periodic Announcement Time(Secs)</mat-label>
+                    <mat-select formControlName="periodic_announcement_time" [(value)]="selected"
+                        [(ngModel)]="callqueueData.periodic_announcement_time">
+                        <mat-option selected value="15">15</mat-option>
+                        <mat-option value="30">30</mat-option>
+                        <mat-option value="60">60</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <!-- <div class="form-group col-md-4" *ngIf="isPeriodicAnnouncementTime">
+                <mat-form-field>    
+                    <mat-label>Periodic Announcement Time(Secs)</mat-label>
+                    <mat-select formControlName="periodic_announcement_time" [(ngModel)]="callqueueData.periodic_announcement_time">
+                        <mat-option *ngFor="let mask of annTime" [value]="mask.id">{{mask.id}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+            <div class="form-group col-md-4" *ngIf="isPeriodicAnnouncementTime">
+                <mat-form-field>
+                    <mat-label style="font-size:15px;">Periodic Announcement Prompt</mat-label>
+                    <mat-select formControlName="periodic_announcement_prompt" [disabled]="prompt != 1"
+                        *ngIf="callqueueData.id" [(ngModel)]="callqueueData.periodic_announcement_prompt">
+                        <mat-option value='0'>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of selectedTeleConsultationValue' [value]="conference.id">
+                            {{ conference.prompt_name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-select formControlName="periodic_announcement_prompt" [disabled]="prompt != 1"
+                        *ngIf="!callqueueData.id">
+                        <mat-option value='0' selected>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of selectedTeleConsultationValue' [value]="conference.id">
+                            {{ conference.prompt_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4 switch-div">
+                <mat-slide-toggle formControlName="play_position_on_call"
+                    [(ngModel)]="callqueueData.play_position_on_call" (change)="showPlayPositionOnCall($event)">
+                    Play Position as Enter on Call
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-4 switch-div" *ngIf="isPlayPositionOnCall">
+                <mat-slide-toggle formControlName="play_position_periodically"
+                    [(ngModel)]="callqueueData.play_position_periodically">
+                    Play Position Periodically
+                </mat-slide-toggle>
+            </div>
+            <!-- hr -->
+            <div class="hr-sect">Add Consultant</div>
+            <!-- hr -->
+            <div class="form-group col-md-12">
+
+                <!-- <mat-label class="chk-lbl">Select Type</mat-label><br/> -->
+                <mat-checkbox class="example-margin pro-check" formControlName="is_extension" [value]="1"
+                    name="is_extension" [checked]="callqueueData.is_extension" (change)="getPackageByProduct($event)">
+                    SIP
+                </mat-checkbox>&nbsp; &nbsp;
+                <mat-checkbox class="example-margin pro-check" formControlName="is_pstn" [value]="2" name="is_pstn"
+                    [checked]="callqueueData.is_pstn" (change)="getPackageByProduct($event)">PSTN
+                </mat-checkbox>
+
+            </div>
+            <div class="form-group col-md-12" *ngIf="isShowExtension">
+                <ejs-multiselect id='multiselectelement' [dataSource]='sourceAgent' [fields]='fields'
+                    [placeholder]='placeholder' formControlName="extension" [(ngModel)]="callqueueData.extension"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="extension.invalid && (extension.dirty || extension.touched)" class="reqired-field mt-1">
+                    <div *ngIf="extension.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-12" *ngIf="isContactSection">
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields3'
+                    [placeholder]='placeholder' [(ngModel)]="contactData.contacts" [mode]='mode'
+                    [selectAllText]='selectAllText' showSelectAll=true formControlName="contacts"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth'>
+                </ejs-multiselect>
+                <br>
+            </div> -->
+            <div class="form-group col-md-12" *ngIf="isShowPSTN">
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields3'
+                    [placeholder]='placeholder2' formControlName="pstn" [(ngModel)]="callqueueData.pstn"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="pstn.invalid && (pstn.dirty || pstn.touched)" class="reqired-field mt-1">
+                    <div *ngIf="pstn.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="isCallerId">
+                <ejs-dropdownlist id='multiselectelement' [dataSource]='callerIdList' [fields]='fields4'
+                    placeholder='Select Caller id ' formControlName="callerid" [(ngModel)]="callqueueData.callerid"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth'>
+                </ejs-dropdownlist>
+                <div *ngIf="callerid.invalid && (callerid.dirty || callerid.touched)" class="reqired-field mt-1">
+                    <div *ngIf="callerid.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="hr-sect">TC Package</div>        
+             <!-- <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label style="font-size:10px;">Contact Group</mat-label>
+                    <mat-select formControlName="group_id" (selectionChange)="groupSelect($event)"
+                        [(ngModel)]="callqueueData.group_id">
+                        <mat-option *ngFor='let c of contactGroupList' [value]="c.id">
+                            {{ c.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>  -->
+             <!-- <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label style="font-size:10px;">Tc Packages</mat-label>
+                    <mat-select (selectionChange)="contactSelect($event)" multiple>
+                        <mat-option *ngFor="let tc of TcPlans" [value]="tc">{{tc.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> 
+            <div class="form-group col-md-12">
+                <mat-form-field style="width: 100%;">
+                    <mat-chip-list aria-label="Fruit selection">
+                        <mat-chip *ngFor="let contact of selectedContactList" [selectable]="selectable"
+                            [removable]="removable" (removed)="remove(contact)">
+                            {{contact.name}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </mat-form-field>
+            </div> -->
+
+            <div class="form-group col-md-12" style="top: 20px;">
+                <ejs-multiselect id='multiselectelement' [dataSource]='TcPlans' [fields]='fields2'
+                    [placeholder]='placeholder3' formControlName="user_ids" [popupHeight]='popupHeight' [(ngModel)]="callqueueData.userList"
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>                
+            </div>
+
+            <div class="col-lg-12 example-button-row" style="top: 25px;">
+                <button mat-raised-button [disabled]="!TCForm.valid || submitted" color="primary">Submit</button>
+                <button mat-raised-button color="warn" type="button" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

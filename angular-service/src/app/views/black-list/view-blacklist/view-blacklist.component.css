@@ -1,0 +1,37 @@
+::ng-deep 
+.swal2-content{
+    color: #FFFFFF !important;
+}
+
+/* @media only screen and (max-width:320px) {
+    .mat-slide-toggle-content{
+      font-size:7px;
+    }
+}
+@media only screen and (max-width:481px) {
+    .mat-slide-toggle-content{
+        font-size:7px;
+    }
+}
+@media only screen and (max-width:641px) {
+    .mat-slide-toggle-content{
+        font-size:10px;
+    }
+}
+@media only screen and (max-width:960px) {
+    .mat-slide-toggle-content{
+        font-size:10px;
+    }
+}
+
+@media only screen and (max-width:1025px) {
+    .mat-slide-toggle-content{
+        font-size:12px;
+    }
+}
+
+@media only screen and (max-width:1381px) {
+    .mat-slide-toggle-content{
+        font-size:12px;
+    }
+} */

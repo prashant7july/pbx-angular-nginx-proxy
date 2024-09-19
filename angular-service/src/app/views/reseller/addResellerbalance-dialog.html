@@ -1,0 +1,87 @@
+<h3 class="card-header-style">Manage Balance</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="addResellerBalanceForm" (ngSubmit)="submitAddBalanceForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Reseller Name</mat-label>
+                    <input matInput type="text"  placeholder="Company Name" formControlName="company_name" [(ngModel)]="ResellerName"
+                          autocomplete="off" readonly>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Payment Date</mat-label>
+                    <input matInput placeholder="Payment Date" formControlName="payment_date" bsDatepicker readonly
+                        autocomplete="off" 
+                        [minDate]="minDate"  
+                        [maxDate]="maxDate"
+                        [(ngModel)]="today"
+                        required
+                        [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', customTodayClass: 'custom-today-class', displayOneMonthRange: true, dateInputFormat: 'DD/MM/YYYY , HH:mm:ss'}" />
+                </mat-form-field>
+                <div *ngIf="payment_date.invalid && (payment_date.dirty || payment_date.touched)" class="reqired-field">
+                    <div *ngIf="payment_date.errors.required">
+                        Required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Available Amount</mat-label>
+                    <input matInput type="text" formControlName="old_amount" placeholder="Old Amount" [(ngModel)]="lastBalance"
+                          autocomplete="off" appBlockCopyPaste
+                        readonly>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Payment Type</mat-label>
+                    <mat-select formControlName="payment_type" (selectionChange)="setBlankAmount($event)" required>
+                        <mat-option value="0">Agent Refund</mat-option>
+                        <mat-option value="1">Amount</mat-option>
+                        <mat-option value="2">Correction</mat-option>
+                        <!-- <mat-option value="3">Extra Fee</mat-option> -->
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="payment_type.invalid && (payment_type.dirty || payment_type.touched)" class="reqired-field">
+                    <div *ngIf="payment_type.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Amount</mat-label>
+                    <input matInput type="text" formControlName="amount" placeholder="Amount"
+                        (keypress)="(payment_type.value == '0') ? commonService.floatWithNegativeNumber($event) : commonService.decimalWIth2digits($event)" maxlength="7" autocomplete="off" appBlockCopyPaste  required>
+                        <span *ngIf="payment_type.value == '2'" matPrefix>-&nbsp;</span>
+                </mat-form-field>
+                <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="reqired-field">
+                    <div *ngIf="amount.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="amount.errors.maxlength">Amount max length is 7 character long.</div>
+                    <div *ngIf="amount.errors.minlength">Amount min length is 1 character.</div>
+                    <div *ngIf="amount.errors.pattern">Enter the correct value</div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4 mt-2">
+                <mat-slide-toggle formControlName="agent_commission">
+                    Create Agent Commission
+                </mat-slide-toggle>
+            </div> -->
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Description" maxlength="150"
+                        style="resize:none;" autocomplete="off" appBlockCopyPaste></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!addResellerBalanceForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

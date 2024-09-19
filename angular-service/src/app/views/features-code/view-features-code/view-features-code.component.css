@@ -1,0 +1,9 @@
+::ng-deep 
+.card-body {
+    padding: 25px;
+}
+::ng-deep
+p {
+    margin-top: 0;
+    margin-bottom: 0rem !important;
+}

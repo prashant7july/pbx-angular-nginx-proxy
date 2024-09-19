@@ -1,0 +1,101 @@
+<h3 class="card-header-style">Excel Import</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form id="uploadForm" enctype="multipart/form-data" action="upload" method="post" style="margin:5px;">
+                    <input type="file" name="importCsv" ng2FileSelect [uploader]="uploader" style="cursor:pointer;" />
+                </form>
+
+            </div>
+            <div class="col-md-3">
+                <button class="sampleBasic"
+                (click)="imageSource = '../../assets/img/basic-import.png';  openPrediction1()">
+                <i class="fa fa-file-excel-o"></i>
+                Sample Basic
+               </button>
+               
+                <!-- <button (click)="basicFile(); uploader.uploadAll()" mat-raised-button color="primary"
+                    style=" background-color: #c69500 !important;">Basic
+                    Excel Import</button> -->
+            </div>
+            <div class="col-md-3">
+                <button class="sampleAdvance"
+                (click)="imageSource1 = '../../assets/img/advance-import.png';  openPrediction2()">
+                <i class="fa fa-file-excel-o"></i>
+                Sample Advance
+              </button>
+                <!-- <button (click)="advanceFile(); uploader.uploadAll()" mat-raised-button color="warn"
+                    style="background-color: #379457 !important;">Advance
+                    Excel Import</button> -->
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:4px;">
+            <div class="col-md-8">
+                <!-- <button class="sampleBasic"
+                    (click)="imageSource = '../../assets/img/basic-import.png';  openPrediction1()">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample Basic
+                </button> -->
+            </div>
+            <div class="col-md-10" style="float:right;">
+                <!-- <button class="sampleAdvance"
+                    (click)="imageSource1 = '../../assets/img/advance-import.png';  openPrediction2()">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample Advance
+                </button> -->
+            </div>
+        </div>
+
+        <div class="row" *ngIf="basic" style="margin-top:4px;">
+            <label><strong>Basic File</strong></label>
+            <img [src]="imageSource" *ngIf="imageSource" style="width: 100%" />
+            {{ text }}
+            <button mat-raised-button color="accent"  class="mt-2"  (click)="downloadExcelSample()"><i class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+        </div>
+        <div class="row" *ngIf="advance" style="margin-top:4px;">
+            <label><strong>Advance File</strong></label>
+            <img [src]="imageSource1" *ngIf="imageSource1" style="width: 100%" />
+            {{ text }}
+            <button mat-raised-button color="accent" class="mt-2" (click)="downloadAdvanceExcelSample()"><i class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+        </div>
+        <div class="row" *ngIf="showNotInsertedValue" style="margin-top:4px; width:80%">
+            <table class="table-responsive-sm table-bordered table-striped table-sm" style="margin:15px;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number1</th>
+                        <th>Phone Number2</th>
+                        <th>Organization</th>
+                        <th>Designation</th>
+                        <th *ngIf="importAdvanceFile">CountryCode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of excelValue">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.phone_number1}}</td>
+                        <td>{{ item.phone_number2}}</td>
+                        <td>{{ item.organization }}</td>
+                        <td>{{ item.designation}}</td>
+                        <td *ngIf="importAdvanceFile">{{ item.country_code}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row" style="margin-top:4px;">
+            <div class="col-md-12 example-button-row mt-4"  style="text-align: left;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+                <button (click)="onshowmsg()" mat-raised-button color="primary"
+                style=" background-color: #c69500 !important;">Basic
+                Submit</button>
+                <button (click)="onshowmsadvance()" mat-raised-button color="warn"
+                    style="background-color: #379457 !important;">Advance
+                    Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
