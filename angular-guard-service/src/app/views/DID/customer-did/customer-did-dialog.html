@@ -1,0 +1,90 @@
+<h3 class="card-header-style">DID Destination</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form class="row" [formGroup]="destinationForm">
+            <div class="form-group col-lg-12">
+                <div class="form-group row">
+                    <div class="form-group col-md-3" style="margin-top: 6px;"> 
+                        <mat-form-field>
+                            <mat-label>DID</mat-label>
+                            <input matInput type="text" [value]="did_num" appBlockCopyPaste disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <ejs-dropdownlist formControlName="active_feature" (filtering)="Featureremovedspace($event)" (select)="getDestinationList($event)"
+                            style="width: 100%;" [dataSource]='activeFeature' [fields]='fields' [(ngModel)]="didFeature" [floatLabelType]="'Auto'"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+                        </ejs-dropdownlist>
+                        <!-- <mat-form-field>
+                            <mat-label>Feature</mat-label> 
+                            <mat-select formControlName="active_feature" (openedChange)="HandleDropdownFilter('filterFeature',FeatureFilter)" (selectionChange)="getDestinationList($event)"
+                                [(ngModel)]="didFeature" required #select4>
+                                <mat-select-filter  *ngIf="select4.focused" [array]="activeFeature" [displayMember]="'feature'" (filteredReturn)="filterFeature = $event"></mat-select-filter>                                
+                                <mat-option *ngFor='let feature of filterFeature' [value]="feature.id">
+                                    {{ feature.feature }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="active_feature.invalid && (active_feature.dirty || active_feature.touched)"
+                            class="reqired-field">
+                            <div *ngIf="active_feature.errors.required">
+                                Required Field
+                            </div> 
+                        </div> -->
+                    </div>
+                    <div class="form-group col-md-3" *ngIf="isUrl && !isVoicebot" style="margin-top: -7px;">
+                        <mat-form-field class="example-full-width" style="margin-left: 35px;">
+                          <textarea matInput formControlName="url_dynamic_ivr" placeholder="Dynamic IVR URL" [(ngModel)]="dynamic_ivr_url"
+                            maxlength="200" style="resize:none;" autocomplete="off" ></textarea>
+                        </mat-form-field>
+                      </div>
+                    <div class="form-group col-md-3" *ngIf="!isUrl && !isVoicebot">
+                  
+                         <ejs-dropdownlist id='ddltooltip' (filtering)="Destinationremovedspace($event)" formControlName="destination_id"
+                            style="width: 100%;" [dataSource]='destination_data' [fields]='fields2' [floatLabelType]="'Auto'"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+                        </ejs-dropdownlist> 
+                     
+                    </div>
+                    <div class="form-group col-md-3" *ngIf="isVoicebot">
+                  
+                        <ejs-dropdownlist id='ddltooltip' (filtering)="Destinationremovedspace($event)" formControlName="voicebot" [(ngModel)]="voicebot"
+                           style="width: 100%;" [dataSource]='voicebotList' [fields]='fields2' [floatLabelType]="'Auto'"
+                           [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Voicebot List' allowFiltering=true>
+                       </ejs-dropdownlist> 
+                    
+                   </div>
+                    
+                    <div class="form-group col-md-3" *ngIf="active_feature.value">
+                        <!-- <mat-form-field>
+                            <mat-label>Time Group</mat-label>
+                            <mat-select formControlName="time_group_id" (openedChange)="HandleDropdownFilter('filterTimeGroup',TimeGroupFilter)" [(ngModel)]="didTimeGroup" #select3>
+                                <mat-select-filter  *ngIf="select3.focused" [array]="timeGroup_data" [displayMember]="'name'" (filteredReturn)="filterTimeGroup = $event"></mat-select-filter>
+                                <mat-option value="0" selected>Select Time Group</mat-option>
+                                <mat-option  *ngFor='let group of filterTimeGroup | orderBy:"name"' [value]="group.id">
+                                    {{ group.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <ejs-dropdownlist id='ddltooltip' (filtering)="Timeremovedspace($event)" formControlName="time_group_id" [(ngModel)]="didTimeGroup"
+                            style="width: 100%;" [dataSource]='timeGroup_data' [fields]='fields2' [floatLabelType]="'Auto'"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true>
+                        </ejs-dropdownlist>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-12">
+                <div class="form-group row">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <button type="button" [disabled]="!destinationForm.valid"
+                            class="btn btn-success" (click)="submitdestinationForm()">Submit</button>
+                           &nbsp;&nbsp;
+                        <button type="button" class="btn btn-danger" (click)="cancelForm()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

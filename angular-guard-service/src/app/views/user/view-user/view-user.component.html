@@ -1,0 +1,204 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>ALL CUSTOMERS</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <button (click)="downloadPDF()" mat-raised-button color="primary" [hidden]="userRole == '5'"
+                style=" margin:11px;top:-10px;left:13px;background-color: #CD5C5C !important;">Download PDF</button>
+              <button (click)="exportToExcel()" mat-raised-button color="warn" [hidden]="userRole == '5'"
+                style=" margin:11px; top:-10px; background-color: #01A89E !important;">Excel Export</button>
+              <div class="view-button" *ngIf="userRole !='4'  && userRole!='5' && customerMenu.add_permission">
+                <button mat-raised-button color="primary" (click)="goToCreate()"><i
+                  class="material-icons left">add_circle</i>
+                ADD</button>
+              </div>
+              <div class="help-button" style="margin-bottom: 12px;">
+                <button mat-raised-button (click)="showInfo()"
+                  style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+                  <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                  HELP
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate>
+                <div class="form-group col-md-3" style="margin-top: -15px;">
+                  <!-- <mat-form-field>
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="by_company">
+                      <mat-option value="" selected>Select Company</mat-option>
+                      <mat-option *ngFor='let company of companyData' [value]="company.company_name">
+                        {{company.company_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" class="mt-2" style="width: 60%;" [dataSource]='companyData'
+                    [fields]='fields' [placeholder]='placeholder' formControlName="by_company"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="email" formControlName="by_email" maxlength="35" placeholder="Email">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="by_status">
+                      <mat-option value="" selected>Select Status</mat-option>
+                      <mat-option value="1">Active</mat-option>
+                      <mat-option value="3">Expired</mat-option>
+                      <mat-option value="0">Inactive</mat-option>
+                      <mat-option value="4">Suspended for Underpayment</mat-option>
+                      <mat-option value="5">Suspended for Litigation</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3" *ngIf="userRole=='0' || userRole=='2' || userRole=='5'" style="margin-top: -15px;">
+                  <!-- <mat-form-field>
+                    <mat-label>Account Manager</mat-label>
+                    <mat-select formControlName="by_account_manager">
+                      <mat-option value="" selected>Select Account Manager</mat-option>
+                      <mat-option *ngFor='let manager of managerArr | orderBy:"first_name"' [value]="manager.id">
+                        {{manager.first_name}} {{manager.last_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <ejs-multiselect id='multiselectelement' (filtering)="Accountremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='managerArr'
+                    [fields]='fields7' [placeholder]='placeholder2' formControlName="by_account_manager"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+                <!-- <div class="form-group col-md-3" *ngIf="userRole === UserTypeAccountManager || userRole === UserTypeSupportManager">
+                  <mat-form-field>
+                    <mat-label>Customer Name</mat-label>
+                    <mat-select formControlName="by_customer_name">
+                      <mat-option value="" selected>Select Customer</mat-option>
+                      <mat-option *ngFor='let item of customerNameList | orderBy:"first_name"' [value]="item.id">
+                        {{item.first_name}} {{item.last_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div> -->
+                <!-- <div class="form-group col-md-3" *ngIf="userRole === UserTypeAccountManager || userRole === UserTypeSupportManager">
+                  <mat-form-field>
+                    <mat-label>Package</mat-label>
+                    <mat-select formControlName="by_package">
+                      <mat-option value="" selected>Select Package</mat-option>
+                      <mat-option *ngFor='let item of packageList | orderBy:"package_name"' [value]="item.package_id">
+                        {{item.package_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div> -->
+                <!-- <div class="form-group col-md-3" *ngIf="userRole === UserTypeAccountManager || userRole === UserTypeSupportManager">
+                  <mat-form-field>
+                    <mat-label>Product</mat-label>
+                    <mat-select formControlName="by_product">
+                      <mat-option value="" selected>Select Product</mat-option>
+                      <mat-option *ngFor='let product of productList | orderBy:"name"' [value]="product.id">
+                        {{product.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div> -->
+                <div class="form-group col-md-3" *ngIf="userRole !=UserTypeAccountManager">
+                  <mat-form-field>
+                    <mat-label>Billing Type</mat-label>
+                    <mat-select formControlName="by_billing_type">
+                      <mat-option value="" selected>Select Billing Type</mat-option>
+                      <mat-option value="1">Prepaid</mat-option>
+                      <mat-option value="2">Postpaid</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" (keypress)="commonService.alphabetOnly($event)"
+                      formControlName="by_name" maxlength="35" placeholder="Name">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="by_username" maxlength="35" placeholder="Username">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3"
+                *ngIf="userRole != UserTypeSupportManager && userRole != UserTypeAccountManager" style="margin-top: -15px;">
+                <ejs-multiselect id='multiselectelement' (filtering)="Circleremovedspace($event)" class="mt-2" style="width: 60%;" [dataSource]='circleList'
+                  [fields]='fields3' [placeholder]='placeholder3' formControlName="by_circle"
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" [mode]='mode' [selectAllText]='selectAllText'
+                  showSelectAll=true>
+                </ejs-multiselect>
+              </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field>
+                    <mat-label>Product</mat-label>
+                    <mat-select formControlName="by_product" (selectionChange)="getPackageByProduct($event)">
+                      <mat-option value="" selected>Select Product</mat-option>
+                      <mat-option value="1">PBX</mat-option>
+                      <mat-option value="2">Outbound Conference</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: -15px;" *ngIf="isOCSelect" >
+                  <ejs-dropdownlist  (filtering)="OCSelectremovedspace($event)" class="mt-2" style="width: 60%;" [dataSource]='ocPackageList'
+                  [fields]='fields3' [placeholder]='placeholder4' formControlName="by_oc"
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" 
+                  showSelectAll=true>
+                </ejs-dropdownlist>
+             
+                </div>
+                <div class="form-group col-md-3" style="margin-top: -15px;" *ngIf="isPBXSelect">
+                  <ejs-dropdownlist   (filtering)="Packageremovedspace($event)" class="mt-2" style="width: 60%;" [dataSource]='pbxPackageList'
+                  [fields]='fields3' [placeholder]='placeholder7' formControlName="by_pbx"
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" 
+                  showSelectAll=true>
+                </ejs-dropdownlist>
+           
+                
+             
+                </div>
+             
+                <!-- <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="by_username" maxlength="35" placeholder="Username">
+                  </mat-form-field>
+                </div> -->
+                <div class="form-group col-md-3">
+                  <button mat-raised-button (click)="filterData()" color="primary">Search</button>
+                  &nbsp;
+                  <button mat-raised-button color="warn" (click)="resetTable()">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+          <div class="example-wrapper" style="margin-top:75px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+              <mat-form-field class="float-right">
+                <mat-label>Number of records</mat-label>
+                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)"
+                  id="page-size">
+                  <mat-option value="10" selected>10</mat-option>
+                  <mat-option value="50">50</mat-option>
+                  <mat-option value="100">100</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData"
+              [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+            </app-grid>
+          </div>
+          <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+            (actionClick)="manageAction($event)">
+          </app-grid> -->
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- </div> -->

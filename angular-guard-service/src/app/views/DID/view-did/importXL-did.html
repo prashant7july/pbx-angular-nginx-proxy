@@ -1,0 +1,94 @@
+<h3 class="card-header-style">Excel Import</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form id="uploadForm" enctype="multipart/form-data" action="upload" method="post" style="margin:5px;">
+                    <input type="file" name="importCsv" ng2FileSelect [uploader]="uploader" style="cursor:pointer;" />
+                </form>
+
+            </div>
+            <div class="col-md-6">
+                <button class="sampleBasic"
+                (click)="imageSource = '../../assets/img/didImportCSV.png';  openPrediction1()">
+                <i class="fa fa-file-excel-o"></i>
+                Sample Basic
+            </button>
+            </div>
+            <!-- <div class="col-md-3">
+                <button (click)="advanceFile(); uploader.uploadAll()" mat-raised-button color="warn"
+                    style="background-color: #379457 !important;">Advance
+                    Excel Import</button>
+            </div> -->
+        </div>
+
+        <div class="row" style="margin-top:4px;">
+            <!-- <div class="col-md-8">
+                <button class="sampleBasic"
+                    (click)="imageSource = '../../assets/img/didImportCSV.png';  openPrediction1()">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample Basic
+                </button>
+            </div>
+             -->
+            <!-- <div class="col-md-10" style="float:right;">
+                <button class="sampleAdvance"
+                    (click)="imageSource1 = '../../assets/img/advance-import.png';  openPrediction2()">
+                    <i class="fa fa-file-excel-o"></i>
+                    Sample Advance
+                </button>
+            </div> -->
+        </div>
+
+        <div class="row" *ngIf="basic" style="margin-top:4px;">
+            <label><strong>Basic File</strong></label>
+            <img [src]="imageSource" *ngIf="imageSource" style="width: 100%" />
+            {{ text }}
+            <button mat-raised-button color="accent"  class="mt-2"  (click)="downloadExcelSample()"><i class="fa fa-download"></i>&nbsp;&nbsp;Download Sample</button>
+        </div>
+        <!-- <div class="row" *ngIf="advance" style="margin-top:4px;">
+            <label><strong>Advance File</strong></label>
+            <img [src]="imageSource1" *ngIf="imageSource1" style="width: 100%" />
+            {{ text }}
+        </div> -->
+        <div class="row" *ngIf="showNotInsertedValue" style="margin-top:4px; width:80%">
+            <table class="table-responsive-sm table-bordered table-striped table-sm" style="margin:15px;">
+                <thead>
+                    <tr>
+                        <th>Did Number</th>
+                        <th>Country</th>
+                        <th>Provider</th>
+                        <th>Did Group</th>
+                        <th>Max Concurrent Call</th>
+                        <th>Monthly Rate</th>
+                        <th>Selling Rate</th>
+                        <th>Connect Charge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of excelValue">
+                        <td>{{ item['did number'] }}</td>
+                        <td>{{ item['country'] }}</td>
+                        <td>{{ item['provider'] }}</td>
+                        <td>{{ item['did group'] }}</td>
+                        <td>{{ item['max cc'] }}</td>
+                        <td>{{ item['monthly rate'] }}</td>
+                        <td>{{ item['selling rate'] }}</td>
+                        <td>{{ item['connect charge'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row" style="margin-top:4px;">
+             <div class="col-md-12 example-button-row mt-4" style="text-align: left;">
+                <button mat-raised-button class="mr-2" color="warn" (click)="cancleDialog()">Close</button>
+               
+            <!-- </div> -->
+            <!-- <div class="col-md-2 example-button-row" style="text-align: left;"> -->
+                <button  (click)="basicFile();  uploader.uploadAll()" mat-raised-button color="primary">
+                Submit</button>
+           </div> 
+
+        </div>
+    </div>
+</div>

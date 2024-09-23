@@ -1,0 +1,262 @@
+<h3 class="card-header-style">Call Plan</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form class="row" [formGroup]="callPlanForm" (ngSubmit)="submitCallPlan()">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" placeholder="Name" formControlName="name" maxlength="50"
+                        [(ngModel)]="callPlanName" autocomplete="off" appBlockCopyPaste required />
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                    <div *ngIf="name.errors.required"> Required Field</div>
+                    <div *ngIf="name.errors.pattern">
+                        Invalid name
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>LC Type</mat-label>
+                    <mat-select formControlName="type"  [(ngModel)]="defaultLC" required>
+                        <mat-option value="0">LCR - According to the buyer price</mat-option>
+                        <mat-option value="1">LCD - According to the seller price</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="type.invalid && (type.dirty || type.touched )" class="reqired-field">
+                    <div *ngIf="type.errors.required"> Required Field</div>
+                    <div *ngIf="type.errors.pattern">
+                        Space not allowed at first position
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-slide-toggle formControlName="isCircle"  [(ngModel)]="isCircleShow" [disabled]="isAssign || isMinutePlanShow || data.id" (change)="isChnageCircle($event)">
+                 Circle
+                </mat-slide-toggle>
+            </div>
+            <div class="form-group col-md-6" *ngIf="callPlanForm.get('isCircle').value" style="margin-top: -25px;">
+                <ejs-dropdownlist formControlName="circle" [floatLabelType]="'Auto'" [readonly]="data.id"  (filtering)="circleremovedspace($event)" 
+                style="width: 65%;margin-top: 9px;" [dataSource]='circleList' [fields]='fields' [(ngModel)]="callPlanCirlce"
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field style="width: 100%;">
+                    <mat-label>Circle Name</mat-label>
+                    <mat-select formControlName="circle" (openedChange)="HandleDropdownFilter('filterCircle',CallPlanFilter)" [(ngModel)]="callPlanCirlce" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                      <mat-select-filter *ngIf="select1.focused" [array]="circleList" [displayMember]="'name'" (filteredReturn)="filterCircle = $event" allowFiltering=true></mat-select-filter>
+                        <mat-option *ngFor='let c of filterCircle' [value]="c.id">
+                            {{c?.name }}
+                          </mat-option> -->
+                        <!-- <mat-option *ngFor="let c of circleList" value="c.id">{{c?.name}}</mat-option> -->
+                        <!-- <mat-option value="1">LCD - According to the seller price</mat-option> -->
+                    <!-- </mat-select>
+                </mat-form-field> -->
+                <div>
+                    <small class="notification-txt" *ngIf="isAssign">Call Plan Circle can't change as this is assign to live Customers</small>
+                </div>
+                <div style="margin-top:2px;" *ngIf="circle.invalid && (circle.dirty || circle.touched )" class="reqired-field">
+                    <div *ngIf="circle.errors.required"> Required Field</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <mat-slide-toggle formControlName="isMinutePlan" [(ngModel)]="isMinutePlanShow" (change)="isChnageMinutePlan($event.checked)" [disabled]="data.id">
+                 Minute Plan
+                </mat-slide-toggle>
+            </div>
+            <div class="hr-sect" *ngIf="isMinutePlan.value">Minute Plan Detail</div>
+            <div class="form-group col-md-8 mt-2" *ngIf="isMinutePlan.value">
+                <mat-radio-group aria-label="Select an option" formControlName="isPlanType" (change)="isChnageMinutePlanType($event)" [(ngModel)]="planTypeValue" [disabled]="data.id">
+                    <!-- <mat-radio-button value="0">Standard</mat-radio-button> &nbsp; &nbsp; -->
+                    <mat-radio-button value="1">DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="5">Outgoing Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Roaming</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="3">Booster</mat-radio-button>&nbsp; &nbsp;
+                    <mat-radio-button value="4">TeleConsultancy</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div style="margin-top: -11px;" class="form-group col-md-4"*ngIf="(isMinutePlan.value) && (planTypeValue =='3')" >
+                <mat-form-field class="example-full-width" style="width: 100%;"  >
+                    <mat-label>Booster For *</mat-label>
+                    <mat-select formControlName="booster_for" [(ngModel)]="callPlanData.booster_for" [disabled]="data.id">
+                        <mat-option value = "1">DID Bundle</mat-option>
+                        <mat-option value = "5">Outgoing Bundle</mat-option>
+                        <mat-option value = "2">Roaming</mat-option>
+                        <mat-option value = "4">Tele Consultancy</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="booster_for.invalid && (booster_for.dirty || booster_for.touched)" class="reqired-field">
+                    <div *ngIf="booster_for.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+           
+            <div class="form-group col-md-6" *ngIf="(isMinutePlan.value)">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Validity</mat-label>
+                    <mat-select formControlName="validity" (selectionChange)="onValidityChanged($event)" [(ngModel)]="callPlanData.validity" required>
+                        <mat-option value = "weekly">Weekly</mat-option>
+                        <mat-option value = "monthly">Monthly</mat-option>
+                        <mat-option *ngIf="isMinutePlan.value != '3'" value = "yearly">Yearly</mat-option>
+                        <mat-option value = "custom">Custom</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="validity.invalid && (validity.dirty || validity.touched)" class="reqired-field">
+                    <div *ngIf="validity.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="validity.value == 'custom'">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>No.Of Days</mat-label>
+                    <input matInput type="text" formControlName="number_of_days" placeholder="No.Of Days" [(ngModel)]="callPlanData.number_of_days"
+                         autocomplete="off" maxlength="3" (input)="checkDaysValidation($event.target.value)" (keypress)="commonService.numberOnly($event)">
+                </mat-form-field>
+                <div *ngIf="number_of_days.invalid && (number_of_days.dirty || number_of_days.touched)" class="reqired-field">
+                    <div *ngIf="number_of_days.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="isMinutePlan.value">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Base Price</mat-label>
+                    <input matInput type="text" formControlName="base_charge" (keypress)="commonService.numberOnly($event)" [(ngModel)]="callPlanData.charge"
+                        placeholder="Base Price" autocomplete="off" maxlength="6" required>
+                </mat-form-field>
+                <div *ngIf="base_charge.invalid && (base_charge.dirty || base_charge.touched)" class="reqired-field">
+                    <div *ngIf="base_charge .errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>  
+
+            <div class="form-group col-md-6" *ngIf="isMinutePlan.value == '1' || isMinutePlan.value == '2'">  <!-- Not come in booster and TC -->
+                <mat-slide-toggle formControlName="is_overuse">
+                 Overuse
+                </mat-slide-toggle>
+            </div>
+            <!-- <div class="form-group col-md-8 mt-2" *ngIf="isMinutePlan.value && planTypeValue == '1'"> -->
+                <!-- <mat-radio-group aria-label="Select an option" formControlName="bundle_type" [disabled]="data.id"> -->
+                    <!-- <mat-radio-button value="1">DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Outgoing Bundle</mat-radio-button> &nbsp; &nbsp;
+                </mat-radio-group>
+            </div>
+            <div class="form-group col-md-8 mt-2" *ngIf="isMinutePlan.value && planTypeValue == '3' && booster_for.value == '1'">
+                <mat-radio-group aria-label="Select an option" formControlName="bundle_type_booster" [disabled]="data.id"> -->
+                    <!-- <mat-radio-button value="1">Booster For DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Booster For Outgoing Bundle</mat-radio-button> &nbsp; &nbsp; -->
+                <!-- </mat-radio-group>
+            </div> -->
+            <div  class="form-group col-md-3 mt-2" *ngIf="(isMinutePlan.value) && (planTypeValue =='3')">
+                <label>
+                    <mat-checkbox  formControlName="is_visible_customer" [(ngModel)]="isVisibleCustomer"   value="1">
+                        Visible to Customer Portal
+                    </mat-checkbox>
+                </label>
+            </div>
+            <div class="hr-sect" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">Extra Fee Detail</div>
+            <div class="row" style="margin-left: 1px; display: contents;" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="recurring"  (change)="recurring($event.checked)">
+                    Recurring Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px;">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge1" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  [readonly]="!recurringT" (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: 1px; display: contents;" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="monthlySupport"  (change)="monthlySupport($event.checked)">
+                    Monthly Support Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px;">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge2" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  [readonly]="!MonthlyT" (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: 1px; display: contents;" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="NocSupport"  (change)="NOCSupport($event.checked)">
+                    NOC Support Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px; ">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge3" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  [readonly]="!NOCT" (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: -1px; display: contents;" *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">
+                <div  class="form-group col-md-6">
+                    <mat-slide-toggle formControlName="OneTimeSupport"  (change)="OneTimeCharge($event.checked)">
+                    One Time Charge
+                    </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-6" style="margin-top:-16px; ">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>Charge*</mat-label>
+                        <input matInput type="text" placeholder="charge" formControlName="charge4" maxlength="50"
+                        autocomplete="off" appBlockCopyPaste  [readonly]="!OneTimeT" (keypress)="commonService.numberOnly($event)">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- <div  *ngIf="(isMinutePlan.value) && (planTypeValue !='3')">1
+                <div class="form-group col-md-12" formArrayName="fee_type_charges"
+                    *ngFor="let d of callPlanForm.controls['fee_type_charges']['controls']; let i=index">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Fee Type</mat-label>
+                                    <mat-select formControlName="fee_type" (selectionChange)="onFeeTypeChanged($event,i)">
+                                        <mat-option [value]='' selected>Select</mat-option>
+                                        <mat-option *ngFor='let e of extraFeeList' [value]="e.id">{{e.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <mat-form-field class="example-full-width" style="width: 100%;">
+                                    <mat-label>Charge</mat-label>
+                                    <input matInput type="text" formControlName="charge" placeholder="Charge"
+                                        (keypress)="commonService.numberOnly($event)">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-3 mt-1" *ngIf="i===0">
+                                <button class="btn btn-outline-primary" style="width: 100%;" type="button"
+                                    (click)="addNewCharges()">Add Fee (+)</button>
+            
+                            </div>
+                            <div class="form-group col-md-3 mt-1" *ngIf="i>0">
+                                <button class="btn btn-outline-primary" style="width: 100%;" type="button"
+                                    (click)="removeCharges(i)">Remove Fee (-)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!callPlanForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

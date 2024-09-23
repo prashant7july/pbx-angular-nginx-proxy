@@ -1,0 +1,109 @@
+<h3 class="card-header-style">Compose Whatsapp</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form  class="row">
+            <!-- <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel Name</mat-label>
+                    <input matInput placeholder="Channel Name" 
+                         autocomplete="off" required>
+                </mat-form-field>               
+            </div> -->
+
+            <div class="form-group col-md-4" >
+                <ejs-dropdownlist formControlName="provider" style="width: 80%;margin-top: -7px;"
+                    [dataSource]='providerList' [fields]='fields1' (change)="chooseProvider($event)"
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder1' allowFiltering=true required>
+                </ejs-dropdownlist>              
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="checkProvider">
+                <ejs-dropdownlist formControlName="template" style="width: 80%;margin-top: -7px;"
+                    [dataSource]='templateList' [fields]='fields2'
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder2' allowFiltering=true required>
+                </ejs-dropdownlist>              
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel Description</mat-label>
+                    <input matInput placeholder="Channel Description"
+                         autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <!-- <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Channel Provider</mat-label>
+                    <mat-select [(value)]="selected">
+                        <mat-option value="1">Whatsapp</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+            <div class="form-group col-md-4">
+                <ejs-dropdownlist style="width: 80%;margin-top: -7px;"
+                    [dataSource]='contactList' [fields]='fields'
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth'
+                    [placeholder]='placeholder' allowFiltering=true required>
+                </ejs-dropdownlist>                
+            </div>
+
+            <div class="form-group col-md-4">
+                <button class="btn btn-social btn-messagebird" style="pointer-events: none;">
+                    <img src="" alt="">
+                </button>
+            </div>
+            
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Access key/API Key</mat-label>
+                    <input matInput placeholder="Access key/API Key"  autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel User ID / Caller ID</mat-label>
+                    <input matInput placeholder="Channel User ID / Caller ID" 
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" >
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Mehery Domain Name</mat-label>
+                    <input matInput placeholder="Mehery Domain Name"  autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" >
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Namespace</mat-label>
+                    <input matInput placeholder="Namespace"  autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Outbound Prepend Digit</mat-label>
+                    <input matInput placeholder="Outbound Prepend Digit" 
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Outbound Strip Digit</mat-label>
+                    <input matInput placeholder="Outbound Strip Digit"  autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button [disabled]=""  mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

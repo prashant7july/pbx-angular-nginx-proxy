@@ -1,0 +1,4 @@
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}

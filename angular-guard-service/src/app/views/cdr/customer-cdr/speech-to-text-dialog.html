@@ -1,0 +1,50 @@
+<!-- <div [style.display]="'flex'"  [style.flexDirection]="'column'" [style.alignItems]="'flex-start'" [style.padding]="'10px'" [style.width]="'100%'" [style.overflow-y]="'auto'" >
+    <ng-container  *ngFor="let message of messageData; let index = index;">
+        <div
+            [style.backgroundColor]="message.speaker === 'A' ? '#DCF8C6' : '#EAEAEA'"
+            [style.borderRadius]="'10px'"
+            [style.padding]="'5px 10px'"
+            [style.marginBottom]="'15px'"
+            [style.alignSelf]="message.speaker === 'A' ? 'flex-end' : 'flex-start'"
+            [style.position]="'relative'"
+        >
+            <b>{{ message.speaker }}</b>
+            <div>
+                {{ message.text }}
+            </div>
+        </div>
+    </ng-container>
+    <div class="col-lg-12 example-button-row mt-2">
+        <button mat-raised-button color="warn" (click)="cancleDialog($event)">Cancel</button>
+      </div>
+</div> -->
+
+
+<div mat-dialog-content>
+    <div class="card-body">
+        <form  [formGroup]="speechToTextForm" (ngSubmit)="submitSpeechToText()" class="column">
+        <!-- <div class="container" style="display:flex; padding:10px; width:100% ; overflow:auto "></div> -->
+        <ng-container  *ngFor="let message of messageData; let index = index;">
+            <div id="messages"
+                [style.backgroundColor]="message.speaker === 'A' ? '#DCF8C6' : '#EAEAEA'"
+                [style.borderRadius]="'10px'"
+                [style.padding]="'5px 10px'"
+                [style.marginBottom]="'15px'"
+                [style.alignSelf]="message.speaker === 'A' ? 'flex-end' : 'flex-start'"
+                [style.position]="'relative'"
+                [attr.contenteditable]="editableIndex === index ? 'true' : 'false'"
+                (click)="toggleEditable(index)"
+                            >
+                <b>{{ message.speaker }}</b> 
+                <span>
+                    {{ message.text }}
+                </span>
+            </div>
+        </ng-container>   
+        <div class="col-lg-12 example-button-row mt-2">
+            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="warn" (click)="cancleDialog($event)">Cancel</button>
+        </div>
+    </form>
+    </div>
+</div>

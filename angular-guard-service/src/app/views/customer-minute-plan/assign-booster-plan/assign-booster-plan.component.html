@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>ASSIGN BOOSTER PLAN</strong>
+        </div>
+        <div class="card-body">
+          <div class="help-button row" style="float: right;" >
+            <button mat-raised-button (click)="showInfo()"
+              style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+              <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+              HELP
+            </button>
+          </div>
+              <form [formGroup]="assignDIDForm" (ngSubmit)="submitAssignDIDForm()" class="row" style="margin-top: 72px;">
+                <div class="form-group col-md-6 mt-3">
+                  <mat-radio-group aria-label="Select an option" formControlName="plan_type" (change)="changeCallPlan($event.value)">
+                    <mat-radio-button value="1">DID Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="5">Outgoing Bundle</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Roaming</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="4">Tele Consultancy</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <div class="col-md-3" style="margin-top: -15px;">
+                  <!-- <ejs-multiselect id='multiselectelement' (filtering)="Boosterremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='boosterListVariable'
+                  [fields]='fields' [placeholder]='placeholder' formControlName="booster_plan" (change)="showDidSellingPrice($event)"
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" [mode]='mode' [selectAllText]='selectAllText'
+                  showSelectAll=true>
+                </ejs-multiselect> -->
+                  <mat-form-field>
+                    <mat-label>Select Booster plan</mat-label>
+                    <mat-select placeholder="Select Booster plans" (openedChange)="HandleDropdownFilter('boosterPlan',BoosterFilter)" [disableOptionCentering]="true" (selectionChange)="showDidSellingPrice($event)" formControlName="booster_plan" multiple
+                      required>
+                      <mat-select-filter [array]="boosterListVariable"  [displayMember]="'label'"  (filteredReturn)="boosterPlan =$event"></mat-select-filter>
+                      <mat-option *ngFor="let didList of boosterPlan" disabled="{{disableList}}" [value]="didList.value.id">
+                        {{didList.label}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="margin-top: 2px;" *ngIf="booster_plan.invalid && (booster_plan.dirty || booster_plan.touched)" class="reqired-field">
+                    <div *ngIf="booster_plan.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3" *ngIf="assignDIDForm.get('booster_plan').value">
+                  <!-- <ejs-multiselect id='multiselectelement' (filtering)="Boosterremovedspace($event)" class="mt-2" style="width: 80%;" [dataSource]='customerList'
+                  [fields]='fields' [placeholder]='placeholder' formControlName="customer" (change)="changedCustomer($event)"
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [floatLabelType]="'Auto'" [mode]='mode' [selectAllText]='selectAllText'
+                  showSelectAll=true>
+                </ejs-multiselect> -->
+                  <mat-form-field>
+                    <mat-label>Select Customer</mat-label>
+                    <mat-select formControlName="customer" (selectionChange)="changedCustomer()" required #select1>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="customerList" [displayMember]="'company_name'" (filteredReturn)="filterCustomer = $event"></mat-select-filter>
+                      <mat-option *ngFor='let company of filterCustomer' [value]="company.id" >
+                        {{ company.company_name }} (Ref. Code: {{company.id}} )</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="customer.invalid && (customer.dirty || customer.touched)" class="reqired-field">
+                    <div *ngIf="customer.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-12 form-group" *ngIf="isSelected">
+                  <table>
+                    <tr>   
+                      <th>Name</th>
+                      <th>Validity</th>
+                      <th>Charges (INR)</th>
+                      <th>Number of Days</th>
+                    </tr>
+                    <tr *ngFor="let didList of selectedDid">
+                      <td>{{didList.name}}</td>
+                      <td>{{didList.validity}}</td>
+                      <td>₹ {{didList.charges}}</td> 
+                      <td>{{didList.number_of_days}}</td> 
+                    </tr>
+                  </table>
+                </div>
+                <div class="form-group col-md-12">
+                  <button mat-raised-button [disabled]="!assignDIDForm.valid" color="primary">Submit</button>
+                  &nbsp;
+                  <button mat-raised-button color="warn" (click)="cancelForm()">Cancel</button>
+                </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

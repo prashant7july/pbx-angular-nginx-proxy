@@ -1,0 +1,16 @@
+<h3 class="card-header-style">Location</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+     <form class="row">
+      <div class="col-lg-12">
+        <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="long">
+          <agm-marker [latitude]="lat" [longitude]="long"></agm-marker>
+        </agm-map>
+      </div>
+      <div class="col-lg-12 example-button-row mt-2">
+        <!-- <button mat-raised-button [disabled]="!didForm.valid" color="primary">Submit</button> -->
+        <button mat-raised-button color="warn" (click)="cancleDialog($event)">Cancel</button>
+      </div>
+     </form>
+  </div>
+</div>

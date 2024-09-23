@@ -1,0 +1,83 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>SMTP AUDIT LOGS</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label> Name</mat-label>
+                    <input matInput type="text" formControlName="by_name"
+                      maxlength="15" placeholder="Name">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Email Template</mat-label>
+                    <input matInput type="text" formControlName="by_template"
+                      maxlength="15" placeholder="EmailTemplate">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3" >
+                  <mat-form-field>
+                      <mat-label>Status</mat-label>
+                      <mat-select formControlName="by_status">
+                          <mat-option value="" selected>Select Value</mat-option>
+                          <mat-option value="1">Success</mat-option>
+                          <mat-option value="2">Failed</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="form-group col-md-3">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="by_date"
+                    readonly >
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker  readonly="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+                <!-- <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Date Range" formControlName="by_date" bsDaterangepicker
+                    autocomplete="off" readonly
+                    [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', rangeInputFormat: 'DD/MM/YYYY', customTodayClass: 'custom-today-class'}" />
+                  </mat-form-field>
+                </div> -->
+               
+                
+               
+                <div class="form-group col-md-3">
+                  <button (click)="filterData()" mat-raised-button color="primary">Search</button>&nbsp;
+                  <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+
+          <div class="example-wrapper" style="margin-top:85px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                <mat-form-field class="float-right">
+                    <mat-label>Number of records</mat-label>
+                    <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)" id="page-size">
+                        <mat-option value="10" selected>10</mat-option>
+                        <mat-option value="50">50</mat-option>
+                        <mat-option value="100">100</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" 
+                [pageSize]='defaultPageSize'>
+            </app-grid>
+
+        </div>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

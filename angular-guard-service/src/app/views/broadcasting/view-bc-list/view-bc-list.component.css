@@ -1,0 +1,23 @@
+/* .ui-datepicker td span, .ui-datepicker td a {
+    padding: 0px;
+}
+
+.ui-calendar .ui-datepicker {
+    height : 200px;
+    } */
+
+    /* .container ::ng-deep p-calendar .ui-datepicker table td {
+        padding: 1px !important;
+      }
+      .container ::ng-deep p-calendar .ui-datepicker .ui-timepicker {
+        padding: 2px 0 0 0 !important;
+      }
+      .container ::ng-deep p-calendar .ui-datepicker {
+        padding: 0.857em 0.857em 0 0.857em !important;
+      } */
+
+      .required-field {
+        color: red;
+        margin-top: 5px;
+        font-size: 12px;
+      }

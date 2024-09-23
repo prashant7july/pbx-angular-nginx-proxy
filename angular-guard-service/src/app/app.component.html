@@ -1,0 +1,8 @@
+<nav>
+    <a *ngIf="authService.getUserRole() === 'Admin'" routerLink="/admin">Admin Panel</a>
+    <a *ngIf="authService.getUserRole() === 'Tenant'" routerLink="/tenant">Tenant Dashboard</a>
+    <a *ngIf="authService.isAuthenticated()" (click)="logout()">Logout</a>
+  </nav>
+  
+  <router-outlet></router-outlet>
+  

@@ -1,0 +1,155 @@
+<h3 class="card-header-style">Advance Service</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="extForm" (ngSubmit)="submitAdvanceForm()" class="row">
+            <div class="form-group col-md-12">
+                <mat-radio-group aria-label="Select an option" formControlName="extType"  (change)="eventTypeChange($event)">
+                    <mat-radio-button value="1" selected>Bulk Delete</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Speed Dial</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="form-group col-md-4" *ngIf="!showSpeedDial">
+                <mat-form-field>
+                    <mat-label>Select Feature</mat-label>
+                    <mat-select formControlName="bulk_select" (selectionChange)="BulkfeatureChange($event)">
+                        <mat-option value="0" selected [disabled]="disabledBulkExtList">Source Extension List</mat-option>
+                        <mat-option value="1">Source Group List</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="disabledBulkExtList" style="width: 200%;">
+                    <small style="color: red; font-weight:600;">*Note</small><small> Extension Limit exceed, Kindly use Extension Group feature.</small>
+                </div> 
+            </div>
+        
+
+            <div class="form-group col-md-12" *ngIf="!showSpeedDial && bulk_listSelect">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='extList' [fields]='fields'
+                    [placeholder]='placeholder33' formControlName="extIds" [popupHeight]='popupHeight' [readonly]="disabledBulkExtList"
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+                </ejs-multiselect>
+                <div *ngIf="extIds.invalid && (extIds.dirty || extIds.touched)" class="reqired-field mt-1">
+                    <div *ngIf="extIds.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="!showSpeedDial && bulk_group_listSelect">
+                <ejs-multiselect id='multiselectelement1' (filtering)="Providerremovedspac_group($event)" [floatLabelType]="'Auto'" [dataSource]='groupList' [fields]='fields1'
+                [placeholder]='placeholder3' formControlName="int_group_id" [popupHeight]='popupHeight'
+                [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+              </ejs-multiselect>
+                <div *ngIf="int_group_id.invalid && (int_group_id.dirty || int_group_id.touched)" class="reqired-field mt-1">
+                    <div *ngIf="int_group_id.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="showSpeedDial">
+                <mat-form-field>
+                    <mat-label>Select Feature</mat-label>
+                    <mat-select formControlName="feature_select" (selectionChange)="SelectfeatureChange($event)">
+                        <mat-option value="0" selected [disabled]="disabledExtList">Source Extension List</mat-option>
+                        <mat-option value="1">Source Group List</mat-option>
+                      
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="disabledExtList" style="width: 200%;">
+                    <small style="color: red; font-weight:600;">*Note</small><small> Extension Limit exceed, Kindly use Extension Group feature.</small>
+                </div> 
+            </div>
+
+            <div class="form-group col-md-12" *ngIf="showSpeedDial && onext_listSelect">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='extList' [fields]='fields'
+                    placeholder='Select Source Extension' formControlName="ext_list" [popupHeight]='popupHeight' [readonly]="disabledExtList"
+                    [popupWidth]='popupWidth'  [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+                </ejs-multiselect>
+                <div *ngIf="ext_list.invalid && (ext_list.dirty || ext_list.touched)" class="reqired-field mt-1">
+                    <div *ngIf="ext_list.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="showSpeedDial && onext_group_listSelect">
+                <ejs-multiselect id='multiselectelement1' (filtering)="Providerremovedspac_group($event)" [floatLabelType]="'Auto'" [dataSource]='groupList' [fields]='fields1'
+                [placeholder]='placeholder4' formControlName="ext_group_id" [popupHeight]='popupHeight'
+                [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+              </ejs-multiselect>
+                <div *ngIf="ext_group_id.invalid && (ext_group_id.dirty || ext_group_id.touched)" class="reqired-field mt-1">
+                    <div *ngIf="ext_group_id.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="form-group col-md-12" >
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='speedDialList' [fields]='fields'
+                    [placeholder]='placeholder' formControlName="SpeedDial" [popupHeight]='popupHeight'
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+            </div> -->
+
+            <div class="form-group col-md-4" *ngIf="showSpeedDial">
+                <mat-form-field>
+                    <mat-label>Speed Dial</mat-label>
+                    <mat-select formControlName="speed_dial">
+                        <mat-option value="0" selected>*0</mat-option>
+                        <mat-option value="1">*1</mat-option>
+                        <mat-option value="2">*2</mat-option>
+                        <mat-option value="3">*3</mat-option>
+                        <mat-option value="4">*4</mat-option>
+                        <mat-option value="5">*5</mat-option>
+                        <mat-option value="6">*6</mat-option>
+                        <mat-option value="7">*7</mat-option>
+                        <mat-option value="8">*8</mat-option>
+                        <mat-option value="9">*9</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="showSpeedDial">
+                <mat-form-field>
+                    <mat-label>Select Feature</mat-label>
+                    <mat-select formControlName="feature" (selectionChange)="featureChange($event)">
+                        <mat-option value="0" selected>SIP</mat-option>
+                        <mat-option value="1">Call Group</mat-option>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        
+
+            <div class="form-group col-md-12" *ngIf="showSpeedDial && onSipSelect">
+                <ejs-dropdownlist id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='extList' [fields]='fields'
+                    placeholder='Select Destination Extension' formControlName="sip" [popupHeight]='popupHeight'
+                    [popupWidth]='popupWidth' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <div *ngIf="sip.invalid && (sip.dirty || sip.touched)" class="reqired-field mt-1">
+                    <div *ngIf="sip.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-md-12" *ngIf="showSpeedDial && onCgSelect">
+                <ejs-dropdownlist id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fieldss'
+                    placeholder='Select Destination Call Group' formControlName="cg" [popupHeight]='popupHeight'
+                    [popupWidth]='popupWidth' required>
+                </ejs-dropdownlist>
+                <div *ngIf="cg.invalid && (cg.dirty || cg.touched)" class="reqired-field mt-1">
+                    <div *ngIf="cg.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button color="primary" [disabled]="!extForm.valid">Submit</button>
+                <button mat-raised-button color="warn" type="button" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

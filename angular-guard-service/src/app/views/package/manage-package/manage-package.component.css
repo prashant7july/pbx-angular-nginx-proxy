@@ -1,0 +1,22 @@
+:host >>> .tooltip-inner {
+    background-color: white;
+    color: black;
+    border-color: black;
+    border-style: solid;
+    border-width: 0.5px;
+    text-align: left;
+  }
+  :host >>> .tooltip.top .tooltip-arrow:before,
+  :host >>> .tooltip.top .tooltip-arrow {
+    border-top-color: black;
+  }
+
+::ng-deep 
+.card-body {
+  padding: 25px !important;
+}
+
+::ng-deep 
+.swal2-content{
+    color: #FFFFFF !important;
+}

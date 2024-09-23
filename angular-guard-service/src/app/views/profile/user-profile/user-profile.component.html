@@ -1,0 +1,290 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>MANAGE PROFILE</strong>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm" novalidate>
+            <div class="centered-content">
+              <!-- hr -->
+              <div class="hr-sect">Personal Information</div>
+              <!-- hr -->
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>First Name</mat-label>
+                    <input matInput type="text" autofocus formControlName="first_name" id="first_name"
+                      [(ngModel)]="userData.first_name" maxlength="20" placeholder="First Name" autocomplete="off"
+                      appBlockCopyPaste required>
+                  </mat-form-field>
+                  <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="reqired-field">
+                    <div *ngIf="first_name.errors.required">
+                      Required Field
+                    </div>
+                    <div *ngIf="first_name.errors.pattern">Invalid name</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput type="text" formControlName="last_name" id="last_name"
+                      [(ngModel)]="userData.last_name" maxlength="20" placeholder="Last Name" autocomplete="off"
+                      appBlockCopyPaste>
+                  </mat-form-field>
+                  <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="reqired-field">
+                    <div *ngIf="last_name.errors.pattern">Invalid name</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="email" id="email" [(ngModel)]="userData.email"
+                      placeholder="Email" autocomplete="new-email" appBlockCopyPaste required>
+                  </mat-form-field>
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="reqired-field">
+                    <div *ngIf="email.errors.required">
+                      Required Field
+                    </div>
+                    <div *ngIf="email.errors.pattern">Email must be a valid</div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole=='0' || userRole=='2'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" value={{textboxval}} [(ngModel)]="userData.username"
+                      [readonly]="(userRole=='4' || userRole=='1' || userRole=='5' || userRole=='0' || userRole=='2')"
+                      (keyup)="checkUsername($event)" formControlName="username" id="username" placeholder="Username"
+                      style="background-color: #FFFFFF;" autocomplete="off" appBlockCopyPaste required>
+                  </mat-form-field>
+                  <div *ngIf="username.invalid && (username.dirty || username.touched)" class="reqired-field">
+                    <div *ngIf="username.errors.required">
+                      Required
+                    </div>
+                    <div *ngIf="username.errors.minlength">
+                      Username must be at least 8 characters long.
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole=='4' || userRole=='1' || userRole=='5' || userRole=='3'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" value={{textboxval}} [(ngModel)]="userData.username"
+                      [readonly]="(userRole=='4' || userRole=='1' || userRole=='5')" formControlName="username"
+                      id="username" placeholder="Username" style="background-color: #FFFFFF;" autocomplete="off"
+                      appBlockCopyPaste>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field>
+                    <mat-label>Select Country</mat-label>
+                    <mat-select formControlName="country" (selectionChange)="getCountryCode($event)"
+                      [(ngModel)]="userData.country_id" required>
+                      <mat-option value="" disabled selected>Select Country</mat-option>
+                      <mat-option *ngFor='let country of countryList' [value]="country.id">
+                        {{ country.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Mobile<span> *</span></mat-label>
+                    <input matInput [hidden]="true" formControlName="country_code" [(ngModel)]="countryCode" />
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" formControlName="mobile"
+                      id="mobile" [(ngModel)]="userData.mobile" placeholder="Mobile" maxlength="10" autocomplete="off"
+                      appBlockCopyPaste required>
+                    <span matPrefix>{{countryCode}}</span>
+                  </mat-form-field>
+                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="reqired-field">
+                    <div *ngIf="mobile.errors.required">
+                      Required Field
+                    </div>
+                    <div *ngIf="mobile.errors.pattern"> Number can not start with 0 and not less than 10 digits.</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="userRole=='1'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>API Token</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="userData.token"
+                      formControlName="token" readonly>
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                      [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <button type="button" title="Refresh" mat-icon-button matSuffix (click)="refreshToken()">
+                      <mat-icon>autorenew</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-md-4"  style="margin-top: 5px;">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" [(ngModel)]="userData.threshold" formControlName="threshold" placeholder="Threshold" maxlength="4" (keypress)="commonService.numberOnly($event)">
+                  </mat-form-field>
+                </div>
+
+                <!-- hr -->
+                <!-- <div class="hr-sect">Features Details</div> -->
+                <!-- hr -->
+                <div class="form-group col-md-4 switch-div-right" *ngIf="userRole=='1'">
+                  <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="userData.is_email_notification"
+                    formControlName="email_notification" [disabled]="userRole == UserTypeAccountManager" (change)="smsToggle($event)">
+                    Email Notification
+                  </mat-slide-toggle>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Notification Email</mat-label>
+                    <input matInput type="email" [readonly]="!isMCA" formControlName="notification_email" id="email" [(ngModel)]="userData.notification_email"
+                      placeholder="Notification Email" autocomplete="new-email" appBlockCopyPaste >
+                  </mat-form-field>
+                  <div *ngIf="notification_email.invalid && (notification_email.dirty || notification_email.touched)" class="reqired-field">
+                    <div *ngIf="notification_email.errors.required">
+                      Required Field
+                    </div>
+                    <div *ngIf="notification_email.errors.pattern">Email must be a valid</div>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="userRole=='1' && isSMSNotificationShow">
+                  <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="userData.is_sms_notification"
+                    formControlName="sms_notification" [disabled]="userRole == UserTypeAccountManager">
+                    SMS Notification
+                  </mat-slide-toggle>
+                </div>
+                
+
+                <!-- hr -->
+                <div class="hr-sect">Company Details</div>
+                <!-- hr -->
+                <div class="form-group col-md-4" *ngIf="userRole == '0'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Company Name</mat-label>
+                    <textarea matInput type="text" formControlName="company_name" id="company_name"
+                      placeholder="Company Name" maxlength="50"
+                      [(ngModel)]="userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2' ? companyData.name : userData.company_name"
+                      [readonly]="userRole=='4' || userRole=='1' || userRole=='5'"
+                      style="background-color: #FFFFFF;resize:none;" autocomplete="off" appBlockCopyPaste required>
+                      </textarea>
+                  </mat-form-field>
+                  <div *ngIf="company_name.invalid && (company_name.dirty || company_name.touched)"
+                    class="reqired-field">
+                    <div *ngIf="company_name.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole=='4' || userRole=='1' || userRole=='5'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Company Name</mat-label>
+                    <textarea matInput type="text" formControlName="company_name" id="company_name"
+                      placeholder="Company Name"
+                      [(ngModel)]="userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2' ? companyData.name : userData.company_name"
+                      [readonly]="userRole=='4' || userRole=='1' || userRole=='5'"
+                      style="background-color: #FFFFFF;resize:none;" autocomplete="off" appBlockCopyPaste>
+                  </textarea>
+                  </mat-form-field>
+                </div>
+                <!-- <div class="form-group col-md-4" *ngIf="userRole=='3'">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Company Name</mat-label>
+                    <textarea matInput type="text" formControlName="company_name" id="company_name"
+                      placeholder="Company Name"
+                      [(ngModel)]="userData.username"
+                      [readonly]="userRole=='3'"
+                      style="background-color: #FFFFFF;resize:none;" autocomplete="off" appBlockCopyPaste>
+                  </textarea>
+                  </mat-form-field>
+                </div> -->
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                      formControlName="company_phone"
+                      [(ngModel)]="(userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2') ? companyData.phone : userData.phone "
+                      [readonly]="userRole=='4' || userRole=='5'" placeholder="Company Phone Number" minlength="10"
+                      maxlength="15" style="background-color: #FFFFFF;" autocomplete="off" appBlockCopyPaste>
+                  </mat-form-field>
+                  <div *ngIf="company_phone.invalid && (company_phone.dirty || company_phone.touched )"
+                    class="reqired-field">
+                    <div
+                      *ngIf="company_phone.errors.minlength || company_phone.errors.maxlength || company_phone.errors.min">
+                      Number can not start with 0 and not more than 15 digits.
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput formControlName="company_address" placeholder="Company Address"
+                      [(ngModel)]="(userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2') ? companyData.address : userData.company_address "
+                      [readonly]="(userRole=='4' || userRole=='1' || userRole=='5')"
+                      style="background-color: #FFFFFF;resize:none;" autocomplete="off" appBlockCopyPaste></textarea>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Account Number</mat-label>
+                    <input matInput type="text" formControlName="account_no" id="account_no"
+                      placeholder="Enter account number" [(ngModel)]="userData.account_number" readonly
+                      style="background-color: #FFFFFF;" maxlength="15" autocomplete="off" appBlockCopyPaste>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Domain</mat-label>
+                    <textarea matInput type="text" formControlName="domain" placeholder="Domain Name"
+                      [(ngModel)]="(userRole=='0' || userRole=='4' || userRole=='5' || userRole=='2') ? companyData.domain : userData.domain"
+                      [readonly]="(userRole=='4' || userRole=='5')" style="background-color: #FFFFFF;resize:none;"
+                      autocomplete="off" appBlockCopyPaste>
+                      </textarea>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-4" *ngIf="userRole == '1'">
+                  <mat-form-field>
+                    <mat-label>Time Zone</mat-label>
+                    <mat-select formControlName="time_zone" [(ngModel)]="timeZoneId">
+                      <mat-option value="" selected disabled>Please Select Time Zone</mat-option>
+                      <mat-option *ngFor='let zone of timeZone' [value]="zone.id">{{zone.gmtzone}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-8" *ngIf="userRole =='1' ">
+                  <div class="image-upload">
+                    <label for="file-input">
+                      <img src="..\assets\img\uploads\camera_image.png" />
+                    </label>
+                    <input id="file-input" type="file" formControlName="profileImg" name="profileImg" ng2FileSelect
+                      [uploader]="uploader" (change)="Validate($event)" style="margin-bottom: 20px;" />
+                  </div>
+                  <img src="{{userData.profile_img}}" class="image"
+                    onerror="this.src='assets/img/Profile-Image.png';" />
+                </div>
+                <!-- <div class="form-group col-md-8" *ngIf="userRole =='1' ">
+                  <div class="image-upload">
+                    <label for="file-input">
+                            <img src="..\assets\img\uploads\camera_image.png" />
+                    </label>
+                    <input id="file-input" type="file" ng2FileSelect 
+                    [uploader]="uploader" (change)="Validated($event)" style="margin-bottom: 20px;" />
+                  </div>
+                  <img src="{{userData.profile}}" class="image" />
+                </div> -->
+                <div class="col-lg-12 example-button-row">
+                  <!-- <button *ngIf="isImg" [disabled]="!userForm.valid" mat-raised-button (click)="uploadProfile(); pageloader=true"
+                  color="primary">Submit</button> -->
+                  <button [disabled]="!userForm.valid" mat-raised-button (click)="submitUserForm(); pageloader=true"
+                    color="primary">Submit</button>
+                  <!-- <button type="submit" mat-raised-button color="primary">Update</button> -->
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

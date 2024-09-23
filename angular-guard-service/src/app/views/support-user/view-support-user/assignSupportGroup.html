@@ -1,0 +1,42 @@
+<h3 class="card-header-style">ASSIGN SUPPORT GROUP</h3>
+<div mat-dialog-content >
+    <div class="card-body">
+        <form [formGroup]="assignSupportForm" (ngSubmit)="submitAssignGroup()" class="row">
+                <div class="form-group col-md-4">
+
+                    <mat-form-field>
+                        <mat-label>Support User</mat-label>
+                        <mat-select formControlName="support_user" required>
+                            <mat-option value="" selected>Select </mat-option>
+                            <mat-option *ngFor='let supportUser of allSupportUser' [value]="supportUser.id">
+                              {{ supportUser.username }}
+                            </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                   
+                    <!-- <div *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                            <div *ngIf="name.errors.required"> Required Field</div>
+                        <div *ngIf="name.errors.pattern">
+                            Invalid name
+                        </div>
+                    </div> -->
+                </div>
+                <div class="form-group col-md-4">       
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Support Group </mat-label>
+                          <mat-select formControlName="name" required>
+                            <mat-option value="" selected>Select </mat-option>
+                            <mat-option *ngFor='let support of selectedValue' [value]="support.id">
+                              {{ support.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+               
+                <div class="col-lg-12 example-button-row">
+                    <button type="submit" mat-raised-button  color="primary">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                </div>
+        </form>
+    </div>
+</div>

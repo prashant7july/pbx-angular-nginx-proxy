@@ -1,0 +1,92 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>ALL EXTENSIONS FEATURE</strong>
+        </div>
+        <div class="card-body">
+          <div class="header-btn">
+          <div class="row mr-0" style="float:right;" *ngIf="showSearching">
+            <button (click)="downloadPDF()" mat-raised-button color="primary" [hidden]="!userRole"
+              style=" margin:11px;top:-10px;left:10px;background-color:#CD5C5C !important;">Download PDF</button>
+            <button (click)="exportToExcel()" mat-raised-button color="warn" [hidden]="!userRole"
+              style=" margin:11px; top:-10px; background-color: #01A89E !important;">Excel Export</button>
+            <div class="help-button mb-4">
+              <button mat-raised-button (click)="showInfo()"
+                style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -4px 0px 0px -3px;cursor: pointer;overflow: hidden;">
+                <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                HELP
+              </button>
+            </div>
+          </div>
+          </div>
+          <div class="row">
+            <!-- <div class="form-group col-md-4">
+              <mat-form-field>
+                <mat-label>Select Company</mat-label>
+                <mat-select (selectionChange)="selectCompanyDiv($event)">
+                  <mat-option *ngFor='let company of selectedValue' matTooltip="{{company.company_name}} (Ref. Code: {{company.id}})"   [value]="company.id">
+                    {{ company.company_name }} (Ref. Code: {{company.id}})</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+
+            
+
+            <div class="form-group col-md-5 mt-2" style="margin-top: -15px;">
+              <ejs-dropdownlist id='ddltooltip' [floatLabelType]="'Auto'" (filtering)="Providerremovedspace($event)" #samples  style="width: 100%;" (select)="selectCompanyDiv($event)"  [dataSource]='companyList'  [fields]='fields'
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [(ngModel)]="companyInSelectedFilter" [placeholder]='placeholder' allowFiltering=true>
+              </ejs-dropdownlist>
+            </div>
+
+            <!-- <div class="verticalLine" *ngIf="showSearching"></div> -->
+            <div class="form-group col-md-7" *ngIf="showSearching">
+              <app-accordian-filter style="width: 100%">
+                <form [formGroup]="filterForm" class="row" novalidate>
+                  <!-- <div > -->
+                  <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="text" formControlName="by_name" maxlength="15" placeholder="Name">
+                    </mat-form-field>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="number" formControlName="by_number" (keypress)="commonService.numberOnly($event)" maxlength="10" placeholder="Number">
+                    </mat-form-field>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <button mat-raised-button (click)="filterData()" color="primary">Search</button>
+                    &nbsp;
+                    <button mat-raised-button color="warn" (click)="resetTable()">Reset</button>
+                  </div>
+                  <!-- </div> -->
+                </form>
+              </app-accordian-filter>
+            </div>
+          </div>
+          <div class="example-wrapper" style="margin-top:56px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+              <mat-form-field class="float-right">
+                <mat-label>Number of records</mat-label>
+                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)"
+                  id="page-size">
+                  <mat-option value="10" selected>10</mat-option>
+                  <mat-option value="50">50</mat-option>
+                  <mat-option value="100">100</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="true" 
+              [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+            </app-grid>
+          </div>
+          <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+            (actionClick)="manageAction($event)">
+          </app-grid> -->
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

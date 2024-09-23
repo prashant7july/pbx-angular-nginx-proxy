@@ -1,0 +1,103 @@
+<h3 class="card-header-style">Email Template</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="emailForm" (ngSubmit)="submitEmail()" class="row">
+            <div class="form-group col-md-4" style="margin-top: -15px;">
+                <ejs-dropdownlist formControlName="product" [floatLabelType]="'Auto'" (filtering)="Selectremovedspace($event)" (change)="selectCategory($event)"
+                style="width: 80%;margin-top: 9px;" [dataSource]='selectedProduct' [fields]='fields6' [(ngModel)]="emailTemplateData.product_id"
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder6' allowFiltering=true>
+            </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                    <mat-label>Select Product</mat-label>
+                    <mat-select formControlName="product" (openedChange)="HandleDropdownFilter('filterSelectProduct',ProductFilter)" [(ngModel)]="emailTemplateData.product_id" (selectionChange)="selectCategory($event)" [disableOptionCentering]="true" #select1 placeholder="Auto Focus" required>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="selectedProduct" [displayMember]="'name'" (filteredReturn)="filterSelectProduct = $event"></mat-select-filter>
+                        <mat-option *ngFor='let product of filterSelectProduct' [value]="product.id">
+                            {{ product.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="product.invalid && (product.dirty || product.touched)" class="reqired-field">
+                    <div *ngIf="product.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -15px;">
+                <ejs-dropdownlist formControlName="category" [floatLabelType]="'Auto'" (filtering)="Categoryremovedspace($event)" 
+                style="width: 80%;margin-top: 9px;" [dataSource]='selectedValue' [fields]='fields4' [(ngModel)]="emailbind"
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder7' allowFiltering=true>
+            </ejs-dropdownlist>
+                <!-- <mat-form-field>
+                    <mat-label>Select Email Category</mat-label>
+                    <mat-select formControlName="category" (openedChange)="HandleDropdownFilter('filterCategory',EmailFilter)" [(ngModel)]="emailTemplateData.category_id" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                      <mat-select-filter  *ngIf="select1.focused" [array]="selectedValue" [displayMember]="'category_name'" (filteredReturn)="filterCategory = $event"></mat-select-filter>
+                        <mat-option *ngFor='let category of filterCategory' [value]="category.id">
+                            {{ category.category_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div style="margin-top:2px;" *ngIf="category.invalid && (category.dirty || category.touched )" class="reqired-field">
+                    <div *ngIf="category.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <!-- <ejs-dropdownlist formControlName="name" (filtering)="Templateremovedspace($event)" 
+                style="width: 80%;margin-top: 9px;" [dataSource]='selectedValue' [fields]='fields5' [(ngModel)]="emailTemplateData.name" 
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true>
+            </ejs-dropdownlist> -->
+                <mat-form-field class="example-full-width">
+                    <mat-label>Template Name</mat-label>
+                    <input matInput type="text" formControlName="name" 
+                        [(ngModel)]="emailTemplateData.name" placeholder="Template Name" maxlength="30"
+                        autocomplete="off" appBlockCopyPaste  required>
+                </mat-form-field>
+                <div style="margin-top:2px;" *ngIf="name.invalid && (name.dirty || name.touched )" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="name.errors.pattern">Invalid name</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Email Subject</mat-label>
+                    <input matInput type="text" formControlName="emailTitle" placeholder="Email Subject"
+                        [(ngModel)]="emailTemplateData.title" maxlength="50" autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="emailTitle.invalid && (emailTitle.dirty || emailTitle.touched )" class="reqired-field">
+                    <div *ngIf="emailTitle.errors.required">
+                        Required Field
+                    </div>
+                    <!-- <div *ngIf="emailTitle.errors.pattern">Invalid name</div> -->
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <textarea matInput id="mainContent" formControlName="content" [(ngModel)]="emailTemplateData.content">
+                </textarea>
+                
+            </div> 
+            <div style="margin-left: 1em;">
+                <button mat-raised-button color="primary" type="button" (click)="preview()"><i
+                    class="material-icons left">add_circle</i>
+                  Preview</button>
+            </div>
+            <!-- hr -->
+            <div class="hr-sect">Banner Image</div>
+            <!-- hr -->
+            <div class="form-group col-md-12">
+                <img src='{{ "assets/uploads/" + logoImage }}' style="height: 100px; width:150px;" >
+                <input matFileInput type="file" formControlName="image" name="image" ng2FileSelect [uploader]="uploader"
+                    (change)="uploader.uploadAll()" accept="image/*" />
+                <div *ngIf="imgError" class="reqired-field" style="margin-top: 0;">
+                        {{imgError}}
+                </div>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!emailForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

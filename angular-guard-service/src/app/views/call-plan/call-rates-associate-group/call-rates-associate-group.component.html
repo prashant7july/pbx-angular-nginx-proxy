@@ -1,0 +1,87 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>MINUTE PLAN DESTINATION LIST</strong>
+        </div>       
+         <div class="card-body">
+          <div class="row" >
+            <div class="header-btn">
+                  <div class="view-button">
+                    <button backButton mat-raised-button style=" margin:11px; top:-10px; background-color:#16709e !important; color: #fff;" ><i
+                      class="fa fa-reply fa-fw"></i> Back</button>
+                  </div>
+            </div>
+          </div>
+          <div class="row">             
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate>
+                <div class="form-group col-md-3">
+                  <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;" [dataSource]='selectedValue'
+                    [fields]='fields' [placeholder]='placeholder' formControlName="by_call_plan"
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <mat-form-field>
+                    <mat-label>Select Gateway</mat-label>
+                    <mat-select formControlName="by_gateway" multiple>
+                         <mat-option *ngFor='let gateway of gateways' [value]="gateway.id" >
+                            {{gateway.provider}} - {{gateway.name}}  {{gateway.domain}}
+                        </mat-option>                            
+                    </mat-select>
+                </mat-form-field>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <ejs-multiselect id='multiselectelement' class="mt-2" style="width: 80%;"
+                      [dataSource]='countryList' [fields]='fields2' [placeholder]='placeholder2'
+                      formControlName="by_country" [popupHeight]='popupHeight'
+                      [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                      showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+  
+                <!-- <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Provider</mat-label>
+                    <input matInput type="text" formControlName="by_provider" maxlength="10" placeholder="By Minutes">
+                  </mat-form-field>
+                </div> -->
+  
+                <div class="form-group col-md-3">
+                  <button (click)="filterData()" mat-raised-button color="primary">Search</button>&nbsp;
+                  <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+
+          <br> 
+          <!-- <div class="col-md-3 example-button-row" style="margin-left: 85.5em;">
+            <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+          </div> -->
+          <br>
+
+          <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource"
+              [pageSize]='defaultPageSize' >
+            </app-grid>                      
+            <!-- <div class="col-md-12 example-button-row">
+              <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+            </div>-->          
+          <ng-template #templateName>
+            <i>oops... This Minute Plan is not associate to any customer.</i>
+            <!-- <div class="row">
+              <div class="col-md-12 example-button-row mt-3">
+                <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+              </div>
+            </div> -->
+          </ng-template>          
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>

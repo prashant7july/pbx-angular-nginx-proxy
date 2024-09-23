@@ -1,0 +1,119 @@
+<h3 class="card-header-style">ADD Social Media Channel</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="socialMediaForm" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel Name</mat-label>
+                    <input matInput placeholder="Channel Name" formControlName="channel_name"
+                         autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="socialMediaForm.controls['channel_name'].invalid && (socialMediaForm.controls['channel_name'].dirty || socialMediaForm.controls['channel_name'].touched)"
+                class="alert">
+                <div *ngIf="socialMediaForm.controls['channel_name'].errors.required"
+                    style="margin-top:-25px; margin-left:-21px; color:red;">
+                    Required Field
+                </div>
+            </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel Description</mat-label>
+                    <input matInput placeholder="Channel Description" formControlName="description"
+                         autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Channel Provider</mat-label>
+                    <mat-select [(value)]="selected">
+                        <mat-option value="1">Whatsapp</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4" >
+                <ejs-dropdownlist formControlName="provider" style="width: 80%;margin-top: -7px;"
+                    [dataSource]='providerList' [fields]='fields' (ngModelChange)="selectProvider($event)"
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [(ngModel)]="providerData"
+                    [placeholder]='placeholder' allowFiltering=true required>
+                </ejs-dropdownlist>
+                <div *ngIf="socialMediaForm.controls['provider'].invalid && (socialMediaForm.controls['provider'].dirty || socialMediaForm.controls['provider'].touched)"
+                class="alert">
+                <div *ngIf="socialMediaForm.controls['provider'].errors.required"
+                    style="margin-top:-17px; margin-left:-21px; color:red;">
+                    Required Field
+                </div>
+            </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="controlProvider">
+                <button class="btn btn-social btn-messagebird" (click)="submitTemplateForm()" style="pointer-events: none;">                    
+                    <div [ngStyle]="{'width': (logoText=='Mehery' ? '7em' : logoText == 'MessageBird' ? '10em' : '6em') }" style="border: 1px solid black; border-radius: 4px;">
+                        <img [ngStyle]="{'margin-left': (logoText=='Mehery' ? '-6px' : logoText == 'MessageBird' ? '-12px' : '-6px') }" style="height: 25px; width: 28px; border-right: 1px solid grey; border-radius: 2px;" [src]="imageSource" alt=""> &nbsp;&nbsp;
+                        {{logoText}}                        
+                    </div>
+                </button>                
+            </div>
+   
+            <!--<div class="form-group col-md-4" *ngIf="controlProvider && logoText == 'MessageBird'">
+                <button class="btn btn-social btn-messagebird" (click)="submitTemplateForm()" style="pointer-events: none;">                    
+                    <div style="border: 1px solid black; width: 10em; border-radius: 4px;">
+                        <img style="height: 25px; width: 28px; margin-left: -12px; border-right: 1px solid grey; border-radius: 2px;" [src]="imageSource" alt=""> &nbsp;&nbsp;
+                        {{logoText}}                        
+                    </div>
+                </button>                
+            </div> -->
+
+            <div class="form-group col-md-4" *ngIf="controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Access key/API Key</mat-label>
+                    <input matInput placeholder="Access key/API Key" formControlName="access_key" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Channel User ID / Caller ID</mat-label>
+                    <input matInput placeholder="Channel User ID / Caller ID" formControlName="caller_id"
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="setProvider == 2 && controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Mehery Domain Name</mat-label>
+                    <input matInput placeholder="Mehery Domain Name" formControlName="mehry_domain" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="setProvider == 1 && controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Namespace</mat-label>
+                    <input matInput placeholder="Namespace" formControlName="namespace" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Outbound Prepend Digit</mat-label>
+                    <input matInput placeholder="Outbound Prepend Digit" formControlName="prepend_digit"
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="controlProvider">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Outbound Strip Digit</mat-label>
+                    <input matInput placeholder="Outbound Strip Digit" formControlName="strip_digit" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button (click)="submitSocialMediaForm()" [disabled]="!socialMediaForm.valid"  mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

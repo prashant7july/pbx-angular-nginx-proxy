@@ -1,0 +1,919 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>CREATE PACKAGE</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <!-- <ejs-dropdownlist style="width: 100%;" [dataSource]='product' [fields]='fields' (change)="selectProductDiv($event)"
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder' allowFiltering=true>
+                            </ejs-dropdownlist> -->
+                            <mat-form-field>
+                                <mat-label>Select Product</mat-label>
+                                <mat-select (selectionChange)="selectProductDiv($event)">
+                                    <mat-option *ngFor='let product of selectedValue' [value]="product.id">
+                                        {{ product.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-8" *ngIf="pbxDiv" style="margin-left: 25px;">
+                            <button mat-raised-button (click)="selectAllFeatures()" color="primary" >Select All</button>
+                            &nbsp;
+                            <button mat-raised-button color="warn" (click)="unselectAllFeatures()" (click)="uncheckTCtoggle($event)" (click)="isChnageOFF($event)">Unselect All</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <!-- Pbx Features start -->
+                    <div id="pbx_feature" *ngIf="pbxDiv">
+                        <form [formGroup]="pbxForm" (ngSubmit)="submitPbxForm()" class="row">
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="package_name"
+                                        placeholder="Package Name" [(ngModel)]="pbxPackageName" maxlength="35"
+                                        (keypress)="commonService.charOnly($event)" autocomplete="off" appBlockCopyPaste
+                                        required>
+                                </mat-form-field>
+                                <div *ngIf="package_name.invalid && (package_name.dirty || package_name.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="package_name.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                                        formControlName="package_duration" maxlength="3" [(ngModel)]="packageValidity"
+                                        placeholder="Package Validity (In Days, 0 - Life time)" autocomplete="off"
+                                        appBlockCopyPaste required>
+                                </mat-form-field>
+                                <div *ngIf="package_duration.invalid && (package_duration.dirty || package_duration.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="package_duration.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isRenew" formControlName="is_auto_renewal">
+                                    Is Auto Renewal
+                                </mat-slide-toggle>
+                            </div> -->
+
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="10"
+                                        id="concurrent_call" maxlength="4" formControlName="concurrent_call"
+                                        placeholder="Concurrent Calls" autocomplete="off" appBlockCopyPaste- required>
+                                </mat-form-field>
+                                <div *ngIf="concurrent_call.invalid && (concurrent_call.dirty || concurrent_call.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="concurrent_call.errors.required">
+                                        Required Field
+                                      </div>
+                                    <div *ngIf="concurrent_call.errors.maxlength">Concurrents call max length is 3 character long.</div>
+                                    <div *ngIf="concurrent_call.errors.minlength">Concurrents call min length is 1 character.</div>
+                                    <div *ngIf="concurrent_call.errors.min">Concurrents call can't be 0.</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="50"
+                                        id="concurrent_call" maxlength="4" formControlName="phone_book"
+                                        [(ngModel)]="phonebookLimit" placeholder="Phone Book Limit" autocomplete="off"
+                                        appBlockCopyPaste required>
+                                </mat-form-field>
+                                <div *ngIf="phone_book.invalid && (phone_book.dirty || phone_book.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="phone_book.errors.required">
+                                        Required Field
+                                      </div>
+                                    <div *ngIf="phone_book.errors.maxlength">Phone book max length is 3 character long.</div>
+                                    <div *ngIf="phone_book.errors.minlength">Phone book min length is 1 character.</div>
+                                    <div *ngIf="phone_book.errors.min">Phone book can't be 0.</div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="60"
+                                        id="ring_time_out" maxlength="3" formControlName="ring_time_out"
+                                        placeholder="Ring Timeout" autocomplete="off" appBlockCopyPaste>
+                                </mat-form-field>
+                                <div *ngIf="ring_time_out.invalid && (ring_time_out.dirty || ring_time_out.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="ring_time_out.errors.maxlength">Timeout max length is 2 character long.</div>
+                                    <div *ngIf="ring_time_out.errors.minlength">Timeout min length is 1 character.</div>
+                                    <div *ngIf="ring_time_out.errors.min">Timeout can't be 0.</div>
+                                </div>
+                            </div> -->  
+                            <!-- As per virendra sir ring timeout commented. -->
+
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="10"
+                                        id="extension_limit" maxlength="4" formControlName="extension_limit"
+                                        placeholder="Extension Limit" autocomplete="off" appBlockCopyPaste required>
+                                </mat-form-field>
+                                <div *ngIf="extension_limit.invalid && (extension_limit.dirty || extension_limit.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="extension_limit.errors.required">
+                                        Required Field
+                                      </div>
+                                    <div *ngIf="extension_limit.errors.min">
+                                       Extension limit can't be 0
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-form-field>
+                                    <mat-label>Package Type</mat-label> 
+                                    <mat-select formControlName="billing_type"
+                                        (selectionChange)="billingTypeAction($event)">
+                                        <mat-option value="1" selected>Standard</mat-option> -->
+                                        <!-- <mat-option value="2">Enterprise with pool</mat-option>
+                                        <mat-option value="3">Enterprise without pool</mat-option> -->
+                                        <!-- <mat-option value="2">Enterprise pool</mat-option> Remove after virendra sir comment at 1 december -->
+                                        <!-- <mat-option value="3">Enterprise bucket</mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <!-- <mat-form-field class="example-full-width" *ngIf="isMinuteBal">
+                                    <input matInput type="text" maxlength="25" formControlName="minute_balance"
+                                        value="100" placeholder="Minute Balance" autocomplete="off"
+                                        (keypress)="commonService.numberOnly($event)" appBlockCopyPaste>
+                                </mat-form-field> -->
+                            <!-- </div> -->
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isBlacklist" formControlName="black_list">
+                                    Black List
+                                </mat-slide-toggle>
+                            </div> -->
+                            
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle formControlName="isFeatureRate" [(ngModel)]="isFeatureRate" (change)="isChnageFeatureRate($event)">
+                                    Feature Rate
+                                </mat-slide-toggle>
+                            </div>
+
+
+                            <div class="form-group col-md-4 switch-div" *ngIf="isFeatureRate" style="margin-top: -15px;">
+                                <ejs-dropdownlist formControlName="featureRate" (filtering)="timeGroupDataremovedspace($event)" style="width: 65%;" [dataSource]='globalFeatureRateList' [fields]='fields'
+                                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder4' allowFiltering=true>
+                                </ejs-dropdownlist>
+                                <!-- <mat-form-field style="width: 70%; border-top: 0px !important;">
+                                    <mat-label>Feature Rate</mat-label>
+                                    <mat-select formControlName="featureRate" (openedChange)="HandleDropdownFilter('filterFeature',FeatureRateFilter)" [disabled]="!isFeatureRate" [disableOptionCentering]="true" #select11 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select11.focused" [array]="globalFeatureRateList" [displayMember]="'name'" (filteredReturn)="filterFeature = $event"></mat-select-filter>
+                                        <mat-option *ngFor='let c of filterFeature' [value]="c.id">
+                                            {{c?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('featureRate').invalid && (pbxForm.get('featureRate').dirty || pbxForm.get('featureRate').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('featureRate').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isFeedbackCall" formControlName="feedback_call">
+                                    Feedback Call
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" [(ngModel)]="isSMS" formControlName="isSms"
+                                    (change)="smsToggle($event)">
+                                    SMS
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div" *ngIf="isSMS" style="margin-top: -15px;">
+                                <ejs-dropdownlist formControlName="sms" (filtering)="smsremovespace($event)" style="width: 65%;" [dataSource]='SMSList' [fields]='fields' 
+                                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder7' allowFiltering=true>
+                                </ejs-dropdownlist>
+                                <!-- <mat-form-field style="width: 70%; border-top: 0px !important;">
+                                    <mat-label>SMS</mat-label>
+                                    <mat-select formControlName="sms" (openedChange)="HandleDropdownFilter('filterSMS',SMSFilter)" [disabled]="!isSMS" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="SMSList" [displayMember]="'name'" (filteredReturn)="filterSMS = $event"></mat-select-filter>
+                                        <mat-option value="0" selected>Custom</mat-option>
+                                        <mat-option *ngFor='let c of filterSMS' [value]="c.id">
+                                            {{c?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('sms').invalid && (pbxForm.get('sms').dirty || pbxForm.get('sms').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('sms').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 switch-div" *ngIf="isSMS">
+                                <!-- <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isMissCallAlert" formControlName="miss_call_alert" [disabled]="!isMCA">
+                                    Missed Call Alert(MCA)
+                                </mat-slide-toggle> -->
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isMissCallAlert" formControlName="miss_call_alert">
+                                    Missed Call Alert(MCA)
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="hr-sect">Calling Plan feature Group</div>
+                           
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" formControlName="is_minute_plan" (change)="changeMinutePlan($event)" [(ngModel)]="isMinutePlan" >
+                                    Minute Plan
+                                </mat-slide-toggle>
+                            </div>
+
+                            <div class="form-group col-md-2" *ngIf="is_minute_plan.value">
+                                <label>
+                                  <mat-checkbox formControlName="is_bundle" (change)="changeMinutePlanType($event.checked,'1')" value="1">
+                                    DID Bundle
+                                  </mat-checkbox>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-2" *ngIf="is_minute_plan.value">
+                                <label>
+                                  <mat-checkbox formControlName="out_bundle" (change)="changeMinutePlanType($event.checked,'5')" value="5">
+                                    Outgoing Bundle
+                                  </mat-checkbox>
+                                </label>
+                            </div>
+
+                            <div class="form-group col-md-2" *ngIf="is_minute_plan.value">
+                                <label>
+                                  <mat-checkbox formControlName="is_roaming" (change)="changeMinutePlanType($event.checked,'2')" value="2">
+                                    Roaming
+                                  </mat-checkbox>
+                                </label>
+                            </div>
+
+                            <div class="form-group col-md-2" *ngIf="is_minute_plan.value">
+                                <label>
+                                  <mat-checkbox formControlName="teleConsultancy" (change)="changeMinutePlanType($event.checked,'4')" (change)="teleConsultancyToggle($event)" value="4">
+                                    TeleConsultancy
+                                  </mat-checkbox>
+                                </label>
+                            </div>
+
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="isTeleConsultancyShow">
+                                <mat-slide-toggle [color]="accent" [(ngModel)]="isTeleConsultancy" (change)="changeMinutePlanType($event.checked,'4')" formControlName="teleConsultancy"
+                                    (change)="teleConsultancyToggle($event)">
+                                    TeleConsultancy
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div mt-2" *ngIf="is_minute_plan.value">
+                                <mat-radio-group aria-label="Select an option" [(ngModel)]="blockForCall" (change)="changeMinutePlan($event)" formControlName="minute_plan_type">
+                                    <mat-radio-button class="col-md-4" value="1">Bundle</mat-radio-button>
+                                    <mat-radio-button class="col-md-4" value="2">Roaming</mat-radio-button>
+                                </mat-radio-group>
+                            </div> -->
+
+                            <div class="form-group col-md-4 switch-div" *ngIf="(is_minute_plan.value) && (is_bundle.value)" style="margin-top: -15px;">
+                                  <ejs-dropdownlist formControlName="bundle_plan_id" (filtering)="Bundleremovedspace($event)" style="width: 65%;" [dataSource]='bundlePlanList' [fields]='fields' 
+                            [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder1' allowFiltering=true>
+                            </ejs-dropdownlist>
+                                <!-- <mat-form-field >
+                                    <mat-label>Bundle Minute Plan</mat-label>
+                                    <mat-select formControlName="bundle_plan_id" (openedChange)="HandleDropdownFilter('filterBundle',BundlePlanFilter)" #select1>
+                                <mat-select-filter  *ngIf="select1.focused" [array]="bundlePlanList" [displayMember]="'name'" (filteredReturn)="filterBundle = $event"></mat-select-filter>
+                                        <mat-option *ngFor='let b of filterBundle' [value]="b.id">
+                                            {{b?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('bundle_plan_id').invalid && (pbxForm.get('bundle_plan_id').dirty || pbxForm.get('bundle_plan_id').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('bundle_plan_id').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-4 switch-div" *ngIf="(is_minute_plan.value) && (out_bundle.value)" style="margin-top: -15px;">
+                                <ejs-dropdownlist formControlName="out_bundle_call_plan_id" (filtering)="OBremovedspace($event)" style="width: 65%;" [dataSource]='outbundlePlanList' [fields]='fields' 
+                                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder8' allowFiltering=true>
+                                </ejs-dropdownlist>
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('out_bundle_call_plan_id').invalid && (pbxForm.get('out_bundle_call_plan_id').dirty || pbxForm.get('out_bundle_call_plan_id').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('out_bundle_call_plan_id').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 switch-div" *ngIf="(is_minute_plan.value) && (is_roaming.value)" style="margin-top: -15px;">
+                                <ejs-dropdownlist formControlName="roaming_plan_id" (filtering)="Roamingremovedspace($event)" style="width: 65%;" [dataSource]='roamingPlanList' [fields]='fields' 
+                                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder2' allowFiltering=true>
+                                </ejs-dropdownlist>
+                                <!-- <mat-form-field>
+                                    <mat-label>Roaming Minute Plan</mat-label>
+                                    <mat-select formControlName="roaming_plan_id" (openedChange)="HandleDropdownFilter('filterRoaming',RoamingPlanFilter)" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="roamingPlanList" [displayMember]="'name'" (filteredReturn)="filterRoaming = $event"></mat-select-filter>
+                                        <mat-option *ngFor='let c of filterRoaming' [value]="c.id">
+                                            {{c?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('roaming_plan_id').invalid && (pbxForm.get('roaming_plan_id').dirty || pbxForm.get('roaming_plan_id').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('roaming_plan_id').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 switch-div" *ngIf="(is_minute_plan.value) && (teleConsultancy.value)" style="margin-top: -15px;">
+                                <ejs-dropdownlist formControlName="teleConsultancy_call_plan_id" (filtering)="Minuteremovedspace($event)" style="width: 65%;" [dataSource]='tcCallPlanist' [fields]='fields' 
+                                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder3' allowFiltering=true>
+                                </ejs-dropdownlist>
+                                <!-- <mat-form-field >
+                                    <mat-label> TC Minute Plan</mat-label>
+                                    <mat-select formControlName="teleConsultancy_call_plan_id" (openedChange)="HandleDropdownFilter('filterTC',TCPlanFilter)" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="tcCallPlanist" [displayMember]="'name'" (filteredReturn)="filterTC = $event"></mat-select-filter>
+                                        <mat-option *ngFor='let tc of filterTC' [value]="tc.id">
+                                            {{tc?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                                <div style="margin-top:2px;" *ngIf="pbxForm.get('teleConsultancy_call_plan_id').invalid && (pbxForm.get('teleConsultancy_call_plan_id').dirty || pbxForm.get('teleConsultancy_call_plan_id').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('teleConsultancy_call_plan_id').errors.required"> Required Field</div>
+                                </div>
+                            </div>
+                       
+
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="pbxForm.get('teleConsultancy').value && isTeleConsultancyShow">
+                                <mat-form-field >
+                                    <mat-label>TC Minute Plan</mat-label>
+                                    <mat-select formControlName="teleConsultancy_call_plan_id" [disabled]="!isTeleConsultancy">
+                                        <mat-option *ngFor='let tc of tcCallPlanist' [value]="tc.id">
+                                            {{tc?.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="pbxForm.get('teleConsultancy_call_plan_id').invalid && (pbxForm.get('teleConsultancy_call_plan_id').dirty || pbxForm.get('teleConsultancy_call_plan_id').touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="pbxForm.get('teleConsultancy_call_plan_id').errors.required"> Required Field</div>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="appointment" (change)="IVRtoggle($event)"
+                                [(ngModel)]="isAppointment">
+                                   Appointment
+                                </mat-slide-toggle>
+                            </div>
+
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="broadcast" (change)="IVRtoggle($event)"
+                                [(ngModel)]="isBroadcast">
+                                    Broadcast
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <div class="row"> -->
+                                    <div class="form-group col-md-4 switch-div">
+                                        <mat-slide-toggle [color]="accent" value="1" formControlName="outbound"
+                                            (change)="activeOutbound($event)" [(ngModel)]="isOutbound"
+                                            [disabled]="disableOutbound">
+                                            Outgoing Call
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="form-group col-md-4" *ngIf="pbxForm.get('outbound').value">
+                                        <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isClick2Call" formControlName="click2call">
+                                            ClickToCall
+                                        </mat-slide-toggle>
+                                    </div>
+
+                                    <div class="form-group col-md-4" style="margin-top: 1px;" *ngIf="pbxForm.get('outbound').value">
+                                        <mat-slide-toggle formControlName="isCircle" [(ngModel)]="isCircle" (change)="isChnageCircle($event)">
+                                         Circle
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="form-group col-md-4 switch-div" *ngIf="isCircle && isOutbound" style="margin-top: -15px;">
+                                        <ejs-dropdownlist formControlName="circle" (filtering)="circleremovedspace($event)" style="width: 80%;" [dataSource]='circleList' [fields]='fields' [disabled]="!isFeatureRate" (change)="onCircleSelect($event)"
+                                        [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder5' allowFiltering=true>
+                                        </ejs-dropdownlist>
+                                        <!-- <mat-form-field style="width: 70%; border-top: 0px !important;">
+                                            <mat-label>Circle Name</mat-label>
+                                            <mat-select formControlName="circle" (openedChange)="HandleDropdownFilter('filterCircle',CircleFilter)" (ngModelChange)="onCircleSelect()" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="circleList" [displayMember]="'name'" (filteredReturn)="filterCircle = $event"></mat-select-filter>
+                                                <mat-option *ngFor='let c of filterCircle' [value]="c.id">
+                                                    {{c?.name }}
+                                                  </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                        <div style="margin-top:2px;" *ngIf="pbxForm.get('circle').invalid && (pbxForm.get('circle').dirty || pbxForm.get('circle').touched )" class="reqired-field">
+                                            <div *ngIf="pbxForm.get('circle').errors.required"> Required Field</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="form-group col-md-12" *ngIf="isOutbound">
+                                        <mat-form-field>
+                                            <mat-label>Gateway Group</mat-label>
+                                            <mat-select formControlName="gateway_group" [(ngModel)] = "this.primaryGatewayGroup">
+                                                <mat-option *ngFor='let gateway of gatewayGroup' [value]="gateway.id">
+                                                    {{ gateway.name }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div> -->
+                                    <div class="form-group col-md-4 switch-div" *ngIf="isOutbound" style="margin-top: -15px;">
+                                        <ejs-dropdownlist formControlName="call_plan" (filtering)="Callremovedspace($event)" style="width: 80%;" [dataSource]='callPlans' [fields]='fields' [(ngModel)]="primaryCallPlan"
+                                        [popupHeight]='popupHeight' [popupWidth]='popupWidth' [floatLabelType]="'Auto'"  [placeholder]='placeholder6' allowFiltering=true>
+                                        </ejs-dropdownlist>
+                                        <!-- <mat-form-field>
+                                            <mat-label>Call Plan</mat-label>
+                                            <mat-select formControlName="call_plan" (openedChange)="HandleDropdownFilter('filterCallPlan',CallPlanFilter)" [(ngModel)]="this.primaryCallPlan" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                                <mat-select-filter  *ngIf="select1.focused" [array]="callPlans" [displayMember]="'name'" (filteredReturn)="filterCallPlan = $event"></mat-select-filter>
+                                                <mat-option *ngFor='let callplan of filterCallPlan' [value]="callplan.id">
+                                                    {{ callplan.name }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                        <div style="margin-top:2px;" *ngIf="pbxForm.get('call_plan').invalid && (pbxForm.get('call_plan').dirty || pbxForm.get('call_plan').touched )"
+                                        class="reqired-field">
+                                        <div *ngIf="pbxForm.get('call_plan').errors.required">
+                                            Required Field
+                                        </div>
+                                    </div>
+                                    </div>
+                                <!-- </div>
+                            </div>   -->
+                            <div class="hr-sect">Basic Call Feature</div>
+
+                        
+                            
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isCallBarging" formControlName="call_barging">
+                                    Call Barging
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isCallGroup" formControlName="call_group">
+                                    Call Group
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isForward" formControlName="forward">
+                                    Call Forwarding
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isCallTransfer" formControlName="call_transfer">
+                                    Call Transfer
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isFindMeFolloeMe" formControlName="find_me_follow_me">
+                                    Find Me Follow Me
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isOnetoOneVideoCall" formControlName="one_to_one_video_call">
+                                    One To One Video Call
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  [(ngModel)]="isSpeeddial" formControlName="speed_dial">
+                                    Speed Dial
+                                </mat-slide-toggle>
+                            </div>
+                      
+
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="isStorage">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isRecording" (change)="activeRecording($event)" formControlName="pbx_recording">
+                                   Call Recording
+                                </mat-slide-toggle>
+                            </div> -->
+                           
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isClick2Call" formControlName="click2call">
+                                    ClickToCall
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isConference" formControlName="conference">
+                                    Conference
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="isStorage">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="custom_prompts"
+                                    [(ngModel)]="isPrompt" (change)="promptoggle($event)">
+                                    Custom Prompts
+                                </mat-slide-toggle>
+                            </div> -->
+                       
+
+
+                         
+                       
+                       
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isIvr" (change)="IVRtoggle($event)"
+                                    formControlName="ivr">
+                                    IVR
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isMusicOnHold" (change)="activeMusicOnHold($event)" formControlName="music_on_hold">
+                                    Music On Hold (MOH)
+                                </mat-slide-toggle>
+                            </div> -->
+                         
+                          
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isOutboundConf" formControlName="outbound_conference">
+                                    Outbound Conferencing
+                                </mat-slide-toggle>
+                            </div> -->
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isOBD" formControlName="outbound_broadcast" (change)="isChnage($event)">
+                                    OBD
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4" *ngIf="pbxForm.get('outbound_broadcast').value">
+                                <mat-form-field>    
+                                    <mat-label>CPS*</mat-label>
+                                    <mat-select formControlName="cps" [(ngModel)]="selectedId">
+                                        <mat-option *ngFor="let mask of maskArray" [value]="mask.id">{{mask.id}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="pbxForm.controls['cps'].invalid && (pbxForm.controls['cps'].dirty || pbxForm.controls['cps'].touched)"
+                                    class="alert">
+                                    <div *ngIf="pbxForm.controls['cps'].errors.required"
+                                        style="margin-top:-25px; margin-left:-20px; color:red;">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 switch-div" *ngIf="pbxForm.get('outbound_broadcast').value">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                                       min="1" max="200" [(ngModel)]="defaultInputValue" formControlName="obd_channal_limit"
+                                        placeholder="OBD Channel Limit*" autocomplete="off" appBlockCopyPaste>
+                                </mat-form-field>
+                           
+                                <div *ngIf="obd_channal_limit.invalid && (obd_channal_limit.dirty || obd_channal_limit.touched)">
+                                    <div *ngIf="obd_channal_limit.errors.required" style="margin-top:-16px; margin-left:-1px; color:red;">Number is required.</div>
+                                    <div *ngIf="obd_channal_limit.errors.min || obd_channal_limit.errors.max" style="margin-top:-16px; margin-left:-1px; color:red;">Enter a number between 1 and 200.</div>
+                                  </div>
+                            </div> -->
+                                                   
+                      
+                        <!--    <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isPlayback" formControlName="playback">
+                                    Playback Services 
+                                </mat-slide-toggle>
+                            </div> -->
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isQueue" (change)="Queuetoggle($event)" formControlName="queue">
+                                    Queue
+                                </mat-slide-toggle>
+                            </div> -->
+
+                           
+
+                          
+
+                         
+                          
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" [(ngModel)]="isStorage" formControlName="storage"
+                                    (change)="activeStorage($event)">
+                                    Storage
+                                </mat-slide-toggle>
+                            </div> -->
+
+                        
+
+                           
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="isTeleConsultancyShow">
+                                <mat-radio-group aria-label="Select an option" [disabled]="!isTeleConsultancy" formControlName="subscription">
+                                    <mat-radio-button value="1" checked>Monthly Subscription</mat-radio-button>
+                                    <mat-radio-button value="2">Yearly Subscription</mat-radio-button>
+                                </mat-radio-group>
+                            </div> -->
+
+
+                         
+                            <div class="hr-sect">Advance Call Feature</div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="caller_id"
+                                    [(ngModel)]="isCallerID">
+                                    CID Routing
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="custom_acl"
+                                    [(ngModel)]="isCustomACL">
+                                    Custom ACL
+                                </mat-slide-toggle>
+                            </div>
+                       
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isGeoTracking" formControlName="geo_tracking">
+                                    Geo Tracking
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isPaging" formControlName="paging">
+                                    Paging
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="sip_trunk"
+                                    [(ngModel)]="isTrunk">
+                                    SIP Trunk
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isStickyAgent" formControlName="sticky_agent">
+                                    Sticky Agent
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1"  [(ngModel)]="isVoicebot"  formControlName="voicebot">
+                                    Voicebot
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle  value="1" [(ngModel)]="isWhatsApp" formControlName="whatsapp">
+                                    Whatsapp
+                                </mat-slide-toggle>
+                            </div>
+
+
+                            <!-- <div class="form-group col-md-4 switch-div">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <mat-slide-toggle formControlName="isFeatureRate" [(ngModel)]="isFeatureRate" (change)="isChnageFeatureRate($event)">
+                                            Feature Rate
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="isFeatureRate">
+                                        <mat-form-field style="width: 70%; border-top: 0px !important;">
+                                            <mat-label>Feature Rate</mat-label>
+                                            <mat-select formControlName="featureRate">
+                                                <mat-option *ngFor='let c of globalFeatureRateList' [value]="c.id">
+                                                    {{c?.feature_name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <div *ngIf="pbxForm.get('featureRate').invalid && (pbxForm.get('featureRate').dirty || pbxForm.get('featureRate').touched )"
+                                            class="reqired-field">
+                                            <div *ngIf="pbxForm.get('featureRate').errors.required"> Required Field</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="form-group col-md-4 switch-div" *ngIf="isStorage">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="10"
+                                        maxlength="4" id="vm_limit" formControlName="vm_limit"
+                                        placeholder="Voice Mail Limit" [(ngModel)]="voicemail_limit" autocomplete="off"
+                                        appBlockCopyPaste>
+                                </mat-form-field>
+                                <div *ngIf="vm_limit.invalid && (vm_limit.dirty || vm_limit.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="vm_limit.errors.min">
+                                        Voicemail limit can't be 0
+                                    </div>
+                                </div>
+                            </div> -->
+                            
+                            <div class="hr-sect">Storage Associated Features</div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" [(ngModel)]="isStorage" formControlName="storage" 
+                                    (change)="activeStorage($event)" >
+                                    Storage
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div" > 
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="appointment" (change)="IVRtoggle($event)"
+                                [(ngModel)]="isAppointment">
+                                   Appointment
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div" >
+                                <mat-slide-toggle [color]="accent" value="1"  formControlName="broadcast" (change)="IVRtoggle($event)"
+                                [(ngModel)]="isBroadcast">
+                                    Broadcast
+                                </mat-slide-toggle>
+                            </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" formControlName="custom_prompts"
+                                [(ngModel)]="isPrompt" (change)="promptoggle($event)" (change)="IVRtoggle($event)">
+                                Custom Prompts
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isRecording" (change)="activeRecording($event)" formControlName="pbx_recording">
+                               Call Recording
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isConference" (change)="IVRtoggle($event)" formControlName="conference">
+                                Conference
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div">
+                            <mat-slide-toggle [color]="accent" value="1"  [(ngModel)]="isDynamicIvr" (change)="IVRtoggle($event)" formControlName="dynamic_ivr">
+                                Dynamic IVR
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isIvr" (change)="IVRtoggle($event)"
+                                formControlName="ivr">
+                                IVR
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isMusicOnHold" (change)="activeMusicOnHold($event)" (change)="IVRtoggle($event)" formControlName="music_on_hold">
+                                Music On Hold (MOH)
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isOBD" (change)="IVRtoggle($event)" formControlName="outbound_broadcast" (change)="isChnage($event)">
+                                OBD
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4" *ngIf="isOBD">
+                            <mat-form-field>    
+                                <mat-label>Call Per Second (CPS)</mat-label>
+                                <mat-select formControlName="cps" [(ngModel)]="selectedId" required>
+                                    <mat-option *ngFor="let mask of maskArray" [value]="mask.id">{{mask.id}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="pbxForm.controls['cps'].invalid && (pbxForm.controls['cps'].dirty || pbxForm.controls['cps'].touched)"
+                                class="alert">
+                                <div *ngIf="pbxForm.controls['cps'].errors.required"
+                                    style="margin-top:-25px; margin-left:-20px; color:red;">
+                                    Required Field
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" *ngIf="isOBD">
+                            <mat-form-field class="example-full-width">
+                                <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                                   maxlength="3" [(ngModel)]="defaultInputValue" formControlName="obd_channal_limit"
+                                    placeholder="OBD Channel Limit" autocomplete="off" appBlockCopyPaste required>
+                            </mat-form-field>
+                       
+                            <!-- <div *ngIf="obd_channal_limit.invalid && (obd_channal_limit.dirty || obd_channal_limit.touched)">
+                                <div *ngIf="obd_channal_limit.errors.required" style="margin-top:-16px; margin-left:-1px; color:red;">Number is required.</div>
+                                <div *ngIf="obd_channal_limit.errors.min || obd_channal_limit.errors.max" style="margin-top:-16px; margin-left:-1px; color:red;">Enter a number between 1 and 200.</div>
+                              </div> -->
+                              <div *ngIf="obd_channal_limit.invalid && (obd_channal_limit.dirty || obd_channal_limit.touched)" class="reqired-field">
+                                <div *ngIf="obd_channal_limit.errors.required">
+                                  Required Field
+                                </div>
+                                <div *ngIf="obd_channal_limit.errors.pattern">Enter a number between 1 and 200.</div>
+                              </div>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isOutboundConf" (change)="IVRtoggle($event)" formControlName="outbound_conference">
+                                Outbound Conference
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isPlayback" (change)="IVRtoggle($event)" formControlName="playback">
+                                Playback Services 
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-slide-toggle [color]="accent" value="1" [(ngModel)]="isQueue" (change)="IVRtoggle($event)" (change)="Queuetoggle($event)" formControlName="queue">
+                                Queue
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-form-field class="example-full-width">
+                                <input matInput type="text" maxlength="3" required
+                                    (keypress)="commonService.numberOnly($event)" value="30"
+                                    id="file_storage_duration" formControlName="file_storage_duration" [readonly]="!isStorage"
+                                    [(ngModel)]="fileDurationDays" placeholder="Storage Duration (In Days)"
+                                    autocomplete="off" appBlockCopyPaste>
+                            </mat-form-field>
+                            <div *ngIf="file_storage_duration.invalid && (file_storage_duration.dirty || file_storage_duration.touched )"
+                                class="reqired-field">
+                                <div *ngIf="file_storage_duration.errors.required">
+                                    Required Field
+                                  </div>
+                                <div *ngIf="file_storage_duration.errors.min">
+                                   File storage duration can't be 0
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 switch-div" >
+                            <mat-form-field class="example-full-width">
+                                <input matInput type="text" maxlength="3" required
+                                    (keypress)="commonService.numberOnly($event)" value="1" id="file_storage_size"
+                                    formControlName="file_storage_size" [(ngModel)]="fileStorageSize" [readonly]="!isStorage"
+                                    placeholder="Storage Size (In GB)" autocomplete="off" appBlockCopyPaste required>
+                            </mat-form-field>
+                            <!-- <div *ngIf="file_storage_size.invalid && (file_storage_size.dirty || file_storage_size.touched )"
+                                class="reqired-field">
+                                <div *ngIf="file_storage_size.errors.min">
+                                   File storage size can't be 0
+                                </div>
+                            </div> -->
+                            <div *ngIf="file_storage_size.invalid && (file_storage_size.dirty || file_storage_size.touched)" class="reqired-field">
+                                <div *ngIf="file_storage_size.errors.required">
+                                  Required Field
+                                </div>
+                                <div *ngIf="file_storage_size.errors.pattern">Enter a number between 1 and 100.</div>
+                              </div>
+                        </div>
+                            
+                            <div class="form-group col-md-12">
+                                <button type="submit" [disabled]="!pbxForm.valid" class="btn btn-success">Create
+                                    Package</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Pbx Features end -->
+                    <!-- Oc Features start -->
+                    <div id="oc_feature" *ngIf="ocDiv">
+                        <form [formGroup]="ocForm" (ngSubmit)="submitOcForm()" class="row">
+                            <div class="form-group col-md-6 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="package_name_oc"
+                                        placeholder="Package Name" [(ngModel)]="ocPackageName" maxlength="35"
+                                        (keypress)="commonService.charOnly($event)" autocomplete="off" appBlockCopyPaste
+                                        required>
+                                </mat-form-field>
+                                <div *ngIf="package_name_oc.invalid && (package_name_oc.dirty || package_name_oc.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="package_name_oc.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" formControlName="package_duration_oc"
+                                        placeholder="Package Validity (In Days)"
+                                        (keypress)="commonService.numberOnly($event)" maxlength="3" autocomplete="off"
+                                        appBlockCopyPaste required>
+                                </mat-form-field>
+                                <div *ngIf="package_duration_oc.invalid && (package_duration_oc.dirty || package_duration_oc.touched )"
+                                    class="reqired-field">
+                                    <div *ngIf="package_duration_oc.errors.required">
+                                        Required Field
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="0"
+                                        maxlength="4" id="campaign_limit" formControlName="campaign_limit"
+                                        placeholder="Campaign Limit" autocomplete="off" appBlockCopyPaste>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" value="0"
+                                        maxlength="4" id="participant_limit" formControlName="participant_limit"
+                                        placeholder="Participant Limit" autocomplete="off" appBlockCopyPaste>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput type="text" (keypress)="commonService.numberOnly($event)"
+                                        (keyup)="maxtrylimit($event)" value="0" id="retry" formControlName="retry"
+                                        [(ngModel)]="this.maxRetrylimit" placeholder="Retry" maxlength="1"
+                                        autocomplete="off" appBlockCopyPaste>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" formControlName="mute">
+                                    Mute
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" formControlName="oc_recording">
+                                   Call Recording
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-4 switch-div">
+                                <mat-slide-toggle [color]="accent" value="1" formControlName="schedule_campaign">
+                                    Schedule Campaign
+                                </mat-slide-toggle>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button type="submit" [disabled]="!ocForm.valid" class="btn btn-success">Create
+                                    Package</button>
+                            </div>
+                      
+
+                        </form>
+                    </div>
+                    <!-- Oc Features end -->
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+</div>

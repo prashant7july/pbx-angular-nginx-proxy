@@ -1,0 +1,190 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>DID: {{didData.did}}</strong>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="didForm" (ngSubmit)="submitDIDForm()" class="row">
+              <div class="form-group col-md-4">
+                <label for="didType">DID Type<span class="reqired-field">*</span></label>              
+                <span *ngIf="didData.did_type == 1">
+                    <input type="text" value="DID Number" class="form-control" readonly>
+                </span>
+                <span *ngIf="didData.did_type == 2">
+                    <input type="text" value="Range" class="form-control" readonly>
+                </span>
+                <span *ngIf="didData.did_type == 3">
+                    <input type="text" value="Tollfree" class="form-control" readonly>
+                </span>
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label for="did_number">DID Number<span class="reqired-field">*</span></label>
+                <input type="text" class="form-control" formControlName="did_number" maxlength="15" minlength="5"
+                  placeholder="Ex. 0123456789" [(ngModel)]="didData.did" readonly>                
+              </div>
+              <div class="form-group col-md-4" *ngIf="userRole!='4' && userRole!='5'">
+                <label for="billing">Billing Type<span class="reqired-field">*</span></label>
+                <select class="form-control" formControlName="billing" [(ngModel)]="didData.billingtype"
+                 (change)="manageRate($event)">
+                  <option value="" selected disabled>Select Billing Type</option>
+                  <option value="1" >Fix per month + Bundle Minute/Dial-out Rate</option>
+                  <option value="2">Fix per month</option>
+                  <option value="3">Only Bundle Minute/Dial-out Rate</option>
+                  <option value="4">Free</option>
+                </select>
+                <div *ngIf="billing.invalid && (billing.dirty || billing.touched)" class="reqired-field">
+                  <div *ngIf="billing.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="userRole=='4' || userRole=='5'">
+                  <label for="billing">Billing Type<span class="reqired-field">*</span></label>
+                  <select class="form-control" formControlName="billing" [(ngModel)]="didData.billingtype"
+                   (change)="manageRate($event)" disabled>
+                    <option value="" selected disabled>Select Billing Type</option>
+                    <option value="1" >Fix per month + Bundle Minute/Dial-out Rate</option>
+                    <option value="2">Fix per month</option>
+                    <option value="3">Only Bundle Minute/Dial-out Rate</option>
+                    <option value="4">Free</option>
+                  </select>
+                  <div *ngIf="billing.invalid && (billing.dirty || billing.touched)" class="reqired-field">
+                    <div *ngIf="billing.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+              <div class="form-group col-md-4" *ngIf="userRole!='4' && userRole!='5'">
+                <label for="provider">Provider<span class="reqired-field">*</span></label>
+                <select class="form-control" formControlName="provider" [(ngModel)]="didData.provider_id" >
+                  <option value="" selected disabled>Select Provider</option>
+                  <option *ngFor='let provider of providerList' [value]="provider.id">
+                      {{ provider.provider }}
+                    </option>
+                </select>
+                <div *ngIf="provider.invalid && (provider.dirty || provider.touched)" class="reqired-field">
+                  <div *ngIf="provider.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="userRole=='4' || userRole=='5'">
+                  <label for="provider">Provider<span class="reqired-field">*</span></label>
+                  <select class="form-control" formControlName="provider" disabled [(ngModel)]="didData.provider_id" >
+                    <option value="" selected disabled>Select Provider</option>
+                    <option *ngFor='let provider of providerList' [value]="provider.id">
+                        {{ provider.provider }}
+                      </option>
+                  </select>
+                  <div *ngIf="provider.invalid && (provider.dirty || provider.touched)" class="reqired-field">
+                    <div *ngIf="provider.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+              <div class="form-group col-md-4" *ngIf="userRole!='4' && userRole!='5'">
+                <label for="country">Country<span class="reqired-field">*</span></label>
+                <select class="form-control" formControlName="country" [(ngModel)]="didData.country_id">
+                  <option value="" selected disabled>Select Country</option>
+                  <option *ngFor='let country of countryList' [value]="country.id">
+                    {{ country.name }}
+                  </option>
+                </select>
+                <div *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                  <div *ngIf="country.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="userRole=='4' || userRole=='5'">
+                  <label for="country">Country<span class="reqired-field">*</span></label>
+                  <select class="form-control" formControlName="country" disabled [(ngModel)]="didData.country_id">
+                    <option value="" selected disabled>Select Country</option>
+                    <option *ngFor='let country of countryList' [value]="country.id">
+                      {{ country.name }}
+                    </option>
+                  </select>
+                  <div *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                    <div *ngIf="country.errors.required">
+                      Required Field
+                    </div>
+                  </div>
+                </div>
+              <div class="form-group col-md-4">
+                <label for="concurrent_call">Max Concurrent Calls<span class="reqired-field">*</span></label>
+                <input type="text" class="form-control" formControlName="concurrent_call" [(ngModel)]="maxLimit"
+                  (keypress)="commonService.numberOnly($event)" placeholder="Ex. 20" maxlength="2"  [readonly]="userRole=='4' || userRole=='5'">
+                <div *ngIf="concurrent_call.invalid && (concurrent_call.dirty || concurrent_call.touched)"
+                  class="reqired-field">
+                  <div *ngIf="concurrent_call.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="connect_charge">Connect Charge<span class="reqired-field">*</span></label>
+                <input type="text" class="form-control" formControlName="connect_charge" placeholder="Connect Charge"
+                  (keypress)="commonService.floatOnly($event)" [(ngModel)]="didData.connection_charge" 
+                  [readonly]="userRole=='4' || userRole=='5'" maxlength="5">
+                <div *ngIf="connect_charge.invalid && (connect_charge.dirty || connect_charge.touched)"
+                  class="reqired-field">
+                  <div *ngIf="connect_charge.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group col-md-4" *ngIf="isMonthlyRate">
+
+                <label for="fixrate">Monthly Rate<span class="reqired-field">*</span></label>
+                <input type="text" class="form-control" formControlName="fixrate" placeholder="Monthly Rate"
+                  (keypress)="commonService.floatOnly($event)" [readonly]="userRole=='4' || userRole=='5'" [(ngModel)]="didData.fixrate" maxlength="5">
+                <div *ngIf="fixrate.invalid && (fixrate.dirty || fixrate.touched)" class="reqired-field">
+                  <div *ngIf="fixrate.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" *ngIf="isSellingRate">
+                <label for="selling_rate">Selling Rate<span class="reqired-field">*</span></label>
+                <input type="text" class="form-control" formControlName="selling_rate" placeholder="Selling Rate"
+                  (keypress)="commonService.floatOnly($event)" [readonly]="userRole=='4' || userRole=='5'" [(ngModel)]="didData.selling_rate" maxlength="5">
+                <div *ngIf="selling_rate.invalid && (selling_rate.dirty || selling_rate.touched)" class="reqired-field">
+                  <div *ngIf="selling_rate.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4" style="margin-top: 35px;" *ngIf="userRole!='4' && userRole!='5'">
+                Activated
+                <label class="switch switch-label switch-pill switch-primary">
+                  <input type="checkbox" class="switch-input" value="1" [(ngModel)]="didData.activated" formControlName="activated">
+                  <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                </label>
+              </div>
+              <div class="form-group col-md-4" style="margin-top: 35px;" *ngIf="userRole=='4' || userRole=='5'">
+                  Activated
+                  <label class="switch switch-label switch-pill switch-primary">
+                    <input type="checkbox" class="switch-input" value="1" disabled [(ngModel)]="didData.activated" formControlName="activated">
+                    <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                  </label>
+                </div>
+              <div class="form-group col-md-12" *ngIf="userRole!='4' && userRole!='5'">
+                <button type="submit"  class="btn btn-success">Submit</button>
+                &nbsp;
+                <button type="button" class="btn btn-danger" (click)="cancelForm()">
+                  Cancel
+                </button>
+              </div>
+              <div class="form-group col-md-12" *ngIf="userRole=='4' || userRole=='5'">                
+                  <button type="button" backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,119 @@
+.card-header{
+
+    background-color: #2f353a;
+    color: #FFFFFF;
+}
+table tr.highlight {
+    background-color: #16709e  !important;
+    color: #ffffff;
+}
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+/* for ticket table */
+::ng-deep 
+p {
+    margin-top: 0;
+    margin-bottom: 0rem !important;
+}
+
+.custom-card{
+    cursor: pointer;
+    height: 80%;
+}
+/* for scale graph */
+.BorderGrid--spacious .BorderGrid-cell {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+.Progress {
+    display: flex;
+    height: 25px;
+    overflow: hidden;
+    background-color: var(--color-auto-gray-2);
+    /*border-radius: 6px;*/
+    outline: 1px solid transparent;
+}
+.Progress-item {
+    outline: 2px solid transparent;
+}
+.Progress-item+.Progress-item {
+    margin-left: 2px;
+}
+.list-style-none {
+    list-style: none!important;
+}
+ol, ul {
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.d-inline {
+    display: inline!important;
+}
+.d-inline-flex {
+    display: inline-flex!important;
+}
+.no-underline {
+    text-decoration: none!important;
+}
+.text-small {
+    font-size: 12px!important;
+}
+.flex-items-center {
+    align-items: center!important;
+}
+.flex-nowrap {
+    flex-wrap: nowrap!important;
+}
+.Link--secondary, .link-gray {
+    color: var(--color-text-secondary)!important;
+}
+
+.scaleDiv{
+    width:500px; 
+    height: 155px; 
+    margin-top:124px;
+    padding: 0px 62px 0px 0px;
+}
+.mat-chip-list .mat-chip {
+    width: auto;
+    min-width: 0;
+    font-size: 12px !important;
+  }
+  .mat-standard-chip{
+    min-height: 16px !important;
+  }
+.answer{
+    background-color: #f1e05a !important;
+}
+.fail{
+    background-color: #e34c26 !important;
+}
+.missed{
+    background-color: #000000 !important;
+}
+.reject{
+    background-color: #29a768 !important;
+}
+.busy{
+    background-color: #4e0fac !important;
+}
+.item-flex{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.e-tooltip-wrap .e-tip-content{
+    font-size: 12px;
+    line-height: 18px;
+}
+.info-button{
+    background-color: transparent;
+    color: #316f9e;
+    margin: 2px 0;
+    padding: 2px;
+    font-size: 16px;
+}
+/* --------------for scale graph------------------- */

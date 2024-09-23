@@ -1,0 +1,137 @@
+<h3 class="card-header-style">Users</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form [formGroup]="userForm" novalidate>
+      <input type="hidden" [(ngModel)]="userData.id" formControlName="id" />
+      <div class="row">
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="f_name" placeholder="First Name" maxlength="20"
+              [(ngModel)]="userData.first_name" autocomplete="off" appBlockCopyPaste
+              required> 
+          </mat-form-field>
+          <div *ngIf="f_name.invalid && (f_name.dirty || f_name.touched)" class="reqired-field">
+            <div *ngIf="f_name.errors.required">
+              Required Field
+            </div>
+            <div *ngIf="f_name.errors.pattern">
+              Invalid name
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.last_name" formControlName="l_name" id="laname"
+              placeholder="Last Name" maxlength="20" autocomplete="off" appBlockCopyPaste>
+          </mat-form-field>
+          <div *ngIf="l_name.invalid && (l_name.dirty || l_name.touched)" class="reqired-field">
+            <div *ngIf="l_name.errors.pattern">
+              Invalid name
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="email" maxlength="40" (change)="checkEmail()" [(ngModel)]="emailId"
+              formControlName="email" id="email" placeholder="Email" autocomplete="new-email" required>
+          </mat-form-field>
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="reqired-field">
+            <div *ngIf="email.errors.required">
+              Required Field
+            </div>
+            <div *ngIf="email.errors.pattern">
+              Email must be a valid email address
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="userData.username" (keydown.space)="$event.preventDefault();"
+              formControlName="username" maxlength="20" id="username" placeholder="Username" required
+              autocomplete="off" appBlockCopyPaste readonly>
+          </mat-form-field>
+          <div *ngIf="username.invalid && (username.dirty || username.touched)" class="reqired-field">
+            <div *ngIf="username.errors.required">
+              Required Field
+            </div>
+            <div *ngIf="username.errors.minlength">
+              Username must be at least 8 characters long.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4" style="margin-top:-7px;">
+          <ejs-dropdownlist id='ddltooltip' [floatLabelType]="'Auto'" formControlName="country" [(ngModel)]="DataBind" style="width: 63%;" [dataSource]='countryList' (change)="getCountryCode($event)" [fields]='fields' 
+          [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+         </ejs-dropdownlist>
+          <!-- <mat-form-field>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" (openedChange)="HandleDropdownFilter('filterCountry',CountryFilter)" (selectionChange)="getCountryCode($event)"
+              [(ngModel)]="userData.country_id" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+              <mat-select-filter *ngIf="select1.focused" [array]="countryList" [displayMember]="'name'" (filteredReturn)="filterCountry = $event" allowFiltering=true></mat-select-filter>
+              <mat-option *ngFor='let country of filterCountry' [value]="country.id">
+                {{ country.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <input type="hidden" formControlName="country_code" [(ngModel)]="countryCode" />
+            <input matInput type="text" [(ngModel)]="userData.mobile" (keypress)="commonService.numberOnly($event)"
+              formControlName="mobile" id="mobile" placeholder="Mobile Number" minlength="10" maxlength="10"
+              autocomplete="off" required>
+            <span matPrefix>{{countryCode}}</span>
+          </mat-form-field>
+          <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="reqired-field">
+            <div *ngIf="mobile.errors.required">
+              Required Field
+            </div>
+            <div *ngIf="mobile.errors.pattern"> Number can not start with 0 and not less than 10 digits and special characters are not allowed.</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" [(ngModel)]="userData.status">
+              <mat-option value="0">Inactive</mat-option>
+              <mat-option value="1">Active</mat-option>
+              <!-- <mat-option value="2">Delete</mat-option> -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4" *ngIf="userData.role_id == 2">
+          <ejs-dropdownlist id="dldelement" [floatLabelType]="'Auto'" formControlName="permission_type" (filtering)="Permissionremovedspace($event)" style="width: 58%;" [dataSource]='permissionArr' [fields]='fields6' 
+          [popupHeight]='popupHeight' [popupWidth]='popupWidth'  placeholder="Select Permission" allowFiltering=true [(ngModel)]="permission_name">  
+        </ejs-dropdownlist>
+          <!-- <mat-form-field>
+            <mat-label>Choose Permission</mat-label>
+            <mat-select formControlName="permission_type" (openedChange)="HandleDropdownFilter('filterPermission',PermissionFilter)" (selectionChange)="goNext($event)" #select1 required>
+              <mat-select-filter  *ngIf="select1.focused" [array]="permissionArr" [displayMember]="'permission_name'" (filteredReturn)="filterPermission = $event" ></mat-select-filter>
+              <mat-option value="">Select Permission</mat-option>
+              <mat-option *ngFor='let permission of filterPermission | orderBy:"permission_name"' [value]="permission.id"> {{ permission.permission_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <div style="margin-top:2px;" *ngIf="permission_type.invalid && (permission_type.dirty || permission_type.touched)" class="reqired-field">
+            <div *ngIf="permission_type.errors.required">
+              Required Field
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group col-lg-12 example-button-row">      
+        <button mat-raised-button [disabled]="!userForm.valid" (click)="submitUserForm()"
+            color="primary">Submit</button>       
+        <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

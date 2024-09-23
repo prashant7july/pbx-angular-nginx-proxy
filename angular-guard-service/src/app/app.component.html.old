@@ -1,0 +1,7 @@
+<router-outlet></router-outlet>
+<!-- <ng-http-loader></ng-http-loader> -->
+<div ngxUiLoaderBlurred blur="15">
+    
+</div>
+
+<ngx-ui-loader></ngx-ui-loader>        

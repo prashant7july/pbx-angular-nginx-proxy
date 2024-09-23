@@ -1,0 +1,11 @@
+/* ag-grid-angular div {
+} */
+
+.ag-root-wrapper.ag-layout-normal {
+    width: 100% !important;
+}
+
+ag-grid-angular > *:first-child
+{
+    width: 100%;
+}

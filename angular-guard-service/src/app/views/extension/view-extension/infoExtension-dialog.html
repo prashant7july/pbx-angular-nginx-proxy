@@ -1,0 +1,22 @@
+<h3 class="card-header-style">Extension Information</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    Customer's may make any number of extensions but can't go beyond as per the provided package by the Administrator. Extensions are used for calling after registration with service with the help of IP phones, SIP softphone and mobile apps.<br />
+                    Customer can see all his Extensions at All Extension section. We may add new extensions after clicking at Add Button. There is an option of making single or multiple Extensions at once. But bundle extensions have some limitations like password would be the same as extension name etc.  
+                    We create Extension by filling the mandatory fields with desirable features to its Extensions. 
+                </mat-card-content>
+                <img src="assets/img/extension.png" style="width:100%;">
+                <app-common-document></app-common-document>
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

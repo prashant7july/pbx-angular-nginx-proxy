@@ -1,0 +1,117 @@
+<h3 class="card-header-style">Manage Minutes</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <mat-tab-group dynamicHeight>
+      <mat-tab label="Transfer Minute">
+
+        <form class="row" [formGroup]="minuteForm">
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <mat-label>Select Extention (Deduct From)</mat-label>
+              <mat-select formControlName="deduct_minute" (selectionChange)="getDeductExtDetail($event)">
+                <mat-option *ngFor='let ext of deductExt' [value]="ext">
+                  {{ ext.ext_number }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field><br />
+            <span>Ext. Minute: {{deductExtMinute}}</span>
+          </div>
+
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <mat-label>Select Extention (Add To)</mat-label>
+              <mat-select formControlName="add_minute" (selectionChange)="getAddExtDetail($event)">
+                <mat-option *ngFor='let ext of addExtarr' [value]="ext">
+                  {{ ext.ext_number }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field><br />
+            <span>Ext. Minute: {{addExtMinute}}</span>
+          </div>
+
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <input matInput type="text" formControlName="add_minutes" placeholder="Add Minutes" autocomplete="off"
+                (keypress)="commonService.numberOnly($event)" (keyup)="manageMinute($event)" appBlockCopyPaste>
+            </mat-form-field><br />
+          </div>
+
+          <div class="form-group col-lg-12">
+            <div class="form-group row">
+              <div class="col-sm-12" style="text-align: center;">
+                <div class="col-lg-12 example-button-row">
+                  <button mat-raised-button (click)="submitForm()" [disabled]="formValid"
+                    color="primary">Submit</button>
+                  <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Deduct Minute">
+        <mat-radio-group aria-label="Select an option" (change)="deductMinuteCheck($event)">
+          <mat-radio-button value="1" checked>Custom</mat-radio-button>
+          <mat-radio-button value="2">All</mat-radio-button>
+        </mat-radio-group>
+        <hr />
+        <form class="row" [formGroup]="deductCustomMinuteForm" *ngIf="isCustomMinuteForm">
+        <div class="form-group col-md-4">
+        <mat-form-field>
+          <mat-label>Select Extention (Deduct From)</mat-label>
+          <mat-select formControlName="deduct_ext" (selectionChange)="getDeductExtMinute($event)">
+            <mat-option *ngFor='let ext of deductExt' [value]="ext">
+              {{ ext.ext_number }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field><br />
+        <span>Ext. Minute: {{deductCustomExtMinute}}</span>    
+        </div> 
+        <div class="form-group col-md-4">
+          <mat-form-field>
+            <input matInput type="text" formControlName="deduct_ext_minutes" placeholder="Deduct Minutes" autocomplete="off"
+              (keypress)="commonService.numberOnly($event)" (keyup)="manageDeductMinute($event)" appBlockCopyPaste>
+          </mat-form-field><br />
+        </div>
+        <div class="form-group col-lg-12">
+          <div class="form-group row">
+            <div class="col-sm-12" style="text-align: center;">
+              <div class="col-lg-12 example-button-row">
+                <button mat-raised-button (click)="submitDecuctCustomForm()" [disabled]="deductFormValid"
+                  color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+
+        <form class="row" [formGroup]="deductAllMinuteForm" *ngIf="isAllMinuteForm">          
+          <div class="form-group col-md-12">
+            
+            <mat-form-field>
+              <input matInput type="text" formControlName="deduct_minutes_all" placeholder="Deduct Minutes" autocomplete="off"
+                (keypress)="commonService.numberOnly($event)" (keyup)="manageDeductMinuteAll($event)" appBlockCopyPaste>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="form-group col-md-4" *ngFor='let ext of deductExt'>
+            <mat-card><strong>Extension</strong>: {{ext.ext_number}} <br /><strong>Assigned Min.</strong> {{ext.total_min_bal}}</mat-card>   
+          </div> 
+          <div class="form-group col-lg-12">
+            <div class="form-group row">
+              <div class="col-sm-12" style="text-align: center;">
+                <div class="col-lg-12 example-button-row">
+                  <button mat-raised-button (click)="submitDecuctAllForm()" [disabled]="allDeductFormValid"
+                    color="primary">Submit</button>
+                  <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

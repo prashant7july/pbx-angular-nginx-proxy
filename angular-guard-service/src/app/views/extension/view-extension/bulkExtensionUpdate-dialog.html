@@ -1,0 +1,246 @@
+<h3 class="card-header-style">Bulk Extension Update</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="extForm" (ngSubmit)="submitExtensionForm()" class="row">
+            <!-- <div class="form-group col-md-12">
+                <mat-radio-group aria-label="Select an option" formControlName="extType"  (change)="extTypeChange($event)">
+                    <mat-radio-button value="1" checked>All</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Custom</mat-radio-button>
+                </mat-radio-group>
+            </div> -->
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Select Feature</mat-label>
+                    <mat-select formControlName="feature" (selectionChange)="SelectfeatureChange($event)">
+                        <mat-option value="0" [disabled]="disableList">Source Extension List</mat-option>
+                        <mat-option value="1">Source Group List</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="disableList" style="width: 200%;">
+                    <small style="color: red; font-weight:600;">*Note</small><small> Extension Limit exceed, Kindly use Extension Group feature.</small>
+                </div>               
+            </div>
+            <div class="form-group col-md-6" *ngIf="onext_listSelect">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='extList' [fields]='fields'
+                    [placeholder]='placeholder' formControlName="extIds" [popupHeight]='popupHeight' [readonly]="disableList"
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="extIds.invalid && (extIds.dirty || extIds.touched)" class="reqired-field mt-1">
+                    <div *ngIf="extIds.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-6">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='extList' [fields]='fields'
+                    [placeholder]='placeholder2' formControlName="ext_group" [popupHeight]='popupHeight'
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="extIds.invalid && (extIds.dirty || extIds.touched)" class="reqired-field mt-1">
+                    <div *ngIf="extIds.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="form-group col-md-6" *ngIf="onext_group_listSelect">
+                <ejs-multiselect id='multiselectelement' formControlName="ext_group"
+                [dataSource]='intercomList' [fields]='fieldss'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [placeholder]='placeholder2' 
+                allowFiltering=true [selectAllText]='selectAllText' showSelectAll=true>
+            </ejs-multiselect>        
+            <div *ngIf="ext_group.invalid && (ext_group.dirty || ext_group.touched)" class="reqired-field mt-1">
+                <div *ngIf="ext_group.errors.required">
+                    Required Field
+                </div>
+            </div>                        
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="userRole=='5'">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="ring_time_out"
+                        (keypress)="commonService.numberOnly($event)" placeholder="Ring Time Out (In Sec.)"
+                        maxlength="3" autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="ring_time_out.invalid && (ring_time_out.dirty || ring_time_out.touched)"
+                    class="reqired-field">
+                    <div *ngIf="ring_time_out.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>DTMF Type</mat-label>
+                    <mat-select formControlName="dtmf_type">
+                        <mat-option value="0">RFC2833</mat-option>
+                        <mat-option value="1">SIP Info</mat-option>
+                        <mat-option value="2">In Band</mat-option>
+                        <mat-option value="3">Auto</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Caller ID Header Type</mat-label>
+                    <mat-select formControlName="header_type">
+                        <mat-option value="0" selected>None</mat-option>
+                        <mat-option value="1">P-Asserted-Identity</mat-option>
+                        <mat-option value="2">Remote-Party-ID</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>            
+
+           
+            <!-- <div class="form-group col-md-8">
+                <label for="codec">Codec</label>
+                <p-pickList [source]="sourceCodec" [target]="targetCodec" sourceHeader="Codec" targetHeader="Allow Codec"
+                    [showSourceControls]="false" [showTargetControls]="false" [responsive]="true" dragdrop="true"
+                    [sourceStyle]="{'height':'135px'}" [targetStyle]="{'height':'135px'}">
+                    <ng-template let-codec pTemplate="codec">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;float:right;">{{codec.codec}}</div>
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </div> -->
+            
+
+
+            <div class="hr-sect">Feature Settings</div>
+            <div class="row">
+                <div class="form-group col-md-4 switch-div-right"
+                    *ngIf="userRole=='1' || userRole == UserTypeAccountManager">
+                    <mat-slide-toggle [color]="accent" value="1" formControlName="isCheckAllFeatureSettings"
+                        (change)="checkAllFeatureSettings($event.checked)"
+                        [disabled]="userRole == UserTypeAccountManager">
+                        Select All
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="admin">
+                         Admin
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="bal_restriction">
+                        Balance Restriction
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isForward">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="call_forward">
+                        Call Forward
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="isCallTransfer">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="call_transfer">
+                        Call Transfer
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="dnd">
+                        Do Not Disturb
+                    </mat-slide-toggle>
+                </div>
+
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isOutbound">
+                    <mat-slide-toggle  (change)="manageSelectAllBtn()" value="1" formControlName="outbound">
+                        Dial Out
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isFindMeFollowMe">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="find_me_follow_me">
+                        Find Me Follow me
+                    </mat-slide-toggle>
+                </div>
+                
+                <!-- <div class="form-group col-md-4">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()"  formControlName="misscall_notify">
+                        Missed Call Alert(MCA)
+                    </mat-slide-toggle>
+                </div> -->
+
+                <div class="form-group col-md-4">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="multiple_reg">
+                        Multiple Registration
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="isSMSOutbound">
+                    <mat-slide-toggle value="1"  (change)="manageSelectAllBtn()" formControlName="outbound_sms_notification">
+                        Outbound SMS Notification
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="isRecording">
+                    <mat-slide-toggle  value="1" (change)="manageSelectAllBtn()"  formControlName="recording">
+                        Recording
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="isRoaming">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="roaming">
+                        Roaming
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isCustomPrompt">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="ringtone">
+                        Ringtone
+                </mat-slide-toggle>
+                </div>
+                
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isSpeedDial">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()"  formControlName="speed_dial">
+                        Speed Dial
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isStickyAgent">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="sticky_agent">
+                        Sticky Agent
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="isVoicemail">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="voice_mail">
+                        Voicemail
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="active_inactive">
+                        Active/Inactive
+                    </mat-slide-toggle>
+                </div>
+
+                <div class="form-group col-md-4 switch-div-right" *ngIf="isIntercomCalling == 1">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="intercom_calling">
+                        Intercom Calling
+                    </mat-slide-toggle>
+                </div>
+                
+                <div class="form-group col-md-4 switch-div-right">
+                    <mat-slide-toggle value="1" (change)="manageSelectAllBtn()" formControlName="call_waiting">
+                        Call Waiting
+                    </mat-slide-toggle>
+                </div>
+                
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" type="button" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

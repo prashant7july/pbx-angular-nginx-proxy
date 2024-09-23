@@ -1,0 +1,28 @@
+export interface PbxFeature {
+    black_list: boolean,
+    pbx_recording: boolean,
+    ivr: boolean,
+    call_transfer: boolean,
+    forward: boolean,
+    outbound: boolean,
+    click2call: boolean,
+    music_on_hold: boolean,
+    caller_id: boolean,
+    speed_dial: boolean,
+    ring_group: boolean,
+    conference: boolean,
+    hunt_group: boolean,
+    call_barging: boolean,
+    concurrent_call: string,
+    phone_book: string,
+    ring_time_out: string,
+    extension_limit: string,
+    //voice_mail: boolean,
+    vm_limit: string,
+    file_storage_duration: string,
+    billing_type: string,
+    package_name: string,
+    package_duration: string,
+    package_old_name: string
+  }
+  

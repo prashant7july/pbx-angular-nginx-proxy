@@ -1,0 +1,65 @@
+<h3 class="card-header-style">Add Balance</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="addBalanceForm" (ngSubmit)="submitAddBalanceForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Payment Date</mat-label>
+                    <input matInput placeholder="Payment Date" formControlName="payment_date" bsDatepicker readonly
+                        autocomplete="off" [minDate]="minDate" required [(ngModel)]="paymentDate"
+                        [bsConfig]="{showWeekNumbers:false ,containerClass:'theme-dark-blue', customTodayClass: 'custom-today-class', dateInputFormat: 'DD/MM/YYYY , HH:mm:ss'}" />
+                </mat-form-field>
+                <div *ngIf="payment_date.invalid && (payment_date.dirty || payment_date.touched)" class="reqired-field">
+                    <div *ngIf="payment_date.errors.required">
+                        Required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Amount</mat-label>
+                    <input matInput type="text" formControlName="amount" placeholder="amount" [(ngModel)]="logPaymentData.amount"
+                        (keypress)="commonService.floatWithNegativeNumber($event)" maxlength="5" autocomplete="off" 
+                        required>
+                </mat-form-field>
+                <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="reqired-field">
+                    <div *ngIf="amount.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="amount.errors.maxlength">Amount max length is 5 character long.</div>
+                    <div *ngIf="amount.errors.minlength">Amount min length is 1 character.</div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Description" maxlength="150"
+                        style="resize:none;" [(ngModel)]="logPaymentData.description" autocomplete="off" ></textarea>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="agent_commission" [(ngModel)]="logPaymentData.added_commission">
+                    Create Agent Commission
+                </mat-slide-toggle>
+            </div>
+            <mat-form-field>
+                <mat-label>Payment Type</mat-label>
+                <mat-select formControlName="payment_type" [(ngModel)]="logPaymentData.payment_type" required>
+                    <mat-option value="0">Agent Refund</mat-option>
+                    <mat-option value="1">Amount</mat-option>
+                    <mat-option value="2">Correction</mat-option>
+                    <mat-option value="3">Extra Fee</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="payment_type.invalid && (payment_type.dirty || payment_type.touched)" class="reqired-field">
+                <div *ngIf="payment_type.errors.required">
+                    Required Field
+                </div>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!addBalanceForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

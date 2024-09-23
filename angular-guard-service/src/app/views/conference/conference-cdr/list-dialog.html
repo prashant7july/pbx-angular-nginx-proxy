@@ -1,0 +1,28 @@
+<h3 class="card-header-style">Conference CDR</h3>
+<div class="header-btn">
+    <button (click)="downloadPDF()" mat-raised-button color="primary"
+        style=" margin:11px;top:-10px;left:26px;background-color: #CD5C5C !important;">Download
+        PDF</button>
+    <button (click)="exportToExcel()" mat-raised-button color="warn"
+        style=" margin:11px; top:-10px;left:13px; background-color: #01A89E !important;">Excel Export</button>
+    <button (click)="advanceExportToExcel()" mat-raised-button color="warn"
+        style=" margin:11px; top:-10px; background-color: #929005 !important;">Advance Excel Export</button>
+</div> 
+<div class="example-wrapper" style="margin-top:75px;"> 
+                      <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+                          <mat-form-field class="float-right">
+                              <mat-label>Number of records</mat-label>
+                              <mat-select [value]="10" [(ngModel)]="defaultPageSize"  id="page-size">
+                                  <mat-option value="10" selected>10</mat-option>
+                                  <mat-option value="50">50</mat-option>
+                                  <mat-option value="100">100</mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                      </div>
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="true"
+                          [pageSize]='defaultPageSize'  >
+                      </app-grid>
+                      <div class="col-lg-12 example-button-row">
+                        <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+                    </div>
+</div>

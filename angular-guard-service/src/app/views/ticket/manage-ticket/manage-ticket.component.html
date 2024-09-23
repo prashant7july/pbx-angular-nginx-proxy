@@ -1,0 +1,269 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header"> <strong>MANAGE TICKET</strong> </div>
+        <div class="card-body">
+          <div class="row">
+            <form [formGroup]="ticketForm" class="row" (ngSubmit)="addTicketHistory()">
+              <div class="form-group col-md-3">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Ticket Number</mat-label>
+                  <input matInput type="text" id="ticket_number" formControlName="ticket_number"
+                    [(ngModel)]="ticketData.ticket_number">
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-3">
+                <mat-form-field>
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="status" (selectionChange)="selectStatus($event)"
+                    [(ngModel)]="ticketData.status" [disabled]="status=='0'">
+                    <mat-option *ngFor='let status of statusDropdown' [value]="status.id" [disabled]="status.hide">
+                      {{ status.statusname }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-3">
+                <mat-form-field>
+                  <mat-label>Ticket Type</mat-label>
+                  <mat-select formControlName="ticket_type" (selectionChange)="selectType($event)"
+                    [(ngModel)]="ticketData.ticket_type" [disabled]="status=='0'">
+                    <mat-option *ngFor='let ticketType of ticketTypeDropdown' [value]="ticketType.id">
+                      {{ ticketType.tickettypevalue }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-3" [hidden]="role=='1'">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Company</mat-label>
+                  <input matInput type="text" formControlName="customer" [(ngModel)]="ticketData.company_name" disabled>
+                </mat-form-field>
+              </div>
+              <!-- for reseller customer  -->
+              <!-- <div class="form-group col-md-4" *ngIf="role=='1' && role !='3'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Assigned To</mat-label>
+                    <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                        value={{selectAssignTo}} readonly>
+                </mat-form-field>
+            </div> -->
+            <!-- for reseller  -->
+               <div class="form-group col-md-4" *ngIf="role_id =='3' && created_by !='2'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Assigned To</mat-label>
+                    <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                        value={{assignedTo}} readonly>
+                </mat-form-field>
+            </div>
+            <!-- for admin  -->
+            <div class="form-group col-md-4" *ngIf="created_by =='2' && role_id != '3' && role_id =='1'">
+              <mat-form-field class="example-full-width">
+                  <mat-label>Assigned To</mat-label>
+                  <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                      value={{assignedTo}} readonly>
+              </mat-form-field>
+          </div>
+          <div class="form-group col-md-4" *ngIf="created_by !='2' && role_id == '1' && role_id !='3'">
+            <mat-form-field class="example-full-width">
+                <mat-label>Assigned To</mat-label>
+                <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                    value={{assignedTo}} readonly>
+            </mat-form-field>
+        </div>
+        <div class="form-group col-md-4" *ngIf="created_by =='2' && role_id =='3'">
+          <mat-form-field class="example-full-width">
+              <mat-label>Assigned To</mat-label>
+              <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                  value={{assignedTo}} readonly>
+          </mat-form-field>
+      </div>
+             <!-- <div *ngIf="created_by =='2' && role_id == '1'"> -->
+              <div class="form-group col-md-3" *ngIf="role_id!='4' && role_id!='3' && created_by =='2' && role_id !='1'" >
+                <mat-form-field>
+                  <mat-label>Assigned To</mat-label>
+                  <mat-select formControlName="assigned_to" (selectionChange)="selectAssignee()"  [(ngModel)]="ticketData.account_manager_id"
+                  [disabled]="(role =='1' || role=='5') || (role == '4' && createdTicketUserRole == '0') || status=='0' ">
+                  <mat-option *ngFor='let assigned_to of selectedaccountManagerValue' [value]="assigned_to.id">
+                    {{ assigned_to.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>  
+            </div>
+          <!-- </div>  -->
+
+              <!-- <div class="form-group col-md-3" *ngIf="role=='3' && role !='1'" >
+                <mat-form-field>
+                  <mat-label>Assigned To</mat-label>
+                  <mat-select formControlName="assigned_to" (selectionChange)="selectAssignee()"  [(ngModel)]="ticketData.account_manager_id"
+                     [disabled]="(role =='1' || role=='5') || (role == '4' && createdTicketUserRole == '0') || status=='0' ">
+                    <mat-option *ngFor='let assigned_to of selectedaccountManagerValue' [value]="assigned_to.id">
+                      {{ assigned_to.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>  
+              </div> -->
+              <!-- <div class="form-group col-md-3" *ngIf="role!='4' && role!='3'" >
+                <mat-form-field>
+                  <mat-label>Assigned To</mat-label>
+                  <mat-select formControlName="assigned_to" (selectionChange)="selectAssignee()"  [(ngModel)]="ticketData.account_manager_id"
+                     [disabled]="(role =='1' || role=='5') || (role == '4' && createdTicketUserRole == '0') || status=='0' ">
+                    <mat-option *ngFor='let assigned_to of selectedaccountManagerValue' [value]="assigned_to.id">
+                      {{ assigned_to.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>  
+              </div> -->
+       
+              <div class="form-group col-md-4" *ngIf="role=='4'">
+                <mat-form-field>
+                    <mat-label>Assigned To</mat-label>
+                    <mat-select formControlName="assigned_to" formControlName="assigned_to" (selectionChange)="selectAssignee()"  [(ngModel)]="ticketData.account_manager_id"
+                    [disabled]="(role =='1' || role=='5') || (role == '4' && createdTicketUserRole == '0') || status=='0' ">
+                        <mat-option *ngFor='let support of selectedSupport' [value]="support.id">
+                            {{ support.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+              <div class="form-group col-lg-12">
+                <label><strong>Description:&nbsp;&nbsp;</strong></label>
+                <label>
+                  <div [innerHtml]="ticketData.message | safeUrl"></div>
+                </label>
+                <button mat-raised-button color="warn" style="float:right;margin:4px;" (click)="cancelForm()">Cancel</button>
+                <button type="button" class="btn btn-warning" style="float:right;margin:5px;" [hidden]="status=='0'"
+                  (click)="messageBox()">
+                  <strong>Add Comment</strong>
+                </button>
+              </div>
+              <div class="form-group col-lg-12" *ngIf="flag && openFlag==1">
+                <label for="message"><strong>Comment</strong></label>
+                <ejs-richtexteditor id='defaultRTE' [(value)]="value" [toolbarSettings]='tools'
+                  formControlName="message" [quickToolbarSettings]='quickTools'>
+                </ejs-richtexteditor>
+                <br />
+                <button mat-raised-button color="primary" (click)='test(1)'>Save</button> &nbsp;
+                <button mat-raised-button color="warn" (click)="test1()">Cancel</button>
+              </div>
+              <!-- --------------------------------Reply section------------------------------>
+              <div class="form-group col-lg-12" *ngIf="ticketHistory">
+                <label><strong>Comments</strong></label>
+                <!-- --------------------------------- -->
+                <!-- ------------last ticket----------------- -->
+                <!-- <span [innerHTML]= {{ticket.message.slice(0,70)}}></span>  -->
+                <div class="form-group col-lg-12">
+                  <div *ngFor='let ticket of ticketHistory | slice:0:1 let i =index'>
+                    <ngb-accordion #acc="ngbAccordion">
+                      <ngb-panel id="{{i}}" title="{{ticket.name}}">
+                        <ng-template ngbPanelTitle>
+                          <span style="color:#000000 !important;">
+                            <strong>&nbsp; added a comment - {{ticket.created_at}}-</strong>
+                            <span style="color:#d04437 !important;"
+                              *ngIf="ticket.ticketDate!= ticket.updated_at">&nbsp;edited</span>
+                            &nbsp;&nbsp;&nbsp;<div [innerHTML]="ticket.message | safeUrl"
+                              style="float:inline-end;"></div>
+
+                            <span style="color:#d04437 !important;" *ngIf="ticket.ticketTypeDisplay">&nbsp; -
+                              {{ticket.ticketTypeDisplay}} type updated</span>
+                          </span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <button type="button" id="{{i}}" class="btn2-info" *ngIf="i==0" [hidden]="status=='0'"
+                            (click)="enableLastMessage()">
+                            <i *ngIf="customerId==ticket.reply_by" class="fa fa-pencil" aria-hidden="true"></i>
+                          </button>
+                          <div [innerHTML]="ticket.message | safeUrl" style="display:inline-block;"></div>
+                          <!-- {{ticket.message}} margin-bottom:178px; -->
+                          <div class="form-group col-lg-12" style="padding-left: 28px; margin-top: 12px;"
+                            *ngIf="lastMessage && i==0 && openFlag==2">
+                           
+                            <ejs-richtexteditor id='defaultRTE1' [(ngModel)]="reply" [toolbarSettings]='tools'
+                              formControlName="reply" [quickToolbarSettings]='quickTools'>
+                            </ejs-richtexteditor>
+                            <br />
+                            <button mat-raised-button color="primary" (click)='test(2)'>Save</button> &nbsp;
+                            <button mat-raised-button color="warn" (click)="test3()">Cancel</button>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <!-- ----------------------------------- -->
+
+                <!-- -----------------Display Count----------------- -->
+                <div class="form-group col-lg-12" style="margin-top: -20px;"
+                  *ngIf="showTicketCount &&  totalTicketCount>2">
+                  <button type="button" class="circle" (click)="showTicketHistory()">{{ticketCount}}</button>
+                  <hr style="border: 1px solid#2b88b5;margin-top: -22px;margin-left: 22px;" />
+                </div>
+                <!-- --------------------------------- -->
+
+                <!-- ---------------middle tickets ticket.message.slice(0,70)----------------- -->
+                <div class="form-group col-lg-12" style="margin-top: -23px;" *ngIf="showTicket">
+                  <div *ngFor='let ticket of ticketHistory | slice: 1:-1 let i = index'>
+                    <ngb-accordion #acc="ngbAccordion">
+                      <ngb-panel id="{{i}}" title="{{ticket.name}}">
+                        <ng-template ngbPanelTitle>
+                          <span style="color:#000000!important">
+                            <strong>&nbsp; added a comment - {{ticket.created_at}}-</strong>
+                            <span style="color:#d04437 !important;"
+                              *ngIf="ticket.ticketDate!= ticket.updated_at">&nbsp;edited</span>
+                            &nbsp;&nbsp;&nbsp; <div [innerHTML]="ticket.message | safeUrl"
+                              style="float:inline-end;"></div>
+                          </span>
+                          <span style="color:#d04437 !important;" *ngIf="ticket.ticketTypeDisplay">&nbsp; -
+                            {{ticket.ticketTypeDisplay}} type updated</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <button type="button" id="{{i}}" class="btn2-info" [hidden]="status=='0' || i>=0"
+                            (click)="enableLastMessage()">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </button>
+                          <label style="margin-left: 14px;" [innerHTML]="ticket.message"></label>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <!-- ----------------------------------------- -->
+
+                <!-- ----------------first ticket ---------------------->
+                <div class="form-group col-lg-12" *ngIf="totalTicketCount>=2">
+                  <div *ngFor='let ticket of ticketHistory | slice:-1 let i =index'>
+                    <ngb-accordion #acc="ngbAccordion">
+                      <ngb-panel id="{{i}}" title="{{ticket.name}}">
+                        <ng-template ngbPanelTitle>
+                          <span style="color:#000000!important">
+                            <strong>&nbsp; added a comment - {{ticket.created_at}}-</strong>
+                            <span style="color:#d04437 !important;"
+                              *ngIf="ticket.ticketDate!= ticket.updated_at">&nbsp;edited</span>
+                            &nbsp;&nbsp;&nbsp;<div [innerHTML]="ticket.message | safeUrl"
+                              style="float:inline-end;"></div>
+                          </span>
+                          <span style="color:#d04437 !important;" *ngIf="ticket.ticketTypeDisplay">&nbsp; -
+                            {{ticket.ticketTypeDisplay}} type updated</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <button type="button" id="{{i}}" class="btn2-info" [hidden]="status=='0' || i>=0"
+                            (click)="enableLastMessage()">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </button>
+                          <label style="margin-left: 14px;" [innerHTML]="ticket.message"></label>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <!--------------------------------------------- -->
+              </div>
+              <!-- -------------------------------- end of Reply section------------------------------>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

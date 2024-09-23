@@ -1,0 +1,107 @@
+<h3 class="card-header-style">Gateway Caller ID</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="row">
+      <div formArrayName="parameterForm" style="margin-left: 30px">
+        <div class="form-group col-md-4" style="margin-left: -1em">
+          <label style="color: blue"><b>Provider - IP/Domain</b></label
+          ><br />
+          <label for="">{{provider}}-{{serverData}}</label>
+        </div>
+
+        <div class="row">
+          <div
+            class="view-button"
+            style="margin-top: -5em; margin-left: 51.4em"
+          >
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addNewParameter()"
+            >
+              <i class="material-icons left">add_circle</i> ADD
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="form-group col-md-12"
+          *ngFor="let d of productForm.controls['parameterForm']['controls']; let i=index"
+        >
+          <div [formGroupName]="i">
+            <div class="row">
+              <div class="form-group">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Striped Digit in Caller ID</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="strip_clr_id"
+                    id="strip_clr_id"
+                    maxlength="6"
+                    (keypress)="stripDigit($event, d)"
+                    placeholder="Striped Digit in Caller ID"
+                    autocomplete="off"
+                  />
+                </mat-form-field>
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div class="form-group">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Prepend Digit In Caller ID</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="prepend_clr_id"
+                    id="prepend_clr_id"
+                    maxlength="6"
+                    (keypress)="prepandDigit($event, d)"
+                    placeholder="Prepend Digit In Caller ID"
+                    autocomplete="off"
+                  />
+                </mat-form-field>
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+
+              <div class="form-group">
+                <mat-form-field style="width: 187px">
+                  <mat-label>Caller ID Header Type</mat-label>
+                  <mat-select formControlName="clr_id_manipulation">
+                    <mat-option [value]="1">Original Dial Number</mat-option>
+                    <mat-option [value]="2">After Strip Dial Number</mat-option>
+                    <mat-option [value]="3"
+                      >After Prepend Dial Number</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <div class="view-button" style="margin-left: 8em">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="removeParameter(i)"
+                  *ngIf="i>=0"
+                >
+                  <i class="material-icons left">delete</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 example-button-row">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!productForm.valid"
+        >
+          Submit
+        </button>
+        <button mat-raised-button color="warn" (click)="onClick($event)">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

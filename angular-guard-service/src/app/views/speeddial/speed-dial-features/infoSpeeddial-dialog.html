@@ -1,0 +1,20 @@
+<h3 class="card-header-style">Speed Dial Information</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    Speed dial allows the user to place a call by pressing a reduced number of keys. This function is particularly useful for phone users who dial certain numbers on a regular basis.<br />
+                    Extension can define PSTN number after tick the Checkbox. A number should be E-164 only.
+                </mat-card-content>
+                <img src="assets/img/speeddial.png" style="width:100%;">
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

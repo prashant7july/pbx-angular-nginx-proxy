@@ -1,0 +1,26 @@
+<h3 class="card-header-style">View API Logs</h3>
+<div mat-dialog-content style="overflow: hidden;max-height: 72vh;">
+    <div class="card-body" style="box-sizing: border-box;
+    display: block;
+    overflow-wrap: anywhere;
+    overflow-y: scroll;
+    height: 15em;
+    width: 100%;">
+        <div style="font-size: 15px;background-color: #e4e7ea !important;"><b>Parameter Data</b></div> <br>
+        <div>
+        <pre>
+            <p>{{BindData | json}}</p>
+        </pre>        
+    </div>
+    <!-- <label class="switch">
+        <input type="checkbox">
+        <div class="slider round">             
+         <span class="on">ON</span>
+         <span class="off">OFF</span>             
+        </div>
+       </label> -->
+    </div>
+    <div class="col-lg-12 example-button-row">
+        <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+    </div>
+</div>

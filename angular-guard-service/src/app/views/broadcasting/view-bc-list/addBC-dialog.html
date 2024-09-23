@@ -1,0 +1,233 @@
+<h3 class="card-header-style">Broadcast</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="BCForm" (ngSubmit)="submitBCForm()" class="row">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" [(ngModel)]="callqueueData.name"
+                    maxlength="20"  (keypress)="commonService.charOnly($event)"  autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="reqired-field">
+                    <div *ngIf="name.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+           
+            <div class="form-group col-md-6" *ngIf="callqueueData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" (filtering)="categoryremovedspace($event)" 
+                style="width: 80%;margin-top: -7px;" [dataSource]='selectedTeleConsultationValue' [fields]='fields11' [(ngModel)]="callqueueData.welcome_prompt" 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field style="width: 100%;">
+                    <mat-label>Prompt</mat-label>
+                    <mat-select formControlName="welcome_prompt" (openedChange)="HandleDropdownFilter('filters',PromptFilter)" [(ngModel)]="callqueueData.welcome_prompt" required [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="selectedTeleConsultationValue" [displayMember]="'prompt_name'" (filteredReturn)="filters = $event"></mat-select-filter>
+                    <mat-option value='0'>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of filters | orderBy:"prompt_name"' [value]="conference.id">
+                            {{ conference.prompt_name }} 
+                        </mat-option>
+                    </mat-select> -->
+                    <!-- <mat-select formControlName="welcome_prompt" *ngIf="!callqueueData.id" [disabled]="welcomePrompt!=1">
+                        <mat-option value='0' selected>Select Prompt</mat-option>
+                        <mat-option *ngFor='let conference of selectedTeleConsultationValue' [value]="conference.id">
+                            {{ conference.prompt_name }}
+                        </mat-option>
+                    </mat-select> -->
+                <!-- </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-6" *ngIf="!callqueueData.id">
+                <ejs-dropdownlist formControlName="welcome_prompt" [disabled]="welcomePrompt!=1" (filtering)="categoryremovedspace($event)" 
+                style="width: 80%;margin-top: -7px;" [dataSource]='selectedTeleConsultationValue' [fields]='fields11' 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder3' allowFiltering=true>
+            </ejs-dropdownlist> 
+            </div>
+            
+
+            <div class="form-group col-md-12 mt-2">
+                <mat-radio-group aria-label="Select an option" formControlName="scheduler"  [(ngModel)]="callqueueData.scheduler" (change)="schedularChange($event)">
+                    <mat-radio-button value="1" checked>Manual Scheduler</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="2">Systematically Scheduler</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+
+            <div class="form-group col-md-4" *ngIf="isShowSchedular">
+                <label style="font-size:x-small;color:rgba(0,0,0,.54);">Start Time</label>
+                <div>
+                    
+                    <p-calendar formControlName="schedular_start_date" [minDate]="minDate" [(ngModel)]="todayDate"
+                       [showTime]="true" [inline]="true"   [showSeconds]="true" [readonlyInput]="true"
+                        dateFormat="yy/mm/dd" hourFormat="24" hideOnDateTimeSelect="true" (onSelect)="validateTime($event)">
+                        <ng-template>
+                            <span
+                                style="border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;"></span>
+                        </ng-template>
+                    </p-calendar>
+                    
+                </div>
+                <div *ngIf="schedular_start_date.invalid && (schedular_start_date.dirty || schedular_start_date.touched)"
+                    class="reqired-field">
+                    <div *ngIf="schedular_start_date.errors.required">
+                        Required
+                    </div>
+                </div>
+            </div>
+           
+           
+            <!-- <div class="form-group col-md-3 mt-3" *ngIf="isCallerId">
+                <mat-slide-toggle formControlName="is_caller_id" [(ngModel)]="callqueueData.is_caller_id" (change)="changeCaller($event)">
+                    Caller ID
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-3 mt-3" *ngIf="is_caller_id.value">
+                <mat-radio-group aria-label="Select an option" formControlName="caller_id_type"  [(ngModel)]="callqueueData.caller_id_type" (change)="changeCallerType($event)">
+                    <mat-radio-button value="SIP">SIP</mat-radio-button> &nbsp; &nbsp;
+                    <mat-radio-button value="DID">DID</mat-radio-button>
+                </mat-radio-group>
+            </div> -->
+           
+
+            <!-- <div class="form-group col-md-12  text-left" style="top: -18px;">
+                <small style="color: blue; font-weight:600">*Note</small><small> If we have any SIP Extension then caller id is mandatory.</small>
+            </div> -->
+            <!-- hr -->
+  
+           
+
+            <div class="hr-sect">Add Consultant</div>
+
+            <div class="form-group col-md-6" *ngIf="isShowExtension" >                
+                <ejs-dropdownlist formControlName="caller_id_ext" (filtering)="Callerremovedspace($event)" 
+                style="width: 80%;margin-top: -7px;" [dataSource]='sourceAgent' [fields]='fields3'
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder4' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field style="width: 100%;">
+                    <mat-label>SIP as caller id*</mat-label>
+                    <mat-select formControlName="caller_id_ext" (openedChange)="HandleDropdownFilter('filter',SIPFilter)" [(ngModel)]="callqueueData.SIP_caller_id" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="sourceAgent" [displayMember]="'agent'" (filteredReturn)="filter = $event"></mat-select-filter>
+                        <mat-option value=''>Select SIP</mat-option>
+                        <mat-option *ngFor='let ext of filter' [value]="ext.id">
+                            {{ ext.agent }} 
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-6" *ngIf="isShowPSTN" >
+                <ejs-dropdownlist formControlName="caller_id_pstn" (filtering)="DIDremovedspace($event)" 
+                style="width: 80%;margin-top: -7px;" [dataSource]='didList' [fields]='fields2' [(ngModel)]="callqueueData.DID_caller_id" 
+                [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [placeholder]='placeholder5' allowFiltering=true>
+            </ejs-dropdownlist>
+                <!-- <mat-form-field style="width: 100%;">
+                    <mat-label>DID as caller id*</mat-label>
+                    <mat-select formControlName="caller_id_pstn" (openedChange)="HandleDropdownFilter('filterDID',DIDFilter)" [(ngModel)]="callqueueData.DID_caller_id" [disableOptionCentering]="true" #select1 placeholder="Auto Focus">
+                    <mat-select-filter *ngIf="select1.focused" [array]="didList" [displayMember]="'didDisplay'" (filteredReturn)="filterDID = $event"></mat-select-filter>
+                        <mat-option value=''>Select DID</mat-option>
+                        <mat-option *ngFor='let did of filterDID' [value]="did.id">
+                            {{ did.didDisplay }} 
+                        </mat-option>
+                    </mat-select>
+            </mat-form-field> -->
+            </div>
+            <!-- hr -->
+            <div class="form-group col-md-12">
+                    <mat-checkbox class="example-margin pro-check"  formControlName="is_extension" value="1"
+                      name="is_extension" [checked]="callqueueData.is_extension"  (change)="getPackageByProduct($event)">SIP
+                    </mat-checkbox>&nbsp; &nbsp;
+                      <mat-checkbox class="example-margin pro-check" formControlName="is_pstn" value="2"
+                      name="is_pstn" [checked]="callqueueData.is_pstn" (change)="getPackageByProduct($event)">PSTN 
+                    </mat-checkbox>   
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="isShowExtension">
+                <mat-form-field>
+                    <mat-label>Select Feature</mat-label>
+                    <mat-select formControlName="feature_select" [(ngModel)]="callqueueData.feature_select" (selectionChange)="SelectfeatureChange($event)">
+                        <mat-option value="0" selected [disabled]="disabledExtList">Source Extension List</mat-option>
+                        <mat-option value="1">Source Group List</mat-option>
+                      
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="disabledExtList" style="width: 200%;">
+                    <small style="color: red; font-weight:600;">*Note</small><small> Extension Limit exceed, Kindly use Extension Group feature.</small>
+                </div> 
+            </div>
+
+            <div class="form-group col-md-12" *ngIf="isShowExtension && onext_listSelect">
+                <ejs-multiselect id='multiselectelement' (filtering)="extensionremovedspace($event)" [dataSource]='sourceAgent' [fields]='fields3' [placeholder]='placeholder'
+                    formControlName="extension" [(ngModel)]="callqueueData.extension" [readonly]="disabledExtList" [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="extension.invalid && (extension.dirty || extension.touched)" class="reqired-field mt-1">
+                    <div *ngIf="extension.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="isShowExtension && onext_group_listSelect">
+                <ejs-multiselect id='multiselectelement1' (filtering)="Providerremovedspac_group($event)" [floatLabelType]="'Auto'" [dataSource]='sipgroupList' [fields]='fields1'
+                placeholder='Select Intercom Group' formControlName="ext_group_id" [(ngModel)]="ext_group_List" [popupHeight]='popupHeight'
+                [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true required>
+              </ejs-multiselect>
+                <div *ngIf="ext_group_id.invalid && (ext_group_id.dirty || ext_group_id.touched)" class="reqired-field mt-1">
+                    <div *ngIf="ext_group_id.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="isShowPSTN">
+                <ejs-multiselect id='multiselectelement' (filtering)="groupremovedspace($event)" [dataSource]='groupList' [fields]='fields' [placeholder]='placeholder2'
+                    formControlName="group" [(ngModel)]="callqueueData.group" (select)="selectGroup($event,true)" (removed)="selectGroup($event,false)" [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div *ngIf="group.invalid && (group.dirty || group.touched)" class="reqired-field mt-1">
+                    <div *ngIf="group.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div> 
+            <div class="row d-flex" style="width: 100%;">
+            <div class="form-group col-md-4 ">
+                <ejs-dropdownlist id='ddlelement' [floatLabelType]="'Auto'"  [dataSource]='attempts'
+                [fields]='fields4' formControlName="attempts"  [(ngModel)]="attempt"
+                     [popupHeight]='popupHeight' [popupWidth]='popupWidth' placeholder='Attempts' allowFiltering=true>
+                   </ejs-dropdownlist>
+            </div>
+            
+            <div class="row d-flex ml-2">
+                <b><label>Try Interval:</label></b>&nbsp;&nbsp;
+            <!-- <div class="form-group ">  
+                <label for="hours">Hours</label><br>
+                <input type="number" id="hours" formControlName="hours" name="hours" [(ngModel)]="hoursV">
+                <div *ngIf="hours.invalid && (hours.dirty || hours.touched)" class="reqired-field mt-1">
+                    <div *ngIf="hours.errors.required">
+                        Required Field
+                    </div>   
+                    <div *ngIf="hours.errors.pattern"> 
+                        Hours should be between 1 - 24
+                    </div>
+                </div>
+            </div>&nbsp; -->
+            <div class="form-group ">  
+                <label for="minutes">Minutes</label><br>
+                <input type="number" id="minutes" formControlName="minutes" name="minutes"  [(ngModel)]="minutesV" min="1" max="240" maxlength="3">
+                <div *ngIf="minutes.invalid && (minutes.dirty || minutes.touched)" class="required-field mt-1">
+                    <div style="color: red;" *ngIf="minutes.errors.required">
+                      Minutes are required
+                    </div>   
+                    <div style="color: red;" *ngIf="minutes.errors.invalidRange"> 
+                      Minutes should be between 1 - 240
+                    </div>
+                  </div>
+            </div>
+        </div>
+        </div>
+    
+
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="submitted || BCForm.invalid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" type="button" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

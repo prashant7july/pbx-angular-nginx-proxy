@@ -1,0 +1,30 @@
+<h3 class="card-header-style">VMN</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="importVMNForm" class="row">                                               
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="vmn_number" maxlength="10" minlength="10"
+                        placeholder="VMN Number *" (keypress)="commonService.numberOnly($event)" [(ngModel)]="VmnNumber" autocomplete="off" >
+                </mat-form-field>
+                <!-- <div *ngIf="vmn_number.invalid && (vmn_number.dirty || vmn_number.touched)" class="reqired-field">
+                    <div *ngIf="vmn_number.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="vmn_number.errors.minlength">DID must be at least 5 characters long.
+                    </div>
+                    <div *ngIf="vmn_number.errors.maxlength">DID can not be more than 15 characters
+                        long.
+                    </div>
+                    <div *ngIf="vmn_number.errors.pattern">
+                        DID can't start with 0
+                    </div>
+                </div> -->
+            </div>                                                                                                         
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!importVMNForm.valid" color="primary" (click)="submitVMN()" >Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

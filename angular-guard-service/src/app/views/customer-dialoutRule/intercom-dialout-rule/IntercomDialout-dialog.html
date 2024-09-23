@@ -1,0 +1,127 @@
+<h3 class="card-header-style">INTERCOM DIALOUT RULE</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="intercomDialoutForm" class="row" novalidate>
+           
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Name</mat-label> 
+                    <input matInput type="text" formControlName="name" [(ngModel)]="dialoutName"  maxlength="50" minlength="0" placeholder="Dialout Name"
+                        required>
+                </mat-form-field>           
+            </div>
+            <!-- <div class="form-group col-md-4" >
+                <mat-form-field>
+                  <mat-label>Group Type</mat-label>
+                  <mat-select formControlName="group_type" [disabled]="disable" [(ngModel)]="group_types"
+                    (selectionChange)="SelectGroupType($event)" >
+                    <mat-option value="0">Ext. Group</mat-option>
+                    <mat-option value="1">CC Group</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+              <div class="form-group col-md-12">
+                <p-pickList [source]="sourceAddSIPExt" [target]="targetAddSIPExt" sourceHeader="SIP Ext"
+                 targetHeader="Group SIP Ext" [showSourceControls]="false" [showTargetControls]="true"
+                 [responsive]="true" dragdrop="true" [sourceStyle]="{'height':'145px'}"
+                 [targetStyle]="{'height':'145px'}" filterBy="codec" sourceFilterPlaceholder="SIP Ext" targetFilterPlaceholder="Group SIP Ext" onMoveToTarget="resetSourceFilter()" onTargetSelect="clearFilter($event)" >
+                 
+                 <ng-template let-codec pTemplate="item">  
+                     <div class="p-picklist-filter">
+                         <span *ngIf="sourceFilterValue"   (click)="options.reset(); sourceFilterValue = ''"></span>
+                     </div>
+
+                     <div class="p-picklist-filter">
+                         <span    (click)="myResetFunction(options)"></span>
+                     </div>
+                     <div class="ui-helper-clearfix">
+                       
+                   
+                         <div style="font-size:14px;float:right;">{{codec.codec}}</div>
+                 
+                     </div>
+                 </ng-template>
+             </p-pickList>
+         </div>
+            <!-- <div class="form-group col-md-12">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [floatLabelType]="'Auto'" [dataSource]='extList' [fields]='fields'
+                    [placeholder]='placeholder1' formControlName="extension_list" [popupHeight]='popupHeight' [(ngModel)]="intercomSipArray"
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+                <div style="margin-top:2px;" *ngIf="intercomDialoutForm.get('extension_list').invalid && (intercomDialoutForm.get('extension_list').dirty || intercomDialoutForm.get('extension_list').touched )" class="reqired-field">
+                  <div *ngIf="intercomDialoutForm.get('extension_list').errors.required"> Required Field</div>
+              </div>
+            </div> -->
+            <div class="form-group col-md-12 switch-div">
+            <mat-label>Rules:-</mat-label>
+            </div>
+         <div class="row" style="display: block;     margin-left: 1px;
+         width: 100%;">
+              <div class="form-group col-md-4 switch-div"> 
+                <mat-slide-toggle [(ngModel)]="only_extension" value="1" formControlName="only_extension">
+                  Only Extension Calling Allowed
+                </mat-slide-toggle>
+              </div> 
+              <div class="form-group col-md-4 switch-div" style="margin-top: 1px;">
+                <mat-slide-toggle [(ngModel)]="group_extension" formControlName="group_extension"
+                (change)="GroupToggle($event)">
+                Extension Group Allowed
+              </mat-slide-toggle>
+            </div>
+              <div class="form-group col-md-4 switch-div">
+                <mat-slide-toggle [(ngModel)]="cc_extension" formControlName="cc_extension"
+                (change)="CCToggle($event)">
+                Call Group Allowed
+              </mat-slide-toggle>
+            </div>
+           
+           
+      
+        </div>
+     
+        <div class="form-group col-md-4" *ngIf="checkValue || group_extension" style="    margin-top: -114px;
+        margin-left: 383px;" >
+          <ejs-multiselect id='multiselectelement1' (filtering)="Providerremovedspac_group($event)" [floatLabelType]="'Auto'" [(ngModel)]="intercom_group_Array" [dataSource]='groupList' [fields]='fields1'
+            [placeholder]='placeholder3' formControlName="extension_group_list" [popupHeight]='popupHeight' 
+            [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+          </ejs-multiselect>
+          <div style="margin-top:2px;" *ngIf="intercomDialoutForm.get('extension_group_list').invalid && (intercomDialoutForm.get('extension_group_list').dirty || intercomDialoutForm.get('extension_group_list').touched )" class="reqired-field">
+            <div *ngIf="intercomDialoutForm.get('extension_group_list').errors.required"> Required Field</div>
+        </div>
+        </div>
+        <div class="form-group col-md-4" *ngIf="checkCCValue || cc_extension" style="    margin-top: -59px;
+        margin-left: 383px;">
+          <ejs-multiselect id='multiselectelement2' (filtering)="Providerremovedspac_cc($event)" [floatLabelType]="'Auto'" [(ngModel)]="intercom_cc_Array" [dataSource]='groupCCList' [fields]='fields1'
+            [placeholder]='placeholder2' formControlName="extension_cc_list" [popupHeight]='popupHeight' 
+            [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+          </ejs-multiselect>
+          <div style="margin-top:2px;" *ngIf="intercomDialoutForm.get('extension_cc_list').invalid && (intercomDialoutForm.get('extension_cc_list').dirty || intercomDialoutForm.get('extension_cc_list').touched )" class="reqired-field">
+            <div *ngIf="intercomDialoutForm.get('extension_cc_list').errors.required"> Required Field</div>
+        </div>
+        </div>
+            <!-- <div class="form-group col-md-4 " style="margin-left: 50px;">
+              <section class="example-section">
+                  Rules:-
+                  <mat-checkbox style="display: block;
+                  margin-top: 1px;" formControlName="intercom_only" >Only Intercon allow</mat-checkbox>
+                  <mat-checkbox formControlName="cc" >Only CC</mat-checkbox><br>
+                  <mat-checkbox formControlName="Ext_Group" >Only Ext Group</mat-checkbox>
+                </section>
+              </div> -->
+
+            <!-- <div class="form-group col-md-12">
+                <ejs-multiselect id='multiselectelement' (filtering)="Providerremovedspace($event)" [dataSource]='cgList' [fields]='fields'
+                    placeholder='CG Allow' formControlName="cg_allow" [popupHeight]='popupHeight' [(ngModel)]="intercomCgArray"
+                    [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+                </ejs-multiselect>
+            </div> -->
+          
+
+            <div class="form-group col-md-12">
+                <button mat-raised-button color="primary" (click)="submitIntercomDGForm()" [disabled]="!intercomDialoutForm.valid">Submit</button>
+                <button mat-raised-button color="warn" style="margin-left: 5px;" (click)="cancelForm()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

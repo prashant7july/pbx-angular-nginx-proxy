@@ -1,0 +1,24 @@
+<h3 class="card-header-style">Add User</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="contactGroupForm" (ngSubmit)="submitContactListForm()" class="row">
+            <!-- <div class="hr-sect">Add Contact</div> -->
+            <div class="form-group col-md-12">
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields'
+                    [placeholder]='placeholder'  formControlName="contacts"  [popupHeight]='popupHeight' [popupWidth]='popupWidth'>
+                </ejs-multiselect>
+                    <!-- <ng-template #itemTemplate="" let-data="">
+                        <span class='item'><span class='name'> {{data.name}}</span><span class ='city'>{{data.name}}</span></span>
+                    </ng-template>
+                    <ng-template #headerTemplate="" let-data="">
+                        <span class='head'><span class='name'>Name</span><span class='city'>City</span></span>
+                    </ng-template> -->
+                <br>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!contactGroupForm.valid || submitted" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

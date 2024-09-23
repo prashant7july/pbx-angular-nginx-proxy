@@ -1,0 +1,860 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" style="background-color: #dbd9d9 !important;">
+        <div class="card-header">
+          <strong>DASHBOARD</strong>
+        </div>
+        <div class="card-body" *ngIf=" AnsCustomizeCall ||
+         MissedCustomizeCall || failedCustomizeCall || busyCustomizeCall || concurrentCustomizeCall ||
+          advanceCustomizeCall || LastInvoiceCustomizeCall || Invoice_Details || ExtensionDetails || TotalcallsdiagramCustomizeCall 
+          || storagesizeCustomizeCall || Callsperhours || MinuteConsume || AvarageCallDuration || AnswerSeizureratio || CallRecords ||
+           ExtensionInformation || AccountInformation || FeaturesInformation || TicketInformation || TotalCustomizeCall">
+          <!-- Pbx Graph start -->
+          <div id="pbxGraph" *ngIf='pbxDiv'>
+            <div class="row">
+              <div class="col-sm-6 col-lg-3" (click)="showTotalCall()" *ngIf="TotalCustomizeCall">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Calls</strong><br />
+                      <span class="text-value">{{totalCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px; transform: rotate(90deg);">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3" *ngIf="AnsCustomizeCall">
+                <div class="card text-white bg-warning">
+                  <div class="card-body pb-0">
+                    <div><strong>Answered Calls </strong><br />
+                      <span class="text-value">{{totalAnsweredCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-ringer-volume-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3" *ngIf="MissedCustomizeCall">
+                <div class="card text-white bg-dark">
+                  <div class="card-body pb-0">
+                    <div><strong>Missed Calls</strong><br />
+                      <span class="text-value">{{totalMissedCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-missed-call-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3" *ngIf="failedCustomizeCall">
+                <div class="card text-white bg-danger">
+                  <div class="card-body pb-0">
+                    <div><strong>Failed Calls </strong><br />
+                      <span class="text-value">{{totalFailedCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-disconnected-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <!-- <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Calls </strong><br />
+                      <span class="text-value">{{totalActiveCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <!--/.col-->
+              <!-- <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body pb-0">
+                    <div><strong>Forwarded Calls</strong><br />
+                      <span class="text-value">{{totalTransferredCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-transfer-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <!-- <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-teal">
+                  <div class="card-body pb-0">
+                    <div><strong>Rejected Calls</strong><br />
+                      <span class="text-value">{{totalRejectedCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-transfer-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3" *ngIf="busyCustomizeCall">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Busy Calls</strong><br />
+                      <span class="text-value">{{totalBusyCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-line-width-white-45.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3" *ngIf="concurrentCustomizeCall">
+                <div class="card text-white bg-gray-700">
+                  <div class="card-body pb-0">
+                    <div><strong>Concurrent Calls Limit</strong><br />
+                      <span class="text-value">{{getConcurrentCall}}</span>
+                      <div>
+                        <img src='assets/img/icons8-line-width-white-45.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-3" *ngIf="advanceCustomizeCall">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <!-- <div style="margin-bottom: 12px"><strong>Credit Balance</strong>
+                      <span class="text-value float-right" >{{invoiceDetails?.balance}}</span>
+                    </div> -->
+                    <div><strong>Advance Payment</strong><br />
+                      <span class="text-value">{{invoiceDetails ? invoiceDetails.advance_balance? invoiceDetails.advance_balance : 0 : 0}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-lg-3" *ngIf="LastInvoiceCustomizeCall">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Last Invoice Amount</strong><br />
+                      <span class="text-value">{{invoiceDetails ? invoiceDetails.amount_with_gst?invoiceDetails.amount_with_gst:0:0}}</span>
+                      <!-- <div>
+                        <img src='assets/img/icons8-line-width-white-45.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-8 col-md-8 col-lg-6 large-left-block" style="cursor: pointer;" (click)="moveOnInvoicePage(invoiceDetails)" *ngIf="Invoice_Details">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div style="margin-bottom: 12px"><strong>Last Invoice Date</strong>
+                          <span class="text-value float-right f-8">{{invoiceDetails ? invoiceDetails.invoice_date?invoiceDetails.invoice_date:0:0}}</span>
+                        </div>
+                        <div style="margin-bottom: 12px"><strong>Invoice Due Date</strong>
+                          <!-- <div style="margin-bottom: 12px"><strong>Next Bill Date</strong> -->
+                          <span class="text-value float-right f-8">{{invoiceDetails ? invoiceDetails.invoice_due_date?invoiceDetails.invoice_due_date:0:0}}</span>
+                        </div>
+                        <div style="margin-bottom: 12px"><strong>Last Adjustment Balance</strong>
+                          <span class="text-value float-right f-8">{{invoiceDetails ? (invoiceDetails.previous_invoice_balance | number) : '1.0-2' }}</span>
+                        </div>
+                        <div style="margin-bottom: 12px"><strong>Last Bill Status</strong>
+                          <span class="text-value float-right f-8">{{invoiceDetails ? invoiceDetails.paid_status?invoiceDetails.paid_status:0:0}}</span>
+                        </div>
+                      </div> 
+                      <div class="col-md-5" style="margin-left:-18px;">
+                        <div style="margin-bottom: 12px"><strong>DID Charges</strong>
+                          <span class="text-value float-right f-8">{{invoiceDetails ? (invoiceDetails.did_charges | number) : '1.0-2'}}</span>
+                        </div>
+                        <div style="margin-bottom: 12px"><strong>Call Charges</strong>
+                          <span class="text-value float-right f-8">{{invoiceDetails ? (invoiceDetails.pstn_charges | number) : '1.0-2'}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- </div> -->
+              <div class="col-sm-4 col-md-4 col-lg-3 large-right-block" (click)="showActiveExtension()" *ngIf="ExtensionDetails">
+                <div class="card text-white bg-danger custom-card">
+                  <div class="card-body pb-0">
+                    <div class="card" style="background: transparent; border-left: 0px !important;">
+                      <div style="margin-bottom: 12px"><strong>Extension Details</strong></div>
+                      <div class="text-value" style="font-size: 12px;"><strong> Total Extension</strong>
+                        <span class =" text-value float-right f-8">{{ActiveExtensionn+inactiveExtensions}}</span>
+                        </div>
+                        <div class="text-value" style="font-size:12px;"><strong>Active Extension</strong>
+                          <span class="text-value float-right f-8">{{ActiveExtensionn}}</span>
+                        </div>
+                          <div class="text-value" style="font-size:12px;"><strong>Inactive Extension</strong>
+                          <span class="text-value float-right f-8">{{inactiveExtensions}}</span>
+                        </div>
+                          <div class="text-value" style="font-size:12px;"><strong>Registered Extension</strong>
+                          <span class="text-value float-right f-8">{{ActiveExtension}}</span>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- </div> -->
+              <!-- </div> -->
+            <!-- </div> -->
+            </div>
+
+            <!-- ----- active extension-->
+            <!-- <div class="col-sm-6 col-lg-4" (click)="showActiveExtension()">
+                <div class="card text-white bg-danger custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Extension</strong></div>
+                    <div class="text-value" style="font-size: 15px;">{{ActiveExtension}} / {{TotalActiveExtension}}
+                      <i class="fa fa-phone fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+            <br><br>
+
+            <div class="row">
+              <!-- <div class="col-md-6">
+                <div class="card ">
+                  <div class="card-body" style="margin-bottom:117px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Total Calls</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="width:500px;margin-top:40px;">
+                      <canvas baseChart class="chart" [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="doughnutColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <div class=col-md-6 *ngIf="TotalcallsdiagramCustomizeCall">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Total Calls</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <div class="chart-wrapper" style="height: 357px; margin-top:50px;">
+                      <canvas baseChart class="chart" [data]="callData" [labels]="callLabels"
+                        [options]="callOptions" [legend]="callLegend" [colors]="callColours" [chartType]="callTypeGraph"
+                        (chartClick)="revenueChartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+              <div class="col-md-6" *ngIf="storagesizeCustomizeCall">
+                <div class="card" style="height: 96.6%;">
+                  <div class="card-body" style="margin-bottom:30px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Storage Size</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                    <div class="chart-wrapper" style="width:500px; margin-top: 50px;">
+                      <canvas baseChart class="chart" [data]="doughnutChartData1" [labels]="doughnutChartLabels1"
+                        [chartType]="doughnutChartType1" [colors]="doughnutColors1" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6" *ngIf="Callsperhours">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Hours</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate" readonly (dateChange)="callsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <div>
+                        <canvas baseChart class="chart" [datasets]="barChartHoursData" [labels]="barChartHoursLabels"
+                          [options]="barChartHoursOptions" [colors]="barChartHoursColours"
+                          [legend]="barChartHoursLegend" [chartType]="barChartHoursType"></canvas>
+                      </div>
+                      <!-- <div *ngIf="barChartHoursData[0].data.length == 0">No data fond</div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6" *ngIf="MinuteConsume">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Minutes Consumed</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-12">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker2" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate2" readonly (dateChange)="dateWiseMinuteConsumed($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;" >                      
+                      <canvas baseChart class="chart" [data]="mainChartData" [labels]="mainChartLabels"
+                        [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend"
+                        [chartType]="mainChartType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6" *ngIf="AvarageCallDuration">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Average Call Duration (ACD)</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalAcdCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker4" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate3" readonly (dateChange)="acdCallsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                          <mat-datepicker #picker4 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">                      
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData2" [labels]="barChartHoursLabels2"
+                        [options]="barChartHoursOptions2" [colors]="barChartHoursColours2"
+                        [legend]="barChartHoursLegend2" [chartType]="barChartHoursType2"></canvas>
+                    </div>
+                    <div *ngIf="loading" class="loading-indicator">
+                      Loading...
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" *ngIf="AnswerSeizureratio">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Answer-Seizure Ratio (ASR)</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalAsrCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker3" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate4" readonly (dateChange)="asrCallsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                          <mat-datepicker #picker3 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData3" [labels]="barChartHoursLabels3"
+                        [options]="barChartHoursOptions3" [colors]="barChartHoursColours3"
+                        [legend]="barChartHoursLegend3" [chartType]="barChartHoursType3"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="CallRecords">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="callColumnDefs" [gridOptions]="specificGridOptions" [dataSource]="callDataSource" [rowData]="callRowData" 
+                        [pageSize]='10' (actionClick)="manageCallAction($event)">
+                      </app-grid>
+                      <!-- <mat-paginator class="custom-paginator" showFirstLastButtons [length]="totalRecords" [pageSize]="defaultPageSize"  (page)="onPageChanged($event.pageIndex + 1)">
+                      </mat-paginator> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="ExtensionInformation">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Extension Information</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+                      <canvas baseChart class="chart" [datasets]="barChart2Data" [labels]="barChart2Labels"
+                        [options]="barChart2Options" [colors]="barChart2Colours" [legend]="barChart2Legend"
+                        [chartType]="barChart2Type"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Account Manager Information -->
+            <div class="row">
+              <div class="col-md-8" *ngIf="AccountInformation">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h5 class="card-title mb-0"><strong>Account Manager Information</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="chart-wrapper" style="height:95px;">
+                        <table style="width:100%;border: 1px solid transparent; border-collapse: collapse;">
+                          <tbody *ngFor='let accountManager of selectedaccountManagerValue'>
+                            <tr>
+                              <td>Name</td>
+                              <td>{{accountManager.name | titlecase}}</td>
+                            </tr>
+                            <tr>
+                              <td>Mobile</td>
+                              <td>{{accountManager.mobile}}</td>
+                            </tr>
+                            <tr>
+                              <td>Email</td>
+                              <td>{{accountManager.email}}</td>
+                            </tr>
+                            <tr>
+                              <td>Support Email</td>
+                              <td>{{supportEmail}}</td>
+                            </tr>
+                            <tr>
+                              <td>Support Number</td>
+                              <td>{{supportNumber}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+              <!-- Features Information -->
+              <div class="col-md-4" *ngIf="FeaturesInformation">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h5 class="card-title mb-0"><strong>Features Information</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+
+                    <!--/.row-->
+                    <div class="card-body">
+                      <table style="width:100%;border: 1px solid transparent; border-collapse: collapse;">
+                        <tr>
+                          <td>Extension</td>
+                          <td>{{totalExtension}}</td>
+                        </tr>
+                        <!-- *ngIf="showIVR" -->
+                        <tr>
+                          <td>IVR</td>
+                          <td>{{totalPbxIvr}}</td>
+                        </tr>
+                        <!-- *ngIf="showQueue" -->
+                        <tr>
+                          <td>Queue</td>
+                          <td>{{totalQueue}}</td>
+                        </tr>
+                        <!-- *ngIf="showConference" -->
+                        <tr>
+                          <td>Conference</td>
+                          <td>{{totalConference}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Ticket Information -->
+            <div class="row" *ngIf="TicketInformation">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Ticket Information</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                    <div class="card-body">
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                        (actionClick)="manageAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+            </div>
+          </div>
+          <!-- Pbx Graph end -->
+          <!-- Oc Graph start -->
+          <div id="ocGraph" *ngIf='ocDiv'>
+            <div class="row">
+              <div class="col-sm-6 col-lg-3" (click)="showTotalCall()">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Calls</strong><br />
+                      <span class="text-value">30</span>
+                      <div>
+                        <img src='assets/img/icons8-call-white-50.png'
+                          style="float: right;margin-top: -37px; height: 50px; width: 50px; transform: rotate(90deg);">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-warning">
+                  <div class="card-body pb-0">
+                    <div><strong>Answered Calls </strong><br />
+                      <span class="text-value">17</span>
+                      <div>
+                        <img src='assets/img/icons8-ringer-volume-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-dark">
+                  <div class="card-body pb-0">
+                    <div><strong>Missed Calls</strong><br />
+                      <span class="text-value">6</span>
+                      <div>
+                        <img src='assets/img/icons8-missed-call-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-danger">
+                  <div class="card-body pb-0">
+                    <div><strong>Failed Calls </strong><br />
+                      <span class="text-value">7</span>
+                      <div>
+                        <img src='assets/img/icons8-call-disconnected-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Calls </strong><br />
+                      <span class="text-value">25</span>
+                      <div>
+                        <img src='assets/img/icons8-call-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body pb-0">
+                    <div><strong>Transferred Calls</strong><br />
+                      <span class="text-value">2</span>
+                      <div>
+                        <img src='assets/img/icons8-call-transfer-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-teal">
+                  <div class="card-body pb-0">
+                    <div><strong>Rejected Calls</strong><br />
+                      <span class="text-value">{{totalRejectedCalls}}</span>
+                      <div>
+                        <img src='assets/img/icons8-call-transfer-white-50.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-gary-700">
+                  <div class="card-body pb-0">
+                    <div><strong>Concurrent Calls Limit</strong><br />
+                      <span class="text-value">{{getConcurrentCall}}</span>
+                      <div>
+                        <img src='assets/img/icons8-line-width-white-45.png'
+                          style="float:right;margin-top: -37px; height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+            </div><!--  row -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Hours</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate" readonly (dateChange)="callsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData" [labels]="barChartHoursLabels"
+                        [options]="barChartHoursOptions" [colors]="barChartHoursColours" [legend]="barChartHoursLegend"
+                        [chartType]="barChartHoursType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body" style="margin-bottom:30px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Disk Usage</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="width:500px;">
+                      <ngx-charts-pie-grid [view]="pieGridView" [scheme]="colorScheme" [results]="pieGridData"
+                        [label]="pieGridlabel" (select)="onSelect($event)">
+                      </ngx-charts-pie-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card ">
+                  <div class="card-body" style="margin-bottom:50px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Total Calls</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="width:500px;margin-top:40px;">
+                      <canvas baseChart class="chart" [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="doughnutColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Minutes Consumed</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-12">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker2" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate2" readonly (dateChange)="dateWiseMinuteConsumed($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+                      <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels"
+                        [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend"
+                        [chartType]="mainChartType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="callColumnDefs" [dataSource]="callDataSource" [rowData]="callRowData"
+                        [pageSize]='10' (actionClick)="manageCallAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Account Manager Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h5 class="card-title mb-0"><strong>Account Manager Information</strong></h5>
+                      </div>
+                      <!--/.row-->
+                    </div>
+                    <div class="card-body">
+                      <table style="width:100%;border: 1px solid transparent; border-collapse: collapse;">
+                        <tbody *ngFor='let accountManager of selectedaccountManagerValue'>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{accountManager.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile</td>
+                            <td>{{accountManager.mobile}}</td>
+                          </tr>
+                          <tr>
+                            <td>Email</td>
+                            <td>{{accountManager.email}}</td>
+                          </tr>
+                          <tr>
+                            <td>Support Email</td>
+                            <td>{{supportEmail}}</td>
+                          </tr>
+                          <tr>
+                            <td>Support Number</td>
+                            <td>{{supportNumber}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+            </div>
+            <!-- Ticket Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Ticket Information</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                        (actionClick)="manageAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Oc Graph end -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

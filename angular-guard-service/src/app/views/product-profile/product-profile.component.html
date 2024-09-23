@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong class="centered-text">MANAGE PROFILE</strong>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm" novalidate>
+            <div class="centered-content">
+              <div class="row mt-3">
+                <div class="form-group col-md-4">
+                  <div class="card-header  space">
+                    <strong>Footer Left Text</strong>
+                  </div>
+                  <input type="text" formControlName="footer_text" maxlength="64" [(ngModel)]="footer_text"
+                    class="form-control space1" />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <div class="card-header space">
+                    <strong>Page Title</strong>
+                  </div>
+                  <input type="text" formControlName="title" [(ngModel)]="title" class="form-control space1" />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <div class="card-header space">
+                    <strong>Footer Right Text</strong>
+                  </div>
+                  <input type="text" formControlName="footer_right_text" maxlength="64" [(ngModel)]="footer_right_text"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <div class="card-header ">
+                    <strong>Logo</strong>
+                  </div>
+                  <div class="center-image-upload">
+                    <div class="image-upload">
+                      <label for="file-input">
+                        <img src="..\assets\img\uploads\camera_image.png" />
+                      </label>
+                      <input id="file-input" type="file" formControlName="profileImg" name="profileImg" ng2FileSelect
+                             [uploader]="uploader" (change)="Validate($event)" class="form-control" />
+                    </div>
+                  </div>
+                  <img src="{{userData.profile_img}}" class="image" />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <div class="card-header">
+                    <strong>Favicon Icon</strong>
+                  </div>
+                  <div class="image-upload">
+                    <label for="file-inputs">
+                      <img src="..\assets\img\uploads\camera_image.png" />
+                    </label>
+                    <input id="file-inputs" type="file" formControlName="favicon" name="favicon" ng2FileSelect
+                      [uploader]="uploaders" (change)="Validates($event)" class="form-control" />
+                  </div>
+                  <img src="{{userDatas.favicons}}" class="image" />
+                </div>
+
+                <div class="form-group col-md-4" *ngIf="enableProfile || is_poweredBy">
+                  <div class="card-header">
+                    <strong>Powered By</strong>
+                  </div>
+                  <div class="image-upload">
+                    <label for="file-inputss">
+                      <img src="..\assets\img\uploads\camera_image.png" />
+                    </label>
+                    <input id="file-inputss" type="file" formControlName="powered_by" name="powered_by" ng2FileSelect
+                      [uploader]="poweredBy_uploader" (change)="ValidatePoweredBy($event)" class="form-control" />
+                  </div>
+                  <img src="{{poweredByData.powered_by}}" class="image" />
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 switch-div" *ngIf="role == 0 || role == 2">
+                <mat-slide-toggle  formControlName="is_poweredBy" (change)="UpdateProfile($event)"
+                [(ngModel)]="is_poweredBy" >
+                Powered By
+                </mat-slide-toggle>
+              </div>
+
+              <div class="form-group mt-4">
+                <button [disabled]="!userForm.valid" mat-raised-button (click)="afterValidImage();"
+                  color="primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<h3 class="card-header-style">TC PACKAGE</h3>
+<div mat-dialog-content *ngIf="isEdit">
+    <div class="card-body">
+        <form [formGroup]="rateplanForm" (ngSubmit)="submitRatePlan()" class="row example-form">
+
+
+            <!-- <div class="form-group col-md-4">
+                <ejs-dropdownlist id='ddltooltip' (filtering)="Countryremovedspace($event)"
+                    [(ngModel)]="country_id" (select)="onCountryselect($event,'')" formControlName="country" style="width: 70%;margin-top:-7px;"
+                    [dataSource]='countryList' [fields]='fields' [popupHeight]='popupHeight' [floatLabelType]="'Auto'"
+                    [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true readonly>
+                </ejs-dropdownlist>
+            </div> -->
+           
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Total Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{total_minutes}}
+                </mat-form-field>                
+            </div>           
+
+            <div class="form-group col-md-4" style="margin-top: 16px;">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Minutes</mat-label>
+                    <input [readonly]="checkEdit" matInput maxlength="5" formControlName="minutes" (change)="onMinuteChange($event)" [(ngModel)]="planData.minutes" autocomplete="off" required
+                        (keypress)="commonService.decimalWIth2digits ($event)" >
+                </mat-form-field>
+                <div *ngIf="price.invalid && (price.dirty || price.touched )" class="reqired-field">
+                    <div *ngIf="price.errors.required"> Required Field</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Remaining Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{remaining_minutes}}
+                </mat-form-field>                
+            </div>
+         
+
+            
+            <div class="form-group col-md-12" >
+                <ejs-multiselect id='multiselectelement' [dataSource]='contactList' [fields]='fields2'
+                    [placeholder]='placeholder' floatLabelType="Auto"   formControlName="contact"  
+                    [popupHeight]='popupHeight' [popupWidth]='popupWidth' (change)="LimitContact($event)" [disabled]="selectedContact" >
+                </ejs-multiselect>
+                <br>
+            </div>
+
+            
+            <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button [disabled]="rateplanForm.invalid"
+                    color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

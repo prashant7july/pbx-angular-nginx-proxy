@@ -1,0 +1,12 @@
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+.error{
+    font-size: 10px;
+    /* text-align:right; */
+    color:#d82020;
+}
+.forwardType{
+    margin-left: 135px;
+}

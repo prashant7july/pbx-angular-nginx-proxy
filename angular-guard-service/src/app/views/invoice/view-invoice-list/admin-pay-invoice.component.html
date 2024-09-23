@@ -1,0 +1,92 @@
+<h3 class="card-header-style">Admin Pay Invoice</h3>
+<form class="form-group" [formGroup]="adminPaymentFormGroup" >
+    <div class="form-group col-md-5"  style="top: 24px" >
+      <mat-radio-group aria-label="Select an option" formControlName="paymentMode" (change)="modechange($event)">
+          <mat-radio-button value="1" checked>Cash</mat-radio-button> &nbsp; &nbsp;
+          <mat-radio-button value="2">DD</mat-radio-button> &nbsp; &nbsp;
+          <mat-radio-button value="3">Cheque</mat-radio-button> &nbsp; &nbsp;
+          <mat-radio-button value="4">UPI</mat-radio-button> &nbsp; &nbsp;
+      </mat-radio-group>
+    </div>
+
+    <div class="form-group col-md-4">
+      <mat-form-field class="example-full-width" style="width: 100%; margin-top: 10px;">
+          <mat-label>Payment Type</mat-label>
+          <mat-select formControlName="payment_type" [(ngModel)]="selectedPaymentType"  (ngModelChange)="changePayment($event)">
+              <mat-option [value]="1">Partial Payment</mat-option>
+              <mat-option [value]="2">Full Payment</mat-option>
+          </mat-select>
+      </mat-form-field>
+  </div>
+
+
+    <div class="form-group col-md-3" style="margin-top: 20px;">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Outstanding Amount" formControlName="amount_with_gst" [(ngModel)]="amount_with_gst" readonly
+          >
+      </mat-form-field>
+    </div>
+
+    <div class="row"  style="margin-top: 5px; margin-left: 4px;">
+         <div class="form-group col-md-4">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Date" formControlName="dateRange"
+          required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker  readonly="false"></mat-datepicker>
+        </mat-form-field>
+        <!-- <div *ngIf="date.invalid && (date.dirty || date.touched)" class="reqired-field">
+          <div *ngIf="date.errors.required">
+            Required
+          </div>
+        </div> -->
+      </div>
+        <div class="form-group col-md-3" style="margin-left: -45px;" >
+          <mat-form-field>
+            <input matInput type="text" placeholder="Amount To Pay" formControlName="amount_to_pay" (keypress)="commonService.floatOnly($event)" [readonly]="read"
+              >
+          </mat-form-field>
+        </div>
+        <div class="form-group col-md-3" style="margin-left: 25px;">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Description" formControlName="desc" maxlength="200"
+              >
+          </mat-form-field>
+        </div>
+        <div class="form-group col-md-3" *ngIf="is_dd" >
+          <mat-form-field>
+            <input matInput type="text" placeholder="DD Number" formControlName="dd_number" (keypress)="commonService.numberOnly($event)" minlength="6" maxlength="10"
+              >
+          </mat-form-field>
+        </div>
+        <div class="form-group col-md-3"  *ngIf="is_cheque">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Cheque Number" formControlName="cheque_number" (keypress)="commonService.numberOnly($event)" minlength="6" maxlength="10"
+              >
+          </mat-form-field>
+        </div>
+        <div class="form-group col-md-3"  *ngIf="is_upi">
+          <mat-form-field>
+            <input matInput type="text" placeholder="UPI ID" formControlName="upi_number" 
+              >
+          </mat-form-field>
+          <div *ngIf="upi_number.invalid && (upi_number.dirty || upi_number.touched)" class="reqired-field">
+            <!-- <div *ngIf="upi_number.errors.required">
+                Required Field
+            </div> -->
+            <div *ngIf="upi_number.errors.pattern">UPI Number must be a valid</div>
+        </div>
+        </div>
+        <div class="form-group col-md-3" *ngIf="is_dd || is_cheque" style="margin-left: 27px;">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Bank Name" formControlName="bank_name" 
+              >
+          </mat-form-field>
+        </div>
+    </div>
+    <div class="col-lg-12 example-button-row">
+      <button (click)="submit();" mat-raised-button color="primary"
+          [disabled]="!adminPaymentFormGroup.valid">Submit</button>
+      <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+  </div>
+</form>

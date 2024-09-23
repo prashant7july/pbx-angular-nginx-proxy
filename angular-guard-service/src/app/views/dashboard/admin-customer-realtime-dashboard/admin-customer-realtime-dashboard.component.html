@@ -1,0 +1,116 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" style="background-color: #dbd9d9 !important;">
+        <div class="card-header">
+          <strong>REALTIME CUSTOMER STATUS</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <!-- <div class="card-body"> -->
+                  <!-- <div class="row">
+                    <div class="col-sm-5">
+                      <h5 class="card-title mb-0"><strong>Live Call Status</strong></h5>
+                    </div>
+                  </div> -->
+                  <div class="card-bodys">
+                    <table mat-table [dataSource]="customerInfo" multiTemplateDataRows class="mat-elevation-z8">
+                      <ng-container matColumnDef="dropdown">
+                        <th mat-header-cell *matHeaderCellDef>
+
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                          <!-- <h1>just work</h1> -->
+                          <span class="mat-expansion-indicator" title="Expand/Collapse" style="cursor: pointer;"></span>
+                        </td>
+                      </ng-container>
+
+                      <!-- <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Customer ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                      </ng-container> -->
+                      <ng-container matColumnDef="first_name">
+                        <th mat-header-cell *matHeaderCellDef> Company Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.company_name}}{{' ('}}{{element.id}}{{')'}}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="registered_extension">
+                        <th mat-header-cell *matHeaderCellDef> Registered Extension </th>
+                        <td mat-cell *matCellDef="let element"> {{element.registered_extensions}}/{{element.total_extensions}} </td>
+                        <!-- <td mat-cell *matCellDef="let element"> 2/12} </td> -->
+                      </ng-container>
+                      <ng-container matColumnDef="live_call">
+                        <th mat-header-cell *matHeaderCellDef> Live Call </th>
+                        <td mat-cell *matCellDef="let element"> {{element?.live_call || 0}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="balance">
+                        <th mat-header-cell *matHeaderCellDef> Balance </th>
+                        <td mat-cell *matCellDef="let element"> {{element.balance}} </td>
+                      </ng-container>
+
+                      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                      <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                          <div class="example-element-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Caller</th>
+                                  <th scope="col">Callee</th>
+                                  <th scope="col">Forward</th>
+                                  <th scope="col">Start Time</th>
+                                  <th scope="col">Call Duration</th>
+                                  <th scope="col">Caller Codecs</th>
+                                  <th scope="col">Callee Codecs</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let item of liveCallList">
+                                  <td>{{item.src}}</td>
+                                  <td>{{item.dst}}</td>
+                                  <td>{{item.forward}}</td>
+                                  <td>{{item.start_time}}</td>
+                                  <td>{{item.bridge_time}}</td>
+                                  <td>{{item.codec}}</td>
+                                  <td>{{item.codec}}</td>
+                                </tr>
+                                <tr *ngIf="liveCallList.length == 0">
+                                  <td class="text-center" colspan="7">No Call Record</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+                        [class.example-expanded-row]="expandedElement === element"
+                        (click)="getRecord(element,expandedElement)"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                      </tr>
+                      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+                    </table>
+
+                  </div>
+                <!-- </div> -->
+              </div><!-- card -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-loader" [hidden]="!loading">
+  <div class="loading-spinner">
+      <!-- <img src="https://loading.io/mod/spinner/gear-set/index.svg"> -->
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      <span class="loading-message">Please wait...</span>
+  </div>
+</div>

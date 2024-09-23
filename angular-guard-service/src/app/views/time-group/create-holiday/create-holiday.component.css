@@ -1,0 +1,54 @@
+::ng-deep 
+.card-body {
+    padding: 25px;
+}
+
+::ng-deep 
+.ngx-datatable .datatable-body-cell, .ngx-datatable .datatable-header-cell {
+    overflow-x: initial !important;
+}
+
+::ng-deep
+.ui-inputtext{
+    display: block;
+    width: 100% !important;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+::ng-deep
+.ui-calendar{
+    width:100% !important;
+}
+.switch-primary{
+    vertical-align: middle;
+    margin-left: 20px;
+    float: right;
+}
+/* .switch-div{
+    border-right: 1px solid #09aee4;
+} */
+.text-div{
+    /* width: auto; */
+    float: right;
+}
+.switch-primary .switch-input:checked + .switch-slider {
+    background-color: #20a8d8!important;
+    border-color: #1985ac!important;
+}
+.switch-slider {
+    background-color: #4e4e4e!important;
+    border: 1px solid #000!important;
+}
+.selected-item{
+    margin-bottom: 3px!important;
+}
+
+::ng-deep body .ui-datepicker{
+    top: -55.469px !important;
+}
+::ng-deep body .ui-datepicker .ui-timepicker {
+    padding: 0 !important;
+}
+

@@ -1,0 +1,320 @@
+<app-header [fixed]="true"
+  [navbarBrandFull]="logo_obj"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/ECTL_logo_new.png', height: 30, alt: 'Cloud Connect'}"
+  [sidebarToggler]="'lg'" [asideMenuToggler]="false" [mobileAsideMenuToggler]="false">
+
+  <ul class="nav navbar-nav ml-auto header_drop">
+
+    <!-- Extension Portal -->
+    <div style="margin-top: 3px; margin-right: 20em;" *ngIf="!ByCustomer && user_role=='6'">
+      <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+        ></i>Extension</button>
+    </div>
+    <div style="margin-right: 13em;" *ngIf="ByCustomer=='1'">
+      <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+        ></i>Extension</button>
+        <div style="margin-top: -17px;
+        margin-left: 81px; color: red;">
+          <label>Delegated</label>
+          <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+            <i class="fa fa-home"></i>
+          </button>
+        </div>
+    </div>
+    <li class="nav-item px-3" *ngIf="user_role == '6'" style="width: auto;"><button class="btn btn-primary"
+        (click)="showDID2SIP()">DID2SIP</button></li>
+
+        <!-- Account Manager Portal -->
+        <div style="margin-top: 2px; margin-right: 20em;" *ngIf="!ByAccount && user_role=='4'">
+          <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+            ></i>Account Manager</button>
+        </div>
+        <div style="margin-right: 19em;" *ngIf="ByAccount=='1'">
+          <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+            ></i>Account Manager</button>
+            <div style="margin-top: -17px;
+            margin-left: 127px; color: red;">
+              <label>Delegated</label>
+              <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+                <i class="fa fa-home"></i>
+              </button>
+            </div>
+        </div>
+
+        <!-- Support Portal -->
+        <div style="margin-top: -2px; margin-right: 9em;" *ngIf="!BySupport && user_role=='5'">
+          <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+            ></i>Support Manager</button>
+        </div>
+  
+        <div style="margin-right: 5em;" *ngIf="BySupport=='2'">
+          <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+            ></i>Support Manager</button>
+            <div style="margin-top: -17px;
+            margin-left: 126px; color: red;">
+              <label>Delegated</label>
+              <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+                <i class="fa fa-home"></i>
+              </button>
+            </div>
+        </div>
+
+        <!-- Sub Admin -->
+        <div style="margin-top: 2px; margin-right: 26em;" *ngIf="!BySub && user_role=='2'">
+          <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+            ></i>Sub Admin</button>
+        </div>
+        <div style="margin-right: 24em;" *ngIf="BySub=='3'">
+          <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+            ></i>Sub Admin</button>
+            <div style="margin-top: -17px;
+            margin-left: 85px; color: red;">
+              <label>Delegated</label>
+              <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+                <i class="fa fa-home"></i>
+              </button>
+            </div>
+        </div>
+
+           <!-- Reseller Portal -->
+        <div style="margin-top: 1px; margin-right: 26em;" *ngIf="!ByReseller && user_role=='3'">
+          <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+            ></i>Reseller</button>
+        </div>
+        <div style="margin-right: 23em;" *ngIf="ByReseller=='3'">
+          <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+            ></i>Reseller</button>
+            <div style="margin-top: -17px;
+            margin-left: 69px; color: red;">
+              <label>Delegated</label>
+              <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+                <i class="fa fa-home"></i>
+              </button>
+            </div>
+        </div>
+  
+    <li class="nav-item px-3" *ngIf="user_role == '5'" style="width: auto;">
+      <select class="form-control" id="package" (change)="selectProductDiv($event)" [ngModel]="product"
+        style="margin:-12px;" [hidden]="hiddenProduct">
+        <option [disabled]="!href" *ngFor='let product of selectedValue' [value]="product.id">
+          <strong>{{ product.name }}</strong>
+        </option>
+      </select>
+    </li>
+    <!-- Customer Portal -->
+    <div style="margin-right: 7em;"  *ngIf="!ByAdmin && user_role=='1'">
+      <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+        ></i>Customer</button>
+    </div>
+    <div style="margin-right: 7em;" *ngIf="ByAdmin=='1' && user_role != '6'">
+      <button class="btn" style="background: springgreen; margin-top: 10px; margin-left: -9px;"><i
+        ></i>Customer</button>
+        <div style="margin-top: -17px;
+        margin-left: 81px; color: red;">
+          <label>Delegated</label>
+          <button class="btn" style="background: rgb(253, 253, 253); margin-top: -21px; margin-left: 10px;" (click)="goToHome()">
+            <i class="fa fa-home"></i>
+          </button>
+        </div>
+    </div>
+
+    <li class="nav-item" *ngIf="user_role=='1'">
+      <input type="text" id="package" class="form-control" (change)="selectProductDiv($event)"
+        [ngModel]="customerSelectedValue.name" style="margin:-12px;" [hidden]="hiddenProduct" readonly>
+    </li>
+
+    <li class="nav-item px-3" matTooltip={{tooltipContent}} *ngIf="user_role=='1'" style="width: auto;">
+      <button class="btn" style="background: springgreen;"><i
+          class="fa fa-inr"></i>{{customerSelectedValue.balance}}</button>
+    </li>
+    <div style="margin-top: -2px; margin-right: 26em;" *ngIf="user_role=='0'">
+      <button class="btn" style="background: springgreen; margin-left: -9px;"><i
+        ></i>Administrator</button>
+    </div>
+
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link user_text" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false" dropdownToggle (click)="false">
+        <!-- <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" />  -->
+        {{user_name | titlecase}} &nbsp;&nbsp;&nbsp;&nbsp;<i (click)="logout()" style="color: red; cursor: pointer;"
+          class="fa fa-sign-out fa-2x"></i>
+      </a>
+    </li>
+
+    <div class="btn-group float-right">
+      <button type="button" class="btn btn-default dropdown-toggle btn-navicon" data-toggle="dropdown">
+        <span class="carett">
+          <i class="fa fa-bell" (click)="removeRedDot()">
+            <span *ngIf="isNotification" class="fa fa-circle"></span>
+          </i>
+
+        </span>
+
+      </button>
+      <div *ngIf="historyData.length > 0" class="dropdown-menu dropdown-menu-right dropdown-notification">
+        <div class="p-3 dropdown-item" *ngFor="let history of historyData">
+          <div class="message">
+            <!-- <div class="py-3 pb-5 mr-3 float-left">
+              <div class="avatar">
+                <img src="assets/img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+                <span class="avatar-status badge-success"></span>
+              </div>
+            </div> -->
+            <div>
+              <small class="text-muted font-weight-bold">{{history.screen_name}}</small>
+            </div>
+
+            <small class="text-muted">{{history.message}}</small>
+          </div>
+          <!-- <hr> -->
+        </div>
+      </div>
+      <div *ngIf="historyData.length ==0" class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-item">
+          <h6>No Notification</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-group float-right">
+      <button type="button" class="btn btn-default dropdown-toggle btn-navicon" data-toggle="dropdown">
+        <span class="carett"><i class="fa fa-navicon" aria-hidden="true"></i></span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-item list-group list-group-accent">
+          <div style="cursor: pointer" class="list-group-item list-group-item-accent-info list-group-item-divider">
+            <div class="avatar">
+              <img class="img-avatar" style="vertical-align: middle;" src="{{userImg}}"
+                onerror="this.src='assets/img/Profile-Image.png';">
+              <span style="margin-left: 10px;">Profile</span>
+            </div>
+            <div></div>
+            <small class="text-muted mr-3" (click)="viewProfile()" *ngIf="user_role!='6'">
+              <i class="fa fa-eye" aria-hidden="true"></i> View
+            </small>
+            <small class="text-muted mr-3" (click)="editProfile()">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+            </small>
+            <small class="text-muted mr-3" (click)="showInfo()">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Help
+            </small>
+            <div *ngIf="type == 1">
+            <small class="text-muted mr-3" (click)="showData()">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Customize Dashboard
+            </small>
+            </div>
+          </div>
+          <div (click)="changePassword()" style="cursor: pointer"
+            class="list-group-item list-group-item-accent-warning list-group-item-divider">
+            <div class="avatar">
+              <img class="img-avatar" style="vertical-align: middle;" src="assets/img/passreset.png">
+              <span style="margin-left: 10px;">Change Password</span>
+            </div>
+            <div></div>
+            <small class="text-muted mr-3" (click)="changePassword()">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+            </small>
+            <small class="text-muted mr-3" (click)="showInfoPassword()">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Help
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ul>
+</app-header>
+<div class="app-body">
+  <!-- {{navMenuItems}} -->
+  <app-sidebar [fixed]="true" [display]="'lg'">
+
+    <!-- <input style="height:45px;" type="text" placeholder="search menu"/> -->
+    <div class="row">
+      <div class="search-hero" style="font-family: FontAwesome;">
+        <input _ngcontent-isv-c2="" [(ngModel)]="searchValue" class="form-control" name="search"
+          placeholder="&#xf002; Search Menu" (keyup)="searchMenu($event)" type="text"
+          style="width: 200px; height: 45px; margin-left:15px">
+      </div>
+    </div>
+    <app-sidebar-nav [navItems]="navMenuItems" [perfectScrollbar] [disabled]="sidebarMinimized">
+    </app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <main class="main">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <app-aside [fixed]="true" [display]="false">
+    <tabset>
+      <tab>
+        <ng-template tabHeading>
+          <i class="fa fa-list" aria-hidden="true"></i></ng-template>
+        <div class="list-group list-group-accent">
+          <div style="cursor: pointer" class="list-group-item list-group-item-accent-info list-group-item-divider">
+            <div class="avatar float-right">
+              <img class="img-avatar" src="assets/img/user.png">
+            </div>
+            <div>Profile</div>
+            <small class="text-muted mr-3" (click)="viewProfile()" *ngIf="user_role!='6'">
+              <i class="fa fa-eye" aria-hidden="true"></i> View
+            </small>
+            <small class="text-muted mr-3" (click)="editProfile()">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+            </small>
+            <small class="text-muted mr-3" (click)="showInfo()">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Help
+            </small>
+          </div>
+          <div (click)="changePassword()" style="cursor: pointer"
+            class="list-group-item list-group-item-accent-warning list-group-item-divider">
+            <div class="avatar float-right">
+              <img class="img-avatar" src="assets/img/passreset.png">
+            </div>
+            <div>Change Password</div>
+            <small class="text-muted mr-3" (click)="changePassword()">
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+            </small>
+            <small class="text-muted mr-3" (click)="showInfoPassword()">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Help
+            </small>
+          </div>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading><i class="fa fa-comments" aria-hidden="true"></i></ng-template>
+        <!-- -------------------------Notification------------------------------------ -->
+
+        <!-- <small class="text-muted float-right mt-1">1:52 PM</small> -->
+        <!-- <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div> -->
+        <div *ngIf="historyData.length ==0" class="dropdown-menu dropdown-menu-right">
+          <div class="p-3" *ngFor="let history of historyData">
+            <div class="message">
+              <div class="py-3 pb-5 mr-3 float-left">
+                <div class="avatar">
+                  <img src="{{userImg}}" class="img-avatar" alt="admin@bootstrapmaster.com">
+                  <span class="avatar-status badge-success"></span>
+                </div>
+              </div>
+              <div>
+                <small class="text-muted">{{history.screen_name}}</small>
+              </div>
+
+              <small class="text-muted">{{history.message}}</small>
+              <!-- </div>+ -->
+            </div>
+            <hr>
+          </div>
+        </div>
+        <!-- ------------------------------------------------------------- -->
+      </tab>
+    </tabset>
+  </app-aside>
+
+
+</div>
+<app-footer>
+  <!-- <span style="color: #ffffff;">Made with ❤️ in India for the World</span> -->
+  <span style="color: #ffffff;">{{footer_text_left}}</span>
+  <span class="ml-auto">{{footer_text}}</span>
+</app-footer>

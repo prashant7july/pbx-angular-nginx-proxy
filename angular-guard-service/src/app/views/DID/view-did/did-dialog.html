@@ -1,0 +1,225 @@
+<h3 class="card-header-style">DID's</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="didForm" (ngSubmit)="submitDIDForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>DID Type</mat-label>
+                    <mat-select [disabled]=isEdit  [(ngModel)]="didData.did_type"
+                        formControlName="didType">
+                        <mat-option value="1">DID Number</mat-option>                        
+                        <mat-option value="3">Tollfree Number</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>            
+
+            <div style="margin-top: 18px;" class="form-group col-md-4" *ngIf="!isEdit">
+                <mat-slide-toggle  (change)="showDIDType($event)" formControlName="is_did_range">
+                    Range
+                </mat-slide-toggle>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="!isDIDNumber && !isEdit">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="did_range_from" [(ngModel)]="did_from"
+                        (keypress)="commonService.numberOnly($event)" minlength="5" maxlength="15"
+                        placeholder="FROM (Ex. 10001)" class="col-md-2" autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="did_range_from.invalid && (did_range_from.dirty || did_range_from.touched)"
+                    class="reqired-field">
+                    <div *ngIf="did_range_from.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="did_range_from.errors.minlength">DID must be at least 5 characters long.
+                    </div>
+                    <div *ngIf="did_range_from.errors.maxlength">DID can not be more than 15 characters
+                        long.</div>
+                    <div *ngIf="did_range_from.errors.pattern">
+                        DID can't start with 0
+                    </div>
+                </div>
+            </div>            
+
+            <div class="form-group col-md-4" *ngIf="!isDIDNumber && !isEdit">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" minlength="5" formControlName="did_range_to" [(ngModel)]="did_to"
+                        (keypress)="commonService.numberOnly($event)" (change)="checkRangeDID()" class="col-md-2"
+                        maxlength="15" placeholder="TO (Ex. 10005)" autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="did_range_to.invalid && (did_range_to.dirty || did_range_to.touched)" class="reqired-field">
+                    <div *ngIf="did_range_to.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="did_range_to.errors.minlength">DID must be at least 5 characters long.
+                    </div>
+                    <div *ngIf="did_range_to.errors.maxlength">DID can not be more than 15 characters
+                        long.</div>
+                    <div *ngIf="did_range_to.errors.pattern">
+                        DID can't start with 0
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="isDIDNumber || isEdit">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="did_number" maxlength="15" minlength="5"
+                        placeholder="DID Number *" [readonly]=isEdit [(ngModel)]="didData.did"
+                        (keypress)="commonService.numberOnly($event)" autocomplete="off" >
+                </mat-form-field>
+                <div *ngIf="did_number.invalid && (did_number.dirty || did_number.touched)" class="reqired-field">
+                    <div *ngIf="did_number.errors.required">
+                        Required Field
+                    </div>
+                    <div *ngIf="did_number.errors.minlength">DID must be at least 5 characters long.
+                    </div>
+                    <div *ngIf="did_number.errors.maxlength">DID can not be more than 15 characters
+                        long.
+                    </div>
+                    <div *ngIf="did_number.errors.pattern">
+                        DID can't start with 0
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Billing Type</mat-label>
+                    <mat-select formControlName="billing" [(ngModel)]="billingType"
+                        (selectionChange)="manageRate($event)" required>
+                        <mat-option value="1">Fix per month + Bundle Minute/Dial-out Rate</mat-option>
+                        <mat-option value="2">Fix per month</mat-option>
+                        <mat-option value="3">Only Bundle Minute/Dial-out Rate</mat-option>
+                        <mat-option value="4">Free</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="billing.invalid && (billing.dirty || billing.touched)" class="reqired-field">
+                    <div *ngIf="billing.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -5px;">
+                <ejs-dropdownlist formControlName="provider" (filtering)="providerremovedspace($event)" style="width: 60%;" [dataSource]='providerList' [fields]='fields'
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' [floatLabelType]="'Auto'" [(ngModel)]="ProviderBind" allowFiltering=true>
+                  </ejs-dropdownlist>              
+                <div style="margin-top:2px;" style="margin-top:2px;" *ngIf="provider.invalid && (provider.dirty || provider.touched)" class="reqired-field">
+                    <div *ngIf="provider.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -5px;">
+                <ejs-dropdownlist formControlName="country" (filtering)="Countryremovedspace($event)" style="width: 60%;" [dataSource]='countryList' [fields]='fields1' (select)="getDIDGroup($event)" 
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' [floatLabelType]="'Auto'" [(ngModel)]="CountryBind" allowFiltering=true [readonly]="editVMN">
+                </ejs-dropdownlist>               
+                <div style="margin-top:2px;" *ngIf="country.invalid && (country.dirty || country.touched)" class="reqired-field">
+                    <div *ngIf="country.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>DID Group</mat-label>
+                    <mat-select formControlName="group" [(ngModel)]="didGroup" (selectionChange)="onSelect($event)"
+                         required [disabled]="editVMN">
+                        <mat-option value="0">General</mat-option>
+                        <mat-option value="1">Premium</mat-option>
+                        <mat-option value="2">Private</mat-option>
+                        <mat-option *ngIf="vmn && !isRange" value="3">VMN</mat-option>                                                
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="group.invalid && (group.dirty || group.touched)" class="reqired-field">
+                    <div *ngIf="group.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="selectVmn && !isRange" style="margin-top:9px;">                
+                <ejs-dropdownlist id='ddlelement' formControlName="vmn" (filtering)="vmnremovedspace($event)" style="width: 80%;" [dataSource]='vmnList' [fields]='fields2' (change)="getCustomValue($event)"
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth'  [placeholder]='placeholder2' [(ngModel)]="vmnNumber" allowFiltering=true  [readonly]="editVMN">
+                </ejs-dropdownlist>              
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="customNumber && !isRange">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="number" minlength="10" maxlength="10"
+                    (keypress)="commonService.numberOnly($event)" placeholder= "Number" [disabled]="editVMN" autocomplete="off" required>
+                </mat-form-field>
+                <div *ngIf="number.invalid && (number.dirty || number.touched)" class="reqired-field">
+                    <div *ngIf="number.errors.required">
+                        Required Field
+                    </div>                                        
+                    <div *ngIf="number.errors.minlength">Number can not be less than 10 characters.
+                    </div>
+                        <div *ngIf="number.errors.pattern">
+                        Number can't start with 0
+                    </div>
+                </div>
+            </div>            
+            
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="concurrent_call" [(ngModel)]="maxLimit" required
+                        (keypress)="commonService.numberOnly($event)" placeholder="Max Concurrent Calls (Ex. 20)"
+                        maxlength="2" autocomplete="off" appBlockCopyPaste>
+                </mat-form-field>
+                <div *ngIf="concurrent_call.invalid && (concurrent_call.dirty || concurrent_call.touched)"
+                    class="reqired-field">
+                    <div *ngIf="concurrent_call.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="connect_charge" placeholder="Connect Charge" required
+                        (keypress)="commonService.floatOnly($event)" [(ngModel)]="didData.connection_charge"
+                        maxlength="5" autocomplete="off" appBlockCopyPaste required>
+                </mat-form-field>
+                <div *ngIf="connect_charge.invalid && (connect_charge.dirty || connect_charge.touched)"
+                    class="reqired-field">
+                    <div *ngIf="connect_charge.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" *ngIf="isMonthlyRate">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" [(ngModel)]="didData.fixrate" formControlName="fixrate"
+                        placeholder="Monthly Rate" (keypress)="commonService.floatOnly($event)" maxlength="5"
+                        autocomplete="off" appBlockCopyPaste required [readonly]="didViewMenu.all_permission">
+                </mat-form-field>
+                <div *ngIf="fixrate.invalid && (fixrate.dirty || fixrate.touched)" class="reqired-field">
+                    <div *ngIf="fixrate.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="isSellingRate">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" formControlName="selling_rate" placeholder="Selling Rate"
+                        [(ngModel)]="didData.selling_rate" (keypress)="commonService.floatOnly($event)" maxlength="5"
+                        autocomplete="off" appBlockCopyPaste required  [readonly]="!didViewMenu.all_permission && user !='0'">
+                </mat-form-field>
+                <div *ngIf="selling_rate.invalid && (selling_rate.dirty || selling_rate.touched)" class="reqired-field">
+                    <div *ngIf="selling_rate.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-slide-toggle formControlName="activated" [(ngModel)]="didData.activated">
+                    Activate
+                </mat-slide-toggle>
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!didForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

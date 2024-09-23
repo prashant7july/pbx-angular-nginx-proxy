@@ -1,0 +1,108 @@
+<h3 class="card-header-style">Ticket</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="ticketForm" (ngSubmit)="submitTicketForm()" class="row">
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Ticket Number</mat-label>
+                    <input matInput type="text" formControlName="ticket_number" placeholder="Ticket Number"
+                        [(ngModel)]="ticketNumberDisplay">
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Ticket Type</mat-label>
+                    <mat-select formControlName="ticket_type" required>
+                        <mat-option value="0">New feature</mat-option>
+                        <mat-option value="1">Issue</mat-option>
+                        <mat-option value="2">Others</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="ticket_type.invalid && (ticket_type.dirty || ticket_type.touched)" class="reqired-field">
+                    <div *ngIf="ticket_type.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: -7px;">
+                <ejs-dropdownlist [floatLabelType]="'Auto'"
+               formControlName="product" (change)="selectCustomer($event)" (filtering)="productremovedspace($event)"
+                style="width: 100%;" [dataSource]='selectedValue' [fields]='fields' 
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Select Product</mat-label>
+                    <mat-select formControlName="product" (openedChange)="HandleDropdownFilter('filterSelectProduct',ProductselectFilter)" (ngModelChange)="selectCustomer($event)" required #select1>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="selectedValue" [displayMember]="'name'" (filteredReturn)="filterSelectProduct = $event" ></mat-select-filter>
+                        <mat-option *ngFor='let product of filterSelectProduct' [value]="product.name">
+                            {{ product.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <div *ngIf="product.invalid && (product.dirty || product.touched)" class="reqired-field">
+                    <div *ngIf="product.errors.required">
+                        Required Field
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4" *ngIf="userType=='4' || userType=='5'" style="margin-top: -15px;">
+                <ejs-dropdownlist [floatLabelType]="'Auto'"
+                formControlName="customer" (filtering)="Countryremovedspace($event)"
+                 style="width: 100%;" [dataSource]='selectedCustomerValue' [fields]='fields1' 
+                 [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+             </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Select Company</mat-label>
+                    <mat-select formControlName="customer" (openedChange)="HandleDropdownFilter('filterSelectCompany',CompanyFilter)" required #select1>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="selectedCustomerValue" [displayMember]="'company_name'" (filteredReturn)="filterSelectCompany = $event" ></mat-select-filter>
+                        <mat-option *ngFor='let customer of filterSelectCompany' [value]="customer.id">
+                            {{ customer.company_name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4" *ngIf="userType=='1'">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Assigned To</mat-label>
+                    <input matInput type="text" formControlName="assigned_to" placeholder="Assigned To"
+                        value={{selectedaccountManagerValue}} readonly>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-md-4" *ngIf="userType=='0' || userType=='2' || userType=='4'" style="margin-top: -15px;">
+                <ejs-dropdownlist [floatLabelType]="'Auto'" 
+               formControlName="assigned_to" (filtering)="Assignedremovedspace($event)"
+                style="width: 100%;" [dataSource]='selectedaccountManagerValue' [fields]='fields2' 
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+            </ejs-dropdownlist> 
+                <!-- <mat-form-field>
+                    <mat-label>Assigned To</mat-label>
+                    <mat-select formControlName="assigned_to" (openedChange)="HandleDropdownFilter('filterAssignTo',AssignToFilter)" #select1>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="selectedaccountManagerValue" [displayMember]="'name'" (filteredReturn)="filterAssignTo = $event" ></mat-select-filter>
+                        <mat-option *ngFor='let assigned_to of filterAssignTo' [value]="assigned_to.id">
+                            {{ assigned_to.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            </div>
+            <div class="form-group col-md-4" *ngIf="userType=='3'" style="margin-top: -15px;">
+                <ejs-dropdownlist [floatLabelType]="'Auto'" 
+               formControlName="assigned_to" (filtering)="Assignedremovedspace($event)"
+                style="width: 100%;" [dataSource]='selectedaccountManagerValue' [fields]='fields3' 
+                [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder2' allowFiltering=true>
+            </ejs-dropdownlist> 
+            </div>
+            <div class="form-group col-lg-12">
+                <label for="message">Message</label>
+                <ejs-richtexteditor id='defaultRTE' [(value)]="value" [toolbarSettings]='tools'
+                  formControlName="message" [quickToolbarSettings]='quickTools'>
+                </ejs-richtexteditor>
+                <!-- <textarea id="mytextarea" class="form-control" (keypress)="commonService.charOnly($event)"
+                    placeholder="Write your issue detail here" formControlName="message"></textarea> -->
+            </div>
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button [disabled]="!ticketForm.valid" color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

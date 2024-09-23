@@ -1,0 +1,22 @@
+<h3 class="card-header-style">Call Group Information</h3>
+<div mat-dialog-content>
+    <div id="scrollId" class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    A Call Group is a way of grouping an extension to distribute incoming calls in a systematic manner like Ring All and Hunt the call Hop by hop. Call group may be used at the time of IVR call routing.<br />
+                    Ring Group : Ring all Extension at once.<br />
+                    Hunt Group : Ring one Extension at a time then next if necessary.
+                    
+                </mat-card-content>
+                <img src="assets/img/callgroup.png" style="width:50%;margin-left:auto;margin-right:auto;display:block;">
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,687 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card" style="background-color: #dbd9d9 !important;">
+        <div class="card-header">
+          <strong>DASHBOARD</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <mat-form-field>
+                <mat-select [(ngModel)]="defaultProduct" (selectionChange)="selectProductDiv($event)">
+                  <mat-option *ngFor='let product of selectedValue' [value]="product.id">
+                    <strong>{{ product.name }}</strong>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <hr>
+          <!-- Pbx Graph start -->
+          <div id="pbxGraph" *ngIf='pbxDiv'>
+            <!-- Customer Status-->
+            <div class="row">
+              <div class="col-sm-6 col-lg-2" (click)="showCustomer('active',1)">
+                <div class="card text-white bg-success custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Customer</strong></div>
+                    <div class="text-value" style="font-size: 18px;">{{totalActiveCustomer}}
+                      <i class="fa fa-arrow-up fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-2" (click)="showCustomer('inactive',1)">
+                <div class="card text-white bg-warning custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Inactive Customer</strong></div>
+                    <div class="text-value" style="font-size: 18px;">{{totalInactiveCustomer}}
+                      <i class="fa fa-arrow-down fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-2" (click)="showCustomer('other',1)">
+                <div class="card text-white bg-dark custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Other Customer</strong></div>
+                    <div class="text-value" style="font-size: 18px;">{{totalOtherCustomer}}
+                      <i class="fa fa-times fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-2" (click)="showRevenue()">
+                <div class="card text-white bg-info custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Revenue</strong></div>
+                    <div class="text-value" style="font-size: 18px;">{{totalRevenueCost}}
+                      <i class="fa fa-inr fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-2" (click)="showActiveExtension()">
+                <div class="card text-white bg-danger custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Extension</strong></div>
+                    <div class="text-value" style="font-size: 15px;">{{ActiveExtension}} / {{TotalActiveExtension}}
+                      <i class="fa fa-phone fa-2x" style="float: right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Revenue by customer -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Revenue By Customer</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="revenueData" [labels]="revenueLabels"
+                        [options]="revenueOptions" [legend]="revenueLegend" [colors]="revenueColours"
+                        [chartType]="revenueType" (chartClick)="revenueChartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+              <!-- Calls Info -->
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Calls</strong></div>
+                    <div class="text-value">{{totalCalls}}
+                      <img src='assets/img/icons8-call-white-50.png'
+                        style="float:right;margin-top: -6px;height: 50px; width: 50px; transform: rotate(90deg);">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                  <div class="card-body pb-0">
+                    <div><strong>Incoming Calls</strong></div>
+                    <div class="text-value">{{totalIncomingCalls}}
+                      <div>
+                        <img src='assets/img/icons8-ringer-volume-white-50.png'
+                          style="float:right;margin-top: -37px;height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-danger">
+                  <div class="card-body pb-0">
+                    <div><strong>Outgoing Calls</strong></div>
+                    <div class="text-value">{{totalOutgoingCalls}}
+                      <div>
+                        <img src='assets/img/icons8-outgoing-call-white-50.png'
+                          style="float:right;margin-top: -37px;height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Duration(Sec)</strong></div>
+                    <div class="text-value">{{totalMonthlyDuration}}
+                      <div>
+                        <img src='assets/img/icons8-bar-chart-white-50.png'
+                          style="float:right;margin-top: -37px;height: 50px; width: 50px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+            </div><!--  row -->
+            <!-- Total calls  -->
+            <div class="row">
+              <div class=col-md-6>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Total Calls</strong></h5>
+                      </div>
+                      <!--/.col-->
+                    </div>
+                    <div class="chart-wrapper" style="height: 407px; margin-top:50px;">
+                      <canvas baseChart class="chart" [datasets]="callData" [labels]="callLabels"
+                        [options]="callOptions" [legend]="callLegend" [colors]="callColours" [chartType]="callTypeGraph"
+                        ></canvas>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+              <!-- Calls Per Customer -->
+              <div class=col-md-6>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Customer</strong></h5>
+                      </div>
+                    </div>
+                    
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalCallsPerTenant}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker1" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate" readonly (dateChange)="callsPerTenant($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                          <mat-datepicker #picker1 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 350px; margin-top:40px;">
+                      <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels"
+                        [chartType]="pieChartType" [colors]="pieChartColours"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Start Calls per tenant -->
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Minutes Consumed</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-12">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker2" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate2" readonly (dateChange)="dateWiseMinuteConsumed($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:350px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels"
+                        [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend"
+                        [chartType]="mainChartType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Calls per Hours -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Hours</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-4">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-4">
+                        <mat-form-field style="float:right; width:10vw">
+                          <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate1" readonly (dateChange)="callsPerHour($event, companyID)">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-4" style="margin-top: -15px;">
+                        <ejs-dropdownlist (filtering)="Countryremovedspace($event)" [(ngModel)]="companyID" (change)="customerCallsPerHour($event)"
+                        style="width: 80%;margin-top: 9px;" [dataSource]='companyData' [fields]='fields1'  [floatLabelType]="'Auto'" 
+                        [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder1' allowFiltering=true>
+                    </ejs-dropdownlist>
+                        <!-- <mat-form-field style="width:10vw">
+                          <mat-label>Company Name</mat-label>
+                          <mat-select [(ngModel)]="companyID" (selectionChange)="customerCallsPerHour($event)">
+                            <mat-option [value]="0" selected> Select Customer </mat-option>
+                            <mat-option *ngFor='let company of companyData' [value]="company.id">
+                              {{company.company_name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field> -->
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 350px; margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData" [labels]="barChartHoursLabels"
+                        [options]="barChartHoursOptions" [colors]="barChartHoursColours" [legend]="barChartHoursLegend"
+                        [chartType]="barChartHoursType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6 item-flex">
+                        <h5 class="card-title mb-0"><strong>Average Call Duration (ACD)</strong></h5>
+                        <ejs-tooltip id="tooltip" content='Average call time (average call duration) is calculated by adding up the total time agents spend on phone calls within a given time period (including average talk time and average hold time) and dividing it by the total number of calls handled within that period.' 
+                          opensOn='Hover' [isSticky]='false'>
+                          <i class="fa fa-info-circle info-button" style="cursor:pointer; display: inline"></i>
+                        </ejs-tooltip>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalAcdCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker4" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate3" readonly (dateChange)="acdCallsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                          <mat-datepicker #picker4 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 350px; margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData2" [labels]="barChartHoursLabels2"
+                        [options]="barChartHoursOptions2" [colors]="barChartHoursColours2"
+                        [legend]="barChartHoursLegend2" [chartType]="barChartHoursType2"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6 item-flex">
+                        <h5 class="card-title mb-0"><strong>Answer-Seizure Ratio (ASR)</strong></h5>
+                        <ejs-tooltip id="tooltip1" content='The answer-seizure ratio (ASR) is a measurement of network quality and call success rates in telecommunications. It is the percentage of answered telephone calls with respect to the total call volume.' 
+                          opensOn='Hover' [isSticky]='false'>
+                          <i class="fa fa-info-circle info-button" style="cursor:pointer; display: inline"></i>
+                        </ejs-tooltip>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls: {{totalAsrCallsPerHours}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker3" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate4" readonly (dateChange)="asrCallsPerHour($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                          <mat-datepicker #picker3 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height: 350px; margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData3" [labels]="barChartHoursLabels3"
+                        [options]="barChartHoursOptions3" [colors]="barChartHoursColours3"
+                        [legend]="barChartHoursLegend3" [chartType]="barChartHoursType3"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="callColumnDefs" [dataSource]="callDataSource" [rowData]="callRowData"
+                        [pageSize]='10' (actionClick)="manageCallAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Extension status -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Extension Information</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChart2Data" [labels]="barChart2Labels"
+                        [options]="barChart2Options" [colors]="barChart2Colours" [legend]="barChart2Legend"
+                        [chartType]="barChart2Type"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Ticket Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Ticket Information</strong></h5>
+                      </div>
+                    </div>
+                    <!--/.row-->
+                    <div class="card-body">
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+                        (actionClick)="manageAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div><!-- card -->
+              </div>
+            </div>
+          </div>
+          <!--/.row-->
+
+          <!-- Pbx Graph end -->
+          <!-- Oc Graph start -->
+          <div id="ocGraph" *ngIf='ocDiv'>
+            <!-- Customer Status-->
+            <div class="row">
+              <div class="col-sm-6 col-lg-3" (click)="showCustomer('active',2)">
+                <div class="card text-white bg-success custom-card">
+                  <div class="card-body pb-0">
+                    <div><strong>Active Customer</strong></div>
+                    <div class="text-value">{{totalOCActiveCustomer}}
+                      <i class="fa fa-arrow-up fa-2x" style="float:right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-warning custom-card" (click)="showCustomer('inactive',2)">
+                  <div class="card-body pb-0">
+                    <div><strong>Inactive Customer</strong></div>
+                    <div class="text-value">{{totalOCInactiveCustomer}}
+                      <i class="fa fa-arrow-down fa-2x" style="float:right;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Revenue by customer -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Revenue By Customer</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="revenueData" [labels]="revenueLabels"
+                        [options]="revenueOptions" [legend]="revenueLegend" [chartType]="revenueType"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- card -->
+              </div>
+              <!-- Calls Info -->
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Calls</strong></div>
+                    <div class="text-value">{{totalCalls}}
+                      <img src='assets/img/icons8-call-white-50.png'
+                        style="float:right;margin-top: -6px;height: 50px; width: 50px; transform: rotate(90deg);">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                  <div class="card-body pb-0">
+                    <div><strong>Incoming Calls</strong></div>
+                    <div class="text-value">{{totalIncomingCalls}}
+                      <div>
+                        <img src='assets/img/icons8-ringer-volume-white-50.png'
+                          style="float:right;width:50px;height:50px;margin-top: -37px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-danger">
+                  <div class="card-body pb-0">
+                    <div><strong>Outgoing Calls</strong></div>
+                    <div class="text-value">{{totalOutgoingCalls}}
+                      <div>
+                        <img src='assets/img/icons8-outgoing-call-white-50.png'
+                          style="float:right;width:50px;height:50px;margin-top: -37px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-info">
+                  <div class="card-body pb-0">
+                    <div><strong>Total Duration (Seconds)</strong></div>
+                    <div class="text-value">{{totalMonthlyDuration}}
+                      <div>
+                        <img src='assets/img/icons8-bar-chart-white-50.png'
+                          style="float:right;width:50px;height:50px;margin-top: -37px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.col-->
+            </div><!--  row -->
+            <!-- Total calls  -->
+            <div class="row">
+              <div class=col-md-6>
+                <div class="card">
+                  <div class="card-body" style="margin-bottom: 105px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Total Calls</strong></h5>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="width:500px; height: 260px; margin-top:15px;">
+                      <canvas baseChart class="chart" [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                        [chartType]="doughnutChartType" [colors]="doughnutColors" (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class=col-md-6>
+                <div class="card">
+                  <div class="card-body" style="margin-bottom: 40px;">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Customer</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #FA8072;">
+                          Total Calls - {{totalCallsPerTenant}}
+                        </label>
+                      </div>
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker1" placeholder="Date" [(ngModel)]="todayDate" readonly
+                            (dateChange)="callsPerTenant($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                          <mat-datepicker #picker1 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="width:500px; height: 260px; margin-top:15px;">
+                      <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels"
+                        [chartType]="pieChartType" [colors]="pieChartColours"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Start Calls per tenant -->
+            <div class="row">
+
+              <!-- Minute consumed Calls  -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+
+                        <h5 class="card-title mb-0"><strong>Minutes Consumed</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-12">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker2" [max]="maxDate" placeholder="Date"
+                            [(ngModel)]="todayDate2" readonly (dateChange)="dateWiseMinuteConsumed($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2 readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels"
+                        [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend"
+                        [chartType]="mainChartType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Calls per Hours -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Calls Per Hours</strong></h5>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-sm-6">
+                        <label style="color:#FFFFFF;padding:10px;background-color: #CC5F00;">
+                          Total Calls - {{totalCallsPerHours}}
+                        </label>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <mat-form-field style="float:right;">
+                          <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="todayDate1" readonly
+                            (dateChange)="callsPerHour($event, companyID)">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker readonly="false"></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <!-- <div class="col-sm-6">
+                        <mat-form-field>
+                          <mat-label>Company Name</mat-label>
+                          <mat-select [(ngModel)]="companyID" (selectionChange)="customerCallsPerHour($event)">
+                            <mat-option *ngFor='let company of companyData' [value]="company.id">
+                              {{company.company_name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div> -->
+                    </div>
+                    <div class="chart-wrapper" style="height:300px;margin-top:15px;">
+                      <canvas baseChart class="chart" [datasets]="barChartHoursData" [labels]="barChartHoursLabels"
+                        [options]="barChartHoursOptions" [colors]="barChartHoursColours" [legend]="barChartHoursLegend"
+                        [chartType]="barChartHoursType"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of calls per hour -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Call Records</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="callColumnDefs" [dataSource]="callDataSource" [rowData]="callRowData"
+                        [pageSize]='10' (actionClick)="manageCallAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Ticket Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-5">
+                        <h5 class="card-title mb-0"><strong>Ticket Information</strong></h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <app-grid [columnDefs]="columnDefs" [dataSource]="callDataSource" [rowData]="callRowData"
+                        [pageSize]='10' (actionClick)="manageAction($event)">
+                      </app-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Oc Graph end -->
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

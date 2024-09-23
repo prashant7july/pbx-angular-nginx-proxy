@@ -1,0 +1,134 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>TC MINUTE MANAGE</strong>
+        </div>
+        <div class="col-lg-12">
+          <div class="card-body" >
+            <div *ngIf="groupList.length>=1; else templateName">
+            <div class="row">      
+              <!-- {{this.tcPlanValue}} -->
+              <div class="form-group col-md-3">
+                <mat-form-field>
+                  <mat-label>Plan Name</mat-label>                  
+                  <mat-select [(ngModel)]="tcPlanValue" [disabled]="disablePlan" required>
+                    <mat-option *ngFor='let g of groupList' [value]="g.id" (click)="onPlanSelect(g,'')">
+                      {{g?.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-md-3" *ngIf="isEdit">
+                <mat-form-field>
+                  <mat-label>Price</mat-label>
+                  <input matInput maxlength="10" [disabled]="disablePlan" [(ngModel)]="planPrice" autocomplete="off" required readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-md-3" *ngIf="isEdit">
+                <mat-form-field>
+                  <mat-label>Select Destination (Deduct From)</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor='let d of destinatioList' [value]="d.dial_prefix" (click)="getDestinationDetails(d)">
+                      {{ d.destination }} - {{d.plan_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field><br />
+              </div>
+
+              <div class="form-group col-md-3" *ngIf="isContact">
+                <mat-form-field>
+                  <mat-label>Select Contact (Add To)</mat-label>
+                  <mat-select [(ngModel)]="selectedExtensionList" (selectionChange)="getExtensionDetail($event)" multiple>
+                    <mat-option *ngFor='let contact of contactList' [value]="contact.name">
+                      {{ contact.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field><br />
+              </div>
+                            
+            </div>
+            <!-- <div class="form-group col-md-6">
+              <mat-form-field>
+                <mat-label>Select Extention (Add To)</mat-label>
+                <mat-select [(ngModel)]="selectedExtensionList" (selectionChange)="getExtensionDetail($event)" multiple>
+                  <mat-option *ngFor='let contact of contactList' [value]="contact.id">
+                    {{ contact.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field><br/>
+            </div> -->
+
+
+            <form [formGroup]="minutePlan" (ngSubmit)="submitRatePlan()">
+              <div class="form-group col-md-12" formArrayName="minutManageForm"
+                *ngFor="let d of getMinutePlanControls(); let i=index">
+                <!-- Use the index for each formGroup inside the formArray -->
+                <div [formGroupName]="i">
+                  <div class="row" style="background:rgb(22, 112, 158); display:flex;  justify-content: space-between; height: 40px;">
+                    <h3 style="color: white; margin-left: 7px;margin-bottom: 2px;margin-top: 4px;">
+                      {{getDestinationName(d,'country_name')}} </h3>
+                      <h3 style="color: white;margin-bottom: 2px; margin-top: 9px; font-size: 21px;">
+                        {{getDestinationName(d,'remaining_minutes')}}</h3>
+                      <h3 style="color:rgb(237, 233, 33); margin-bottom: 2px; margin-top: 9px; font-size: 21px;">
+                        {{getDestinationName(d,'assign_minute')}} </h3>
+                        <h3 style="color:rgb(0,255,0); margin-bottom: 2px; margin-top: 9px; font-size: 21px;">
+                          {{getDestinationName(d,'remains_minute')}} </h3>
+                        <h3 style="color:rgb(255, 100, 0);margin-bottom: 2px; margin-right: 7px; margin-top: 9px; font-size: 21px;">
+                          {{getDestinationName(d,'used_minute')}} </h3>
+                  </div>
+
+                  <div formArrayName="ext">
+                    <div [formGroupName]="x" *ngFor="let a of d.controls.ext.controls; let x = index">
+                      <div class="row" style="background: #f7f5f5;">
+                        <div class="form-group col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Contact</mat-label>
+                            <input matInput type="text" formControlName="c_name" autocomplete="off" readonly>
+                          </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Assigned Minutes</mat-label>
+                            <input matInput (keypress)="commonService.numberWithNegative($event)" 
+                              (input)="restrictMinuteValidation(d,'remaining_minutes',i,x)" formControlName="minutes"
+                              autocomplete="off" >
+                          </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Used Minutes</mat-label>
+                            <input matInput (keypress)="commonService.numberWithNegative($event)"                              
+                              autocomplete="off" formControlName="used_minutes" readonly>
+                          </mat-form-field>
+                        </div>                     
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button [disabled]="minutePlan.invalid"
+                  color="primary">Submit</button>&nbsp;
+                  <button mat-raised-button color="warn" (click)="cancelForm()">Cancel</button>              
+              </div>
+            </form>           
+            </div>
+            <ng-template #templateName>
+              <i>oops... You do not have any TC Plan.</i>
+              <div class="row">
+                <div class="col-md-12 example-button-row mt-3">
+                  <button backButton mat-raised-button color="primary"><i class="fa fa-reply fa-fw"></i>Back</button>
+                </div>
+              </div>
+            </ng-template>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

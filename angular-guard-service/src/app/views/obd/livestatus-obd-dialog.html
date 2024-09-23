@@ -1,0 +1,57 @@
+<h3 class="card-header-style">LIVE OBD CALLS</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form class="row">
+            <div class="col-lg-12 example-button-row">
+            <button mat-raised-button (click)="resetTable()"
+                style="background-color: #15cdd6;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden; margin-left :60em;">
+                <i class="fa fa-refresh fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                Refresh 
+              </button> 
+            </div>  
+             <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;">
+                <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2"  [dataSource]="dataSource2"
+                 >
+                </app-grid> 
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                
+                <!-- <button class="fa fa-refresh fa-lg" style="background-color: #15cdd6;" (click)="resetTable()" mat-raised-button>Reset</button> -->
+                <button mat-raised-button color="warn" (click)="onNoClick()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

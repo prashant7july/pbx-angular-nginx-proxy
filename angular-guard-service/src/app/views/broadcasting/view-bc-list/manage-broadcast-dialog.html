@@ -1,0 +1,95 @@
+<h3 class="card-header-style">Manage Broadcast</h3>
+<div mat-dialog-content>
+   
+    <div class="row">
+                  <div class="hr-sect" style="margin-left: -8px;" > SIP </div>
+               
+               
+             <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;" >
+
+                <div class="row">
+                    <div class="header-btn">
+                       <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-193px;" (click)="deleteCheckedExt()" [disabled]="isDeleteExt || participantsExt.length === 0" >Delete</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-211px;" (click)="selectAllExt()"  >Select All</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-229px; margin-right: -200px;" (click)="unselectAllExt()"  >Unselect All</button>
+                       <div class="row">
+                        <div class="header-btn">
+                            <label style="    margin-right: 22px; margin-top: 25PX;"><b>Reset Leads:</b></label>
+                           <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-2px;" (click)="resetAllExt()" > All</button>
+                           <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-21px;" (click)="resetAnsweredExt()"  >Answered</button>
+                           <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-40px;" (click)="resetFailedExt()"  >Failed</button>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs"  [dataSource]="dataSource"
+                [pageSize]='defaultPageSize'  (actionClick)="manageAction($event)" >
+                </app-grid>
+                
+            </div>
+                  <div class="hr-sect" style="margin-left: -8px;" > PSTN </div>
+               
+               
+             <div class="card-body" style="margin-right: 100px;margin-left: 100px;width: 650px;" >
+
+                <div class="row">
+                    <div class="header-btn">
+                       <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-193px;" (click)="deleteCheckedPstn()" [disabled]="isDeletePstn || participantsPstn.length === 0" >Delete</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-211px;" (click)="selectAllPstn()"  >Select All</button>
+                       <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-229px; margin-right: -200px;" (click)="unselectAllPstn()"  >Unselect All</button>
+                       <div class="row">
+                        <div class="header-btn">
+                            <label style="    margin-right: 22px; margin-top: 25PX;"><b>Reset Leads:</b></label>
+                           <button mat-raised-button color="primary" style=" margin:11px;top:3px;left:-2px;" (click)="resetAllPstn()" > All</button>
+                           <button mat-raised-button color="primary"  style=" margin:11px;top: 3px;left:-21px;" (click)="resetAnsweredPstn()"  >Answered</button>
+                           <button mat-raised-button color="primary"  style=" margin:11px;top:3px;left:-40px;" (click)="resetFailedPstn()"  >Failed</button>
+                           <!-- <button mat-raised-button color="warn"  style=" margin:11px;top:3px;left:-45px; background-color: #01A89E !important;"  (click)="exportToExcelExt()"  >Export Excel</button> -->
+                        </div>
+                        
+                    </div>
+                    </div>
+                  </div>
+                <app-grid [reinitializeTable]="true" [columnDefs]="columnDefs2"  [dataSource]="dataSource2"
+                [pageSize]='defaultPageSize'  (actionClick)="manageAction($event)" >
+                </app-grid>
+                
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button (click)="submitParticipants();" mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Cancel</button>
+            </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

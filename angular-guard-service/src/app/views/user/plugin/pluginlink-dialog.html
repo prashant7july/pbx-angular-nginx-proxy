@@ -1,0 +1,28 @@
+<h3 class="card-header-style">PLUGIN CODE - {{name}}</h3>
+<div mat-dialog-content>
+    <div id="scrollId" class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;">
+                    <textarea type="text" id="link" style="width: 800px; height: 250px;" readonly>
+                <script type="text/javascript">
+                 var g = document.createElement("script"); 
+                 g.type = "text/javascript"; 
+                 g.src = location.protocol + "{{scriptURL}}"; 
+                 window.onload = function () { hc.initialize(`{{token}}`, `{{color}}`, `{{lang}}`); 
+                 hc.setConfiguration({ defaultTitle: 'Click 2 Call   ', eStyle: { right: '24px', bottom: '24px' } }) }; 
+                 document.getElementsByTagName("head")[0].appendChild(g);
+                </script>
+                    </textarea>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+                <button mat-raised-button color="primary" (click)="copyText()">copy</button>
+            </div>
+        </div>
+    </div>
+</div>

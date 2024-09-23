@@ -1,0 +1,161 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>ALL CALL RATES</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="header-btn">
+              <div *ngIf="!ManageIcon">
+              <button (click)="manageGateway()" mat-raised-button color="primary"
+              style=" margin:11px;top:-11px;left:34px;background-color: #8cb81dd2 !important;">Manage Gateway</button>
+              </div>
+              <button (click)="downloadPDF()" mat-raised-button color="primary"
+                style=" margin:11px;top:-11px;left:19px;background-color: #CD5C5C !important;">Download PDF</button>
+              <button (click)="exportToExcel()" mat-raised-button color="warn"
+                style=" margin:11px; top:-11px;left: 0px; background-color: #01A89E !important;">Excel Export</button>
+              <button (click)="importFile()" mat-raised-button color="primary"
+                style=" margin:11px;top:-11px;left:0px;background-color:#E8692D !important;">Excel Import</button>  
+              <div class="view-button" *ngIf="callRateMenu.add_permission">
+                <button mat-raised-button color="primary"  style="margin: right 6px;" (click)="openDialog()"><i
+                    class="material-icons left">add_circle</i>
+                  ADD</button>
+              </div>
+              <div class="help-button">
+                <button mat-raised-button (click)="showInfo()"
+                  style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -11px;cursor: pointer;overflow: hidden;">
+                  <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+                  HELP
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <app-accordian-filter style="width: 100%">
+              <form [formGroup]="filterForm" class="row" novalidate>
+                <div class="form-group col-md-3" style="margin-top: -15px;">
+                  <!-- <mat-form-field>
+                    <mat-label>Call Plan</mat-label>
+                    <mat-select formControlName="by_call_plan">
+                      <mat-option value="" selected>Select Call Plan</mat-option>
+                      <mat-option *ngFor='let plan of selectedValue' [value]="plan.id">
+                        {{ plan.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <ejs-multiselect id='multiselectelement' class="mt-2" (filtering)="Callremovedspace($event)"  style="width: 60%;" [dataSource]='selectedValue'
+                    [fields]='fields' [placeholder]='placeholder' formControlName="by_call_plan"
+                    [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                    showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Dial Prefix</mat-label>
+                    <input matInput type="text" formControlName="by_dial_prefix"
+                      (keypress)="commonService.numberOnly($event)" maxlength="5" placeholder="By Dial Prefix">
+                  </mat-form-field>
+                </div>
+                <!-- <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Buying Rate</mat-label>
+                    <input matInput type="text" formControlName="by_buying_rate" (keypress)="commonService.floatOnly($event)"
+                      maxlength="5" placeholder="By Buying Rate">
+                  </mat-form-field>
+                </div> -->
+                <div class="form-group col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Selling Rate</mat-label>
+                    <input matInput type="text" formControlName="by_selling_rate"
+                      (keypress)="commonService.floatOnly($event)" maxlength="5" placeholder="By Selling Rate">
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: -15px;">
+                  <ejs-multiselect id='multiselectelement' (filtering)="CallGroupremovedspace($event)" class="mt-2" style="width: 60%;"
+                    [dataSource]='selectedGroupValue' [fields]='fields2' [placeholder]='placeholder2'
+                    formControlName="by_call_group" [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode'
+                    [selectAllText]='selectAllText' showSelectAll=true>
+                  </ejs-multiselect>
+                </div>
+                <div class="form-group col-md-3">
+                  <mat-form-field>
+                    <mat-label>Plan Type</mat-label>
+                    <mat-select formControlName="by_plan_type"> 
+                      <mat-option value="" selected>Select Plan Type</mat-option>
+                      <mat-option value="0">Standard</mat-option>
+                      <mat-option value="1">DID Bundle</mat-option>
+                      <mat-option value="5">Outgoing Bundle</mat-option>
+                      <mat-option value="2">Roaming</mat-option>
+                      <mat-option value="3">Booster</mat-option>
+                      <mat-option value="4">TeleConsultancy</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-md-3" style="margin-top: -15px;" *ngIf="!ManageIcon">
+                  <ejs-multiselect id='multiselectelement' class="mt-2" (filtering)="Gatewayremoved($event)" style="width: 60%;" [dataSource]='gateways'
+                  [fields]='fields4' [placeholder]='placeholder4' formControlName="by_gateway"
+                  [popupHeight]='popupHeight' [floatLabelType]="'Auto'" [popupWidth]='popupWidth' [mode]='mode' [selectAllText]='selectAllText'
+                  showSelectAll=true>
+                </ejs-multiselect>
+                  <!-- <mat-form-field> 
+                    <mat-label>Select Gateway</mat-label>
+                    <mat-select formControlName="by_gateway" (openedChange)="HandleDropdownFilter('filterGateway',GatewayFilter)" #select1 multiple>
+                      <mat-select-filter  *ngIf="select1.focused" [array]="gateways" [displayMember]="'provider'" (filteredReturn)="filterGateway = $event"></mat-select-filter>
+                         <mat-option *ngFor='let gateway of filterGateway' [value]="gateway.id" >
+                            {{gateway.provider}} - {{gateway.name}} 
+                        </mat-option>                            
+                    </mat-select>
+                </mat-form-field>    -->
+                </div>
+                <div class="form-group col-md-3" style="margin-top: -15px;">
+
+                  <ejs-multiselect id='multiselectelement' [floatLabelType]="'Auto'" (filtering)="Countryremoved($event)" class="mt-2" style="width: 60%;" [dataSource]='allCountryList' [fields]='fields6'
+                  [placeholder]='placeholder6' formControlName="by_destination" [popupHeight]='popupHeight' [popupWidth]='popupWidth'
+                  [mode]='mode' [selectAllText]='selectAllText' showSelectAll=true>
+              </ejs-multiselect>
+                </div>
+                <!-- <div class="form-group col-md-3">
+                  <mat-form-field>
+                    <mat-label>Customer Name</mat-label>
+                    <mat-select formControlName="by_customer">
+                      <mat-option *ngFor='let customer of accountManagerCustomerList' [value]="customer.id">
+                        {{ customer.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field> 
+                </div> -->
+                <div class="form-group col-md-3">
+                  <button (click)="filterData()" mat-raised-button color="primary">Search</button>&nbsp;
+                  <button (click)="resetTable()" mat-raised-button color="warn">Reset</button>
+                </div>
+              </form>
+            </app-accordian-filter>
+          </div>
+
+          <div class="example-wrapper" style="margin-top:75px;">
+            <div class="example-header col-md-3" style="float:right;margin-top:-57px;margin-right:-12px;">
+              <mat-form-field class="float-right">
+                <mat-label>Number of records</mat-label>
+                <mat-select [value]="10" [(ngModel)]="defaultPageSize" (selectionChange)="onPageSizeChanged($event)"
+                  id="page-size">
+                  <mat-option value="10" selected>10</mat-option>
+                  <mat-option value="50">50</mat-option>
+                  <mat-option value="100">100</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [suppressColumnFit]="true"
+              [pageSize]='defaultPageSize' (actionClick)="manageAction($event)">
+            </app-grid>
+          </div>
+          <!-- <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource" [rowData]="rowData" [pageSize]='10'
+            (actionClick)="manageAction($event)">
+          </app-grid> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

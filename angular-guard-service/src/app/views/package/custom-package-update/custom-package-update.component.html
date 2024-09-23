@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>MANAGE PACKAGES</strong>
+        </div>
+        <div class="card-body">
+          <div id="pbx_feature" *ngIf="pbxDiv">
+            <form [formGroup]="customerPbxForm" (ngSubmit)="updatePbxForm(customerPbxForm.value)" class="row">
+              <input type="hidden" [(ngModel)]="productId" formControlName="pbx_id" />
+              <input type="hidden" [(ngModel)]="packageId" formControlName="package_id" />
+
+              <div class="form-group col-md-6 col-sm-6 switch-div">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" [readonly]="isReadonly" [(ngModel)]="old_package"
+                    formControlName="package_old_name" placeholder="Package Name"
+                    (keypress)="commonService.charOnly($event)" autocomplete="off" appBlockCopyPaste
+                    required>
+                </mat-form-field>
+                <div *ngIf="package_old_name.invalid && package_old_name.touched" class="reqired-field">
+                  <div *ngIf="package_old_name.errors.required">
+                    Required Field
+                  </div>                 
+                </div>
+              </div>
+
+              <div class="form-group col-md-6 col-sm-6 switch-div">
+                <mat-slide-toggle [color]="accent" [(ngModel)]="masterSelect" (change)="allUserCheck($event)"
+                  formControlName="allCheck">
+                  Update For All Users
+                </mat-slide-toggle>
+              </div>
+
+              <div class="form-group col-md-3 switch-div" *ngFor="let customer of customers">
+                <mat-slide-toggle [color]="accent" id="{{customer.customer_id}}" (change)="change($event)"
+                  [checked]="isSelected" name="user" [disabled]="isDisabled" formControlName="user">
+                  <strong>{{customer.company_name}}</strong><br /><small>{{customer.first_name}}
+                    {{customer.last_name}}</small>
+                </mat-slide-toggle>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" [disabled]="!formValid" class="btn btn-success">Update Package</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- Pbx Features end -->
+          <!-- Oc Features start -->
+          <div id="oc_feature" *ngIf="ocDiv">
+            <form [formGroup]="customerOcForm" (ngSubmit)="updateOcForm(customerOcForm.value)" class="row">
+              <input type="hidden" [(ngModel)]="productId" formControlName="oc_id" />
+              <input type="hidden" [(ngModel)]="packageId" formControlName="package_id" />
+
+              <div class="form-group col-md-6 col-sm-6 switch-div">
+                <label for="package">Package Name<span class="reqired-field">*</span></label>
+                <input type="text" [readonly]="isReadonly" [(ngModel)]="old_package"
+                  class="form-control text-div col-md-8" formControlName="package_old_name_oc"
+                  placeholder="Package Name"  (keypress)="commonService.charOnly($event)" autocomplete="off" appBlockCopyPaste required />
+                <div *ngIf="package_old_name_oc.invalid && package_old_name_oc.touched" class="reqired-field">
+                  <div *ngIf="package_old_name_oc.errors.required">
+                    Required Field
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 switch-div">
+                Update For All Users
+                <label class="switch switch-label switch-pill switch-primary">
+                  <input type="checkbox" class="switch-input" value="{{masterSelect}}" [(ngModel)]="masterSelect"
+                    (change)="allUserCheck($event)" formControlName="allCheck">
+                  <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                </label>
+              </div>
+
+              <div class="form-group col-md-3 switch-div" *ngFor="let customer of customers">
+                <strong>{{customer.company_name}}</strong><br /><small>{{customer.first_name}}
+                  {{customer.last_name}}</small>
+                <label class="switch switch-label switch-pill switch-primary">
+                  <input type="checkbox" (change)="change($event)" [checked]="isSelected" class="switch-input"
+                    value="{{customer.customer_id}}" name="user" formControlName="user">
+                  <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                </label>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" [disabled]="!formValid" class="btn btn-success">Update Package</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- Oc Features end -->
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

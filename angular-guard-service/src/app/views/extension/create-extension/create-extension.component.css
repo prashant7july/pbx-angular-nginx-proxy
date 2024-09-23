@@ -1,0 +1,32 @@
+::ng-deep 
+/* .card-body {
+    padding: 25px;
+} */
+
+.switch-primary{
+    vertical-align: middle;
+    margin-left: 20px;
+    float: right;
+}
+.switch-div{
+    border-right: 1px solid #09aee4;
+}
+.switch-div-left{
+    border-left: 1px solid #09aee4;
+}
+.switch-div-right{
+    border-right: 1px solid #09aee4;
+}
+.text-div{
+    /* width: auto; */
+    float: right;
+}
+.switch-primary .switch-input:checked + .switch-slider {
+    background-color: #20a8d8!important;
+    border-color: #1985ac!important;
+}
+.switch-slider {
+    background-color: #4e4e4e!important;
+    border: 1px solid #000!important;
+}
+

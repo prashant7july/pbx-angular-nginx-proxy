@@ -1,0 +1,44 @@
+<h3 class="card-header-style">TC SUBSCRIBER </h3>
+<div mat-dialog-content >
+    <div class="card-body">
+        <form [formGroup]="subscriberForm" (ngSubmit)="AddMinutes()"  class="row example-form">
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Contact</mat-label>
+                    <input matInput autocomplete="off" disabled> {{contact}}
+                </mat-form-field>                
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                    <mat-label>Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{minutes}}
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Remaining Destination Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{remaining_minutes}}
+                </mat-form-field>                
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Assigned Minutes</mat-label>
+                    <input matInput autocomplete="off" disabled> {{remaining_contact_minutes}}
+                </mat-form-field>                
+            </div>
+
+             
+            <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button
+                    color="primary">Add</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+
+            
+        </form>
+    </div>
+</div>

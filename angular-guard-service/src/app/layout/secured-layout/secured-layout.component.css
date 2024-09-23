@@ -1,0 +1,67 @@
+.btn-primary1 {
+  color: #0e0e0e !important;
+  background-color: #f7fafb !important;
+  border-color: rgb(232, 240, 254) !important;
+  margin: auto;
+  display: block;
+  border: none !important;
+}
+
+.app-header .navbar-nav {
+  justify-content: flex-end;
+}
+
+.mat-menu-panel {
+  max-height: 248px !important;
+}
+
+.btn-navicon {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  color: white;
+  font-size: 20px;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-notification {
+  height: 240px;
+  overflow-y: auto;
+  width: 240px;
+}
+
+i.fa-bell {
+  position: relative;
+  color: white;
+  cursor: pointer;
+}
+
+span.fa-circle {
+  position: absolute;
+  font-size: 0.6em;
+  top: -4px;
+  color: red;
+  right: -4px;
+}
+
+span.num {
+  position: absolute;
+  font-size: 0.3em;
+  top: 1px;
+  color: #fff;
+  right: 2px;
+}
+
+.img-avatar {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+}
+
+.search-hero .form-control::placeholder {
+  font-family: 'Roboto', FontAwesome;
+  font-weight: 400;
+}

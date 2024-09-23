@@ -1,0 +1,20 @@
+<h3 class="card-header-style">Call Plan Information</h3>
+<div mat-dialog-content>
+    <div id="scrollId" class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;">
+                    Call Plan is a group of Call Plan Rates. It will be assigned to customers for making PSTN calls from products. Customers can use a single callplan at a time.<br />
+                    Admin creates Call Plans according to buyer price or seller price. Call Plan will be used later on at the Rate section.
+                </mat-card-content>
+                <img src="assets/img/callplan.png" style="width:50%;margin-left:auto;margin-right:auto;display:block;">
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

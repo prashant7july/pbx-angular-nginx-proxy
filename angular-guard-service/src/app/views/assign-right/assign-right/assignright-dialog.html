@@ -1,0 +1,41 @@
+<h3 class="card-header-style">Assign Rights</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <form [formGroup]="assignRightsForm" (ngSubmit)="submitAssignRightsForm()" class="row">
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="userName" (selectionChange)="displayList($event)"
+                        [(ngModel)]="assignRightsData.userName" disabled>
+                        <mat-option *ngFor='let userpackagevalue of userPackageValue' [value]="userpackagevalue.userid">
+                            {{ userpackagevalue.username }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-4">
+                <mat-form-field>
+                    <mat-label>Assigned Package</mat-label>
+                    <mat-select formControlName="pkgName" [(ngModel)]="assignRightsData.pkgName" disabled>
+                        <mat-option *ngFor='let userpackagevalue of userPackageValue' [value]="userpackagevalue.pkgid">
+                            {{ userpackagevalue.pkgname }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-12" *ngIf="dataSource1.length!=0">
+                <app-grid [columnDefs]="columnDefs" [dataSource]="dataSource1" [rowData]="rowData" [pageSize]='10'
+                    (actionClick)="manageAction($event)">
+                </app-grid>
+            </div>
+
+            <div class="col-lg-12 example-button-row">
+                <button mat-raised-button color="primary">Submit</button>
+                <button mat-raised-button color="warn" (click)="onNoClick($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

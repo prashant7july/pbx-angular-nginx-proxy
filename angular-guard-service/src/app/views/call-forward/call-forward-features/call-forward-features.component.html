@@ -1,0 +1,341 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>CALL FORWARD</strong>
+        </div>
+        <div class="card-body">
+          <div class="help-button row" style="float:right;">
+            <button mat-raised-button (click)="showInfo()"
+              style="background-color: #7B68EE;border: none;color: #ffffff;text-align: center;text-decoration: none;display: inline-block;margin: -6px 0px 0px -6px;cursor: pointer;overflow: hidden;">
+              <i class="fa fa-question-circle fa-lg" style="font-size:1.50em !important;" aria-hidden="true"></i>
+              HELP
+            </button>
+          </div>
+          <form [formGroup]="callForwardForm" (ngSubmit)="submitCallForwardForm()" class="row" 
+            style="padding-left: 12%; padding-right: 20%; margin-top:50px;">
+            <div class="form-group col-md-6">
+              <mat-form-field class="forwardType">
+                <mat-label>Universal Forward Type</mat-label>
+                <mat-select formControlName="universal_type" (selectionChange)="getUniversalForwardType($event)"
+                  [value]=0 [(ngModel)]="callForwardData.universal_type" required>
+                  <mat-option value="0" selected>Disabled</mat-option>
+                  <mat-option value="1" *ngIf="extensionHasVoiceMail == '1'">Voicemail</mat-option>
+                  <!-- <mat-option value="2" *ngIf="extensionFeature == '1' || checkcondition">External</mat-option> -->
+                  <mat-option value="2" *ngIf="pstnCheck">External</mat-option>
+                  <mat-option value="3">Extension</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- //disabled and voicemail case -->
+            <div class="form-group col-md-6" *ngIf="!universalForwardType && !universalForwardExtension">
+              <mat-form-field class="example-full-width">
+                <input matInput type="text" formControlName="universal" id="universal" placeholder="Universal Forward"
+                  readonly>
+              </mat-form-field>
+            </div>
+            <!-- //extension case -->
+            <div class="form-group col-md-6" *ngIf="universalForwardExtension && !universalForwardType">
+              <ejs-dropdownlist formControlName="universal_extension" (filtering)="Extensionremovedspace($event)" [floatLabelType]="'Auto'"
+              style="width: 63%;margin-top: -7px;"  [dataSource]='extensionInfo' [fields]='fields1'
+              [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder10' allowFiltering=true required>
+          </ejs-dropdownlist> 
+              <div class="reqired-field" style="margin-top:2px;">
+                <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension which has DND enable not listed here.</small>
+              </div>
+              <!-- <div *ngIf="universal_extension.invalid && (universal_extension.dirty || universal_extension.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="universal_extension.errors.required">
+                  Required Field
+                </div>
+              </div> -->
+            </div>
+            <!-- //external case -->
+            <div class="form-group col-md-6" *ngIf="universalForwardType && !universalForwardExtension">
+              <div class="row">
+                <div class="form-group col-md-5" *ngIf="universalForwardType">
+                  <ejs-dropdownlist formControlName="universal_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'universal_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist>
+                  <div *ngIf="universal_country.invalid && (universal_country.dirty || universal_country.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="universal_country.errors.required">
+                      Required country
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-5" *ngIf="!universalForwardType">
+                  <ejs-dropdownlist formControlName="universal_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'universal_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist> 
+                </div>
+                <div class="form-group col-md-2"></div>
+                <div class="form-group col-md-5">
+                  <mat-form-field class="example-full-width">
+                    <mat-label *ngIf="pstnCheck">External Number</mat-label>
+                    <input matInput [hidden]="true" formControlName="universal_country_code" />
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                      formControlName="universal_external" id="universal_external" maxlength="10"
+                      [(ngModel)]="!universalForwardType ? '' : callForwardData.universal_external"
+                      autocomplete="off"  required>
+                    <!-- <span matPrefix >{{countryCode}}</span> -->
+                    <span matPrefix >{{universal_country_code.value}}</span>
+                  </mat-form-field>
+
+                  <div *ngIf="universal_external.invalid && (universal_external.dirty || universal_external.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="universal_external.errors.required">
+                      Required Field
+                    </div>
+                    <div class="error" *ngIf="universal_external.errors.pattern"> Number can not start with 0 and not
+                      less than 10 digits.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="forwardType">
+                <mat-label>Busy Forward Type</mat-label>
+                <mat-select formControlName="busy_type" (selectionChange)="getBusyForwardType($event)"
+                  [(ngModel)]="callForwardData.busy_type" [value]=0 required>
+                  <mat-option value="0" selected>Disabled</mat-option>
+                  <mat-option value="1" *ngIf="extensionHasVoiceMail == '1'">Voicemail</mat-option>
+                  <!-- <mat-option value="2" *ngIf="extensionFeature == '1' && checkcondition">External</mat-option> -->
+                  <mat-option value="2" *ngIf="pstnCheck">External</mat-option>
+
+                  <mat-option value="3">Extension</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- //disabled and voicemail case -->
+            <div class="form-group col-md-6" *ngIf="!busyForwardType && !busyForwardExtension">
+              <mat-form-field class="example-full-width">
+                <input matInput type="text" formControlName="busy" id="busy" placeholder="Busy Forward" readonly>
+              </mat-form-field>
+
+            </div>
+            <!-- //extension case -->
+            <div class="form-group col-md-6" *ngIf="busyForwardExtension && !busyForwardType">
+              <ejs-dropdownlist formControlName="busy_extension" (filtering)="Extensionremovedspace($event)" [floatLabelType]="'Auto'"
+              style="width: 63%;margin-top: -7px;"  [dataSource]='extensionInfo' [fields]='fields1'
+              [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder10' allowFiltering=true required>
+          </ejs-dropdownlist>
+              <div class="reqired-field" style="margin-top:2px;">
+                <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension which has DND enable not listed here.</small>
+              </div>
+            </div>
+            <!-- //external case -->
+            <div class="form-group col-md-6" *ngIf="busyForwardType && !busyForwardExtension">
+              <div class="row">
+                <div class="form-group col-md-5" *ngIf="busyForwardType" >
+                  <ejs-dropdownlist formControlName="busy_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'busy_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist>
+                  <div *ngIf="busy_country.invalid && (busy_country.dirty || busy_country.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="busy_country.errors.required">
+                      Required country
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-5" *ngIf="!busyForwardType" >
+                  <ejs-dropdownlist formControlName="busy_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'busy_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist> 
+                </div>
+                <div class="form-group col-md-2"></div>
+                <div class="form-group col-md-5">
+                  <mat-form-field class="example-full-width">
+                    <mat-label *ngIf="pstnCheck">External Number</mat-label>
+                    <input matInput [hidden]="true" formControlName="busy_country_code" />
+                    <input matInput type="text" formControlName="busy_external" id="busy_external"
+                      (keypress)="commonService.numberOnly($event)" minlength="10" maxlength="10"
+                      [(ngModel)]="!busyForwardType ? '' : callForwardData.busy_external"
+                      autocomplete="off" required>
+                    <!-- <span matPrefix >{{countryCode}}</span> -->
+                    <span matPrefix >{{busy_country_code.value}}</span>
+                  </mat-form-field>
+                  <div *ngIf="busy_external.invalid && (busy_external.dirty || busy_external.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="busy_external.errors.required">
+                      Required Field
+                    </div>
+                    <div class="error" *ngIf="busy_external.errors.pattern"> Number can not start with 0 and not less
+                      than 10 digits.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="forwardType">
+                <mat-label>No answer Forward Type</mat-label>
+                <mat-select formControlName="noanswer_type" (selectionChange)="getNoanswerForwardType($event)"
+                  [(ngModel)]="callForwardData.noanswer_type" [value]=0 required>
+                  <mat-option value="0" selected>Disabled</mat-option>
+                  <mat-option value="1" *ngIf="extensionHasVoiceMail == '1'">Voicemail</mat-option>
+                  <mat-option value="2" *ngIf="pstnCheck">External</mat-option>
+                  <!-- <mat-option value="2" *ngIf="extensionFeature == '1' && checkcondition">External</mat-option> -->
+                  <mat-option value="3">Extension</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-6" *ngIf="!noanswerForwardType && !noanswerForwardExtension">
+              <mat-form-field class="example-full-width">
+                <input matInput type="text" formControlName="noanswer" id="noanswer" placeholder="No answer Forward"
+                  readonly>
+              </mat-form-field>
+            </div>
+            <!-- //extension case -->
+            <div class="form-group col-md-6" *ngIf="noanswerForwardExtension && !noanswerForwardType">
+              <ejs-dropdownlist formControlName="noanswer_extension" (filtering)="Extensionremovedspace($event)" [floatLabelType]="'Auto'"
+              style="width: 63%;margin-top: -7px;"  [dataSource]='extensionInfo' [fields]='fields1'
+              [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder10' allowFiltering=true required>
+          </ejs-dropdownlist>
+              <div class="reqired-field" style="margin-top:2px;">
+                <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension which has DND enable not listed here.</small>
+              </div>
+            </div>
+            <!-- //external case -->
+            <div class="form-group col-md-6" *ngIf="noanswerForwardType && !noanswerForwardExtension">
+              <div class="row">
+                <div class="form-group col-md-5" *ngIf="noanswerForwardType" >
+                  <ejs-dropdownlist formControlName="noanswer_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'noanswer_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist>
+                  <div *ngIf="noanswer_country.invalid && (noanswer_country.dirty || noanswer_country.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="noanswer_country.errors.required">
+                      Required country
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-5" *ngIf="!noanswerForwardType" >
+                  <ejs-dropdownlist formControlName="noanswer_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'noanswer_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist> 
+                </div>
+                <div class="form-group col-md-2"></div>
+                <div class="form-group col-md-5">
+                  <!-- <div *ngIf="noanswer"> -->
+                  <mat-form-field class="example-full-width">
+                    <mat-label *ngIf="pstnCheck">External Number</mat-label>
+                    <input matInput [hidden]="true" formControlName="noanswer_country_code"  />
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                      formControlName="noanswer_external" id="noanswer_external" maxlength="10"
+                      [(ngModel)]="!noanswerForwardType ? '' : callForwardData.noanswer_external" 
+                      autocomplete="off"  required>
+                    <!-- <span matPrefix >{{countryCode}}</span> -->
+                    <span matPrefix >{{noanswer_country_code.value}}</span>
+                  </mat-form-field>
+                  <div *ngIf="noanswer_external.invalid && (noanswer_external.dirty || noanswer_external.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="noanswer_external.errors.required">
+                      Required Field
+                    </div>
+                    <div class="error" *ngIf="noanswer_external.errors.pattern"> Number can not start with 0 and not
+                      less than 10 digits.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="forwardType">
+                <mat-label>Unavailable Forward Type</mat-label>
+                <mat-select formControlName="unavailable_type" (selectionChange)="getUnavailableForwardType($event)"
+                  [(ngModel)]="callForwardData.unavailable_type" [value]=0 required>
+                  <mat-option value="0" selected>Disabled</mat-option>
+                  <mat-option value="1"  *ngIf="extensionHasVoiceMail == '1'">Voicemail</mat-option>
+                  <!-- <mat-option value="2" *ngIf="extensionFeature == '1' && checkcondition">External</mat-option> -->
+                  <mat-option value="2" *ngIf="pstnCheck">External</mat-option>
+
+                  <mat-option value="3">Extension</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+            <div class="form-group col-md-6" *ngIf="!unavailableForwardType && !unavailableForwardExtension">
+              <mat-form-field class="example-full-width">
+                <input matInput type="text" formControlName="unavailable" id="unavailable"
+                  placeholder="Unavailable Forward" readonly>
+              </mat-form-field>
+            </div>
+            <!-- //extension case -->
+            <div class="form-group col-md-6" *ngIf="unavailableForwardExtension && !unavailableForwardType">
+              <ejs-dropdownlist formControlName="unavailable_extension" (filtering)="Extensionremovedspace($event)" [floatLabelType]="'Auto'"
+              style="width: 63%;margin-top: -7px;"  [dataSource]='extensionInfo' [fields]='fields1'
+              [popupHeight]='popupHeight' [popupWidth]='popupWidth' [placeholder]='placeholder10' allowFiltering=true required>
+          </ejs-dropdownlist>
+              <div class="reqired-field" style="margin-top:2px;">
+                <small style="color: blue; font-weight:600">*Note</small><small style="color: gray"> The Extension which has DND enable not listed here.</small>
+              </div>            
+                <div
+                *ngIf="unavailable_extension.invalid && (unavailable_extension.dirty || unavailable_extension.touched)"
+                class="reqired-field">
+                <div class="error" *ngIf="unavailable_extension.errors.required">
+                  Required Field
+                </div>
+              </div>
+            </div>
+            <!-- //external case -->
+            <div class="form-group col-md-6" *ngIf="unavailableForwardType && !unavailableForwardExtension">
+              <div class="row">
+                <div class="form-group col-md-5" *ngIf="unavailableForwardType">
+                  <ejs-dropdownlist formControlName="unavailable_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'unavailable_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist>
+                  <div *ngIf="unavailable_country.invalid && (unavailable_country.dirty || unavailable_country.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="unavailable_country.errors.required">
+                      Required country
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-5" *ngIf="!unavailableForwardType">
+                  <ejs-dropdownlist formControlName="unavailable_country" (filtering)="Countryremovedspace($event)" [floatLabelType]="'Auto'" (change)="getCountryCode($event,'unavailable_country_code')"
+                  style="width: 145%;margin-top: -7px;"  [dataSource]='countryList' [fields]='fields2' 
+                  [popupHeight]='popupHeight' [popupWidth]='popupWidth1' [placeholder]='placeholder2' allowFiltering=true required>
+              </ejs-dropdownlist>
+                </div>
+                <div class="form-group col-md-2"></div>
+                <div class="form-group col-md-5">
+                  <!-- <div *ngIf="unavailable"> -->
+                  <mat-form-field class="example-full-width">
+                    <mat-label *ngIf="pstnCheck">External Number</mat-label>
+                    <input matInput [hidden]="true" formControlName="unavailable_country_code" /> 
+                    <input matInput type="text" (keypress)="commonService.numberOnly($event)" minlength="10"
+                      formControlName="unavailable_external" id="unavailable_external" maxlength="10"
+                      [(ngModel)]="!unavailableForwardType ? '' : callForwardData.unavailable_external" 
+                      autocomplete="off" required>
+                    <!-- <span matPrefix >{{countryCode}}</span> -->
+                    <span matPrefix >{{unavailable_country_code.value}}</span>
+                  </mat-form-field>
+                  <div
+                    *ngIf="unavailable_external.invalid && (unavailable_external.dirty || unavailable_external.touched)"
+                    class="reqired-field">
+                    <div class="error" *ngIf="unavailable_external.errors.required">
+                      Required Field
+                    </div>
+                    <div class="error" *ngIf="unavailable_external.errors.pattern"> Number can not start with 0 and not
+                      less than 10 digits.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 example-button-row" style="text-align: center;">
+              <button mat-raised-button color="primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- <small style="color: blue; font-weight:600">*Note</small><small> The Extension which has DND enable not listed here.</small> -->
+      </div>
+    </div>
+  </div>
+</div>

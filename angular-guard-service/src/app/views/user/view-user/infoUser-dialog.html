@@ -1,0 +1,33 @@
+<h3 class="card-header-style">User Information</h3>
+<div mat-dialog-content>
+    <div class="card-body">
+        <div class="row">
+            <mat-card
+                style="background-color:#d2e1f8 !important;color:#115375  !important;border-color:#d2e1f8 !important;width:100%;">
+                <mat-card-content style="font-size:16px;text-align: justify;" *ngIf="role == '0'">
+                    Customers are basically of two types, Enterprise Customers and Internal Users(Account Manager and
+                </mat-card-content>
+                <img src="assets/img/customer.png" style="width:100%;" *ngIf="role == '0'">
+                <mat-card-content style="font-size:16px;" *ngIf="role == '0'">
+                    Enterprise Customer and Reseller comes in the category of Customers, we choose User Type and fill
+                    all mandatory details and create Customer. <br />
+                    In case of Enterprise customers we have to provide a Product and Package as per product. Admin also
+                    assigns an Account Manager to his Customer. Package will provide all information to assign features
+                    to enterprise customers.
+                </mat-card-content>
+                <img src="assets/img/create_customer.png" style="width:100%;" *ngIf="role == '0'">
+                <mat-card-content style="font-size:16px;text-align: justify;" *ngIf="role == '4' || role == '5'">
+                    The account manager and support person have only views permission of his customer’s account. They
+                    can view their assign package and can filter accounts as active or inactive basic etc.
+                </mat-card-content>
+                <img src="assets/img/internalUserCustomer.png" style="width:100%;" *ngIf="role == '4' || role == '5'">
+                <app-common-document></app-common-document>
+            </mat-card>
+        </div>
+        <div class="row" style="margin-top:36px;">
+            <div class="col-md-4 example-button-row" style="margin:-17px;">
+                <button mat-raised-button color="warn" (click)="cancleDialog()">Close</button>              
+            </div>            
+        </div>
+    </div>
+</div>

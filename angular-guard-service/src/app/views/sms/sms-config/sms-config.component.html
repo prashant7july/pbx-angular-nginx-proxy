@@ -1,0 +1,42 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>SMS NOTIFICATION CONFIGURATION</strong>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="rateplanForm" (ngSubmit)="submitRatePlan()" class="row">
+            <div class="form-group col-md-4">
+              <mat-slide-toggle formControlName="isCheckAllConfig" (change)="checkAllConfig($event.checked)" >
+                Select All
+            </mat-slide-toggle>
+          </div>
+            <div  class="form-group col-md-4" formArrayName="smsConfigForm" *ngFor="let d of getfeatureRateControls(); let i=index">
+                <!-- Use the index for each formGroup inside the formArray -->
+                <div [formGroupName]="i">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <mat-slide-toggle formControlName="value" (change)="manageSelectAllBtn(d)">
+                             {{d.value.name}}
+                          </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group col-md-4"  *ngIf="tele_consultancy">
+              <mat-slide-toggle formControlName="sms_pack"  (change)="manageSelectAllBtn()" >
+                TC SMS Package
+            </mat-slide-toggle>
+          </div>             -->
+             <div class="col-lg-12 example-button-row">
+                <button type="submit" mat-raised-button [disabled]="rateplanForm.invalid"  color="primary">Submit</button>
+            </div>   
+    </form>
+        </div>
+        
+     
+         </div> 
+      </div> 
+   </div> 
+</div>

@@ -1,0 +1,47 @@
+.switch-primary{
+    vertical-align: middle;
+    margin-left: 20px;
+    float: right;
+}
+.switch-div{
+    border-right: 1px solid #09aee4;
+}
+.text-div{
+    /* width: auto; */
+    float: right;
+}
+.switch-primary .switch-input:checked + .switch-slider {
+    background-color: #20a8d8!important;
+    border-color: #1985ac!important;
+}
+.switch-slider {
+    background-color: #4e4e4e!important;
+    border: 1px solid #000!important;
+}
+.selected-item{
+    margin-bottom: 3px!important;
+}
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+.hr-sect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.62);
+    margin: 8px 0px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.hr-sect::before,
+.hr-sect::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(9, 174, 228, 1);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 8px;
+}

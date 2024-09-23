@@ -1,0 +1,22 @@
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+.image-upload > input {
+    display: none;
+}
+.image{
+    border-radius: 25px;
+    height: 190px;
+    width: 138px;
+    object-fit: contain;
+}
+.image-upload img{
+    width: 58px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    background: transparent;
+    left: 118px;
+    top: 170px;
+}

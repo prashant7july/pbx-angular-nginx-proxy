@@ -1,0 +1,501 @@
+<h3 class="card-header-style">EDIT PERMISSION</h3>
+<div mat-dialog-content>
+  <div class="card-body">
+    <form [formGroup]="permissionForm" novalidate>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <mat-form-field class="example-full-width">
+            <mat-label>Permission Name</mat-label>
+            <input
+              matInput
+              placeholder="Permission"
+              maxlength="30"
+              formControlName="permission_name"
+              autocomplete="off"
+              [(ngModel)]="selectedPermission"
+              required
+              (change)="checkName();"
+            />
+          </mat-form-field>
+          <div
+            *ngIf="permission_name.invalid && (permission_name.dirty || permission_name.touched )"
+            class="reqired-field"
+          >
+            <div *ngIf="permission_name.errors.maxlength">
+              Name max length is 30 character long.
+            </div>
+            <div *ngIf="permission_name.errors.minlength">
+              Name min length is 1 character.
+            </div>
+          </div>
+         
+        </div>
+        <div class="form-group col-md-2" style="margin-left: -170px;">
+          <mat-form-field style="margin-left: 10px;">
+            <mat-label>User Type </mat-label>
+            <mat-select formControlName="user_type" [disabled]="true" [(ngModel)]="selectedUserType">
+              <mat-option value="" selected >Sub Admin</mat-option>
+              <mat-option value="1">Reseller</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group col-md-4 " style="margin-left: 50px;">
+          <section class="example-section">
+            Product:
+            <mat-checkbox class="col-md-4" formControlName="pbx" [(ngModel)]="selectedPbx" [disabled]="true">PBX</mat-checkbox>
+            <mat-checkbox class="col-md-4" formControlName="oc" [(ngModel)]="selectedOc" [disabled]="true" >OC</mat-checkbox>
+          </section>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="form-group col-md-3">
+          <label><strong>Menu</strong></label>
+        </div>
+        <div class="form-group col-md-3">
+          <label><strong>Sub Menu</strong></label>
+        </div>
+        <div class="form-group col-md-6">
+          <div class="custom-check">
+            <label><strong>Permissions</strong></label>
+            <label class="checkbox">
+              <span class="checkbox__input">
+                <input
+                  type="checkbox"
+                  (change)="completeCheck($event)"
+                  name="complete_check"
+                  formControlName="complete_permissions"
+                  [checked]="completePermissions"
+
+                />
+                <span class="checkbox__control">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                    ></path>
+                  </svg>
+                </span>
+              </span>
+              <span class="radio__label">Complete Permission</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div *ngFor="let data of allUrl; let i = index">
+        <div *ngIf="data.children != null; then child else parent"></div>
+        <ng-template #child>
+          <div class="row">
+            <div class="form-group col-md-3">
+              <label>{{ data.menuname }}</label>
+            </div>
+            <div class="form-group col-md-3">
+              <label *ngIf="data.children != '-'">{{ data.children }}</label>
+            </div>
+            <div class="form-group col-md-6">
+              <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="allCheck($event,data)"
+                      [checked]="data.allpermission == 1 || data.id == 324 || data.id == 325 || data.id == 326 || data.id == 1"
+                      value="all_{{ data.id }}"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="allCheck"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">All</span>
+                </label>
+              </div>
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event,data,'add')"
+                      value="add_{{ data.id }}"
+                      [checked]="data.addpermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                      data-type="add"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Add</span>
+                </label>
+              </div> -->
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event,data,'edit')"
+                      value="modify_{{ data.id }}"
+                      [checked]="data.editpermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                      data-type="modify"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Modify</span>
+                </label>
+              </div> -->
+              <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event,data,'view')"
+                      value="view_{{ data.id }}"
+                      [checked]="data.viewpermission == 1 || data.id == 324 || data.id == 325 || data.id == 326 || data.id == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                      data-type="view"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">View</span>
+                </label>
+              </div>
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event,data,'delete')"
+                      value="delete_{{ data.id }}"
+                      [checked]="data.deletepermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                      data-type="delete"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Delete</span>
+                </label>
+              </div> -->
+
+              <!-- <span *ngIf="data.is_extra_permission">
+                      <div class="custom-check" *ngFor="let xp of data.extra_permission">
+                        <label class="checkbox">
+                          <span class="checkbox__input">
+                            <input type="checkbox" (change)="singleCheck($event)"
+                              value="{{xp.permission_name | lowercase}}_{{ data.id }}" [checked]="isSelected"
+                              name="p_{{ data.id }}_{{ data.parent_id }}" formControlName="permissions" />
+                            <span class="checkbox__control">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                                focusable="false">
+                                <path fill="none" stroke="currentColor" stroke-width="3"
+                                  d="M1.73 12.91l6.37 6.37L22.79 4.59">
+                                </path>
+                              </svg>
+                            </span>
+                          </span>
+                          <span class="radio__label">{{xp.permission_name}}</span>
+                        </label>
+                      </div>
+                    </span> -->
+
+              <!-- <div class="custom-check">
+                      <span style="color: #16709e; cursor: pointer;" class="radio__label" (click)="openDialog(data.id)"><i
+                          class="fa fa-plus-square-o" aria-hidden="true"></i></span>
+                    </div> -->
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #parent>
+          <div class="row hidden">
+            <div class="form-group col-md-3">
+              <label>{{ data.menuname }}</label>
+            </div>
+            <div class="form-group col-md-3">
+              <label *ngIf="data.children != '-'">{{ data.children }}</label>
+            </div>
+            <div class="form-group col-md-6">
+              <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="allCheck($event)"
+                      [checked]="data.allpermission == 1 || data.id == 324 || data.id == 325 || data.id == 326 || data.id == 1"
+                      value="all_{{ data.id }}"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="allCheck"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">All</span>
+                </label>
+              </div>
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event)"
+                      value="add_{{ data.id }}"
+                      [checked]="data.addpermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Add</span>
+                </label>
+              </div> -->
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event)"
+                      value="modify_{{ data.id }}"
+                      [checked]="data.editpermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Modify</span>
+                </label>
+              </div> -->
+              <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event)"
+                      value="view_{{ data.id }}"
+                      [checked]="data.viewpermission == 1 || data.id == 324 || data.id == 325 || data.id == 326 || data.id == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">View</span>
+                </label>
+              </div>
+              <!-- <div class="custom-check">
+                <label class="checkbox">
+                  <span class="checkbox__input">
+                    <input
+                      type="checkbox"
+                      (change)="singleCheck($event)"
+                      value="delete_{{ data.id }}"
+                      [checked]="data.deletepermission == 1"
+                      name="p_{{ data.id }}_{{ data.parent_id }}"
+                      formControlName="permissions"
+                    />
+                    <span class="checkbox__control">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          d="M1.73 12.91l6.37 6.37L22.79 4.59"
+                        ></path>
+                      </svg>
+                    </span>
+                  </span>
+                  <span class="radio__label">Delete</span>
+                </label>
+              </div> -->
+
+              <!-- <span *ngIf="data.is_extra_permission">
+                        <div class="custom-check" *ngFor="let xp of data.extra_permission">
+                          <label class="checkbox">
+                            <span class="checkbox__input">
+                              <input type="checkbox" (change)="singleCheck($event)"
+                                value="{{xp.permission_name | lowercase}}_{{ data.id }}" [checked]="isSelected"
+                                name="p_{{ data.id }}_{{ data.parent_id }}" formControlName="permissions" />
+                              <span class="checkbox__control">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                                  focusable="false">
+                                  <path fill="none" stroke="currentColor" stroke-width="3"
+                                    d="M1.73 12.91l6.37 6.37L22.79 4.59">
+                                  </path>
+                                </svg>
+                              </span>
+                            </span>
+                            <span class="radio__label">{{xp.permission_name}}</span>
+                          </label>
+                        </div>
+                      </span> -->
+
+              <!-- <div class="custom-check">
+                        <span style="color: #16709e; cursor: pointer;" class="radio__label" (click)="openDialog(data.id)"><i
+                            class="fa fa-plus-square-o" aria-hidden="true"></i></span>
+                      </div> -->
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="form-group col-lg-12">
+        <div class="form-group row">
+          <div class="col-sm-12" style="text-align: center">
+            <div class="col-lg-12 example-button-row">
+              <button
+                mat-raised-button
+                [disabled]="!permissionForm.valid"
+                (click)="updatePermission()"
+                color="primary"
+              >
+                Submit
+              </button>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="onNoClick($event)"
+              >
+                Cancel</button
+              ><br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+.btn1-info {     
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    float:right;
+}
+
+.btn2-info {     
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    color: #000000;
+}
+
+.circle {
+    background-color: #2b88b5;
+    border-radius: 50%;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+/* .comment:hover {
+    background-color: rgba(222, 221, 221, 0.5);
+    } */
+
+/* ::ng-deep 
+:focus { 
+    outline: 0 !important;
+    text-decoration: none;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+} */
+
+::ng-deep 
+.accordion > .card .card-header  {
+    background-color: white!important;
+    color:#000000!important;
+}
+::ng-deep 
+.card {
+    margin-bottom: 0rem;
+}
+
+::ng-deep 
+.form-control:disabled, .form-control[readonly] {
+    background-color: #ffffff;
+}
+
+::ng-deep 
+.btn-ghost-primary {
+    color: #20a8d8;
+    background-color: transparent;
+    background-image: none;
+    border-color: transparent;
+    margin-top: 10px;
+}
+::ng-deep 
+br[data-mce-bogus="1"] {
+    display:none;
+}
+::ng-deep 
+.card-body {
+    padding: 25px !important;
+}
+
+::ng-deep 
+.e-rte-content{
+    height:500px !important;
+}
